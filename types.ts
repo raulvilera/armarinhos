@@ -47,4 +47,8 @@ export interface Sale {
   fiscal?: FiscalInfo;
 }
 
+<<<<<<< HEAD
 export type ViewType = 'STOREFRONT' | 'DASHBOARD' | 'CATALOG' | 'CHECKOUT' | 'POS' | 'CUSTOMERS' | 'LOGIN' | 'SUBSCRIPTIONS' | 'SUPER_ADMIN';
+=======
+export type ViewType = 'STOREFRONT' | 'DASHBOARD' | 'CATALOG' | 'CHECKOUT' | 'POS' | 'CUSTOMERS' | 'LOGIN' | 
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)

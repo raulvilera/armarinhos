@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
+<<<<<<< HEAD
 import { createSubscriptionPlan, initMPCheckout } from '../services/mercadopagoService';
+=======
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 
 export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView }) => {
     const [plans, setPlans] = useState<any[]>([]);
@@ -12,6 +15,7 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
 
     const fetchPlans = async () => {
         const { data } = await supabase.from('plans').select('*');
+<<<<<<< HEAD
         if (data && data.length > 0) {
             setPlans(data);
         } else {
@@ -53,6 +57,12 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
         }
     };
 
+=======
+        if (data) setPlans(data);
+        setLoading(false);
+    };
+
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
     return (
         <div className="p-8 max-w-4xl mx-auto">
             <header className="flex justify-between items-center mb-10">
@@ -79,11 +89,16 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
                         </div>
                         <h3 className="text-lg font-bold mb-2 uppercase">{plan.name}</h3>
                         <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
+<<<<<<< HEAD
                         <button
                             onClick={() => handleSubscribe(plan)}
                             className="w-full bg-primary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs"
                         >
                             Assinar Agora
+=======
+                        <button className="w-full bg-primary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs">
+                            Editar Plano
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                         </button>
                     </div>
                 ))}

@@ -9,16 +9,27 @@ import { Checkout } from './pages/Checkout';
 import { POS } from './pages/POS';
 import { Customers } from './pages/Customers';
 import { Login } from './pages/Login';
+<<<<<<< HEAD
 import { Subscriptions } from './pages/Subscriptions';
+=======
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 import { ChatWidget } from './components/ChatWidget';
 import { supabase } from './services/supabaseClient';
 
 const App: React.FC = () => {
   const [view, setView] = useState<ViewType>('STOREFRONT');
+<<<<<<< HEAD
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
   const [user, setUser] = useState<any>(null);
+=======
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [sales, setSales] = useState<Sale[]>([]);
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderComplete, setIsOrderComplete] = useState(false);
@@ -26,6 +37,7 @@ const App: React.FC = () => {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
 
   useEffect(() => {
+<<<<<<< HEAD
     // Verificar sessão atual
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -45,6 +57,9 @@ const App: React.FC = () => {
     });
 
     return () => subscription.unsubscribe();
+=======
+    fetchData();
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
   }, []);
 
   const fetchData = async () => {
@@ -74,7 +89,11 @@ const App: React.FC = () => {
 
   const handleSetView = (newView: ViewType) => {
     const adminViews: ViewType[] = ['DASHBOARD', 'CATALOG', 'POS', 'CUSTOMERS'];
+<<<<<<< HEAD
     if (adminViews.includes(newView) && !user) {
+=======
+    if (adminViews.includes(newView) && !isLoggedIn) {
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
       setView('LOGIN');
       return;
     }
@@ -168,6 +187,7 @@ const App: React.FC = () => {
     }
   };
 
+<<<<<<< HEAD
   const updateProduct = async (updated: Product) => {
     try {
       const { error } = await supabase
@@ -188,6 +208,11 @@ const App: React.FC = () => {
     await supabase.auth.signOut();
     setUser(null);
     handleSetView('STOREFRONT');
+=======
+  const updateProduct = (updated: Product) => {
+    setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
+    showToast('Produto atualizado!', 'success');
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
   };
 
   const renderView = () => {
@@ -211,15 +236,22 @@ const App: React.FC = () => {
       case 'STOREFRONT':
         return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />;
       case 'LOGIN':
+<<<<<<< HEAD
         return <Login onLogin={() => { }} setView={handleSetView} />;
       case 'DASHBOARD':
         return <Dashboard setView={handleSetView} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />;
+=======
+        return <Login onLogin={() => setIsLoggedIn(true)} setView={handleSetView} />;
+      case 'DASHBOARD':
+        return <Dashboard setView={handleSetView} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={() => setIsLoggedIn(false)} />;
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
       case 'CATALOG':
         return (
           <Catalog
             setView={handleSetView}
             products={products}
             sales={sales}
+<<<<<<< HEAD
             onAddProduct={async (p) => {
               try {
                 const { data, error } = await supabase.from('products').insert([p]).select();
@@ -249,11 +281,17 @@ const App: React.FC = () => {
                 showToast('Erro ao atualizar estoque', 'info');
               }
             }}
+=======
+            onAddProduct={(p) => setProducts([p, ...products])}
+            onDeleteProduct={(id) => setProducts(products.filter(p => p.id !== id))}
+            onUpdateStock={(id, stock) => setProducts(products.map(p => p.id === id ? { ...p, stock } : p))}
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
             onUpdateProduct={updateProduct}
             showToast={showToast}
           />
         );
       case 'POS':
+<<<<<<< HEAD
         return (
           <POS
             setView={handleSetView}
@@ -297,6 +335,13 @@ const App: React.FC = () => {
         return <Checkout setView={handleSetView} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />;
       case 'SUBSCRIPTIONS':
         return <Subscriptions setView={handleSetView} />;
+=======
+        return <POS setView={handleSetView} products={products} sales={sales} customers={customers} onFinishSale={finishOrder} />;
+      case 'CUSTOMERS':
+        return <Customers setView={handleSetView} customers={customers} onAddCustomer={(c) => { setCustomers([c, ...customers]); showToast('Cliente cadastrado!'); }} />;
+      case 'CHECKOUT':
+        return <Checkout setView={handleSetView} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />;
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
       default:
         return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.length} />;
     }

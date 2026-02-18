@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import React, { useState, useMemo } from 'react';
 import { ViewType, Product, Sale } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Legend } from 'recharts';
 import { BarcodeScanner } from '../components/BarcodeScanner';
+=======
+
+import React, { useState, useMemo } from 'react';
+import { ViewType, Product, Sale } from '../types';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Legend } from 'recharts';
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 
 interface CatalogProps {
   setView: (v: ViewType) => void;
@@ -19,13 +26,21 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('Todos');
   const [chartCategoryFilter, setChartCategoryFilter] = useState('Todos');
+<<<<<<< HEAD
   const [isScannerOpen, setIsScannerOpen] = useState(false);
 
+=======
+  
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
   // Filtros de Data
   const [filterDay, setFilterDay] = useState(new Date().getDate());
   const [filterMonth, setFilterMonth] = useState(new Date().getMonth());
   const [filterYear, setFilterYear] = useState(new Date().getFullYear());
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
   // Controle de Dropdowns Inline
   const [openFilter, setOpenFilter] = useState<'day' | 'month' | 'year' | null>(null);
 
@@ -55,8 +70,13 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
     const filteredSales = sales.filter(sale => {
       const saleDate = new Date(sale.date);
       return saleDate.getDate() === filterDay &&
+<<<<<<< HEAD
         saleDate.getMonth() === filterMonth &&
         saleDate.getFullYear() === filterYear;
+=======
+             saleDate.getMonth() === filterMonth &&
+             saleDate.getFullYear() === filterYear;
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
     });
 
     const data = products
@@ -64,7 +84,11 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
       .map(p => {
         let soldQty = 0;
         let soldValue = 0;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
         filteredSales.forEach(sale => {
           const item = sale.items.find(i => i.product.id === p.id);
           if (item) {
@@ -109,7 +133,12 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
     if (editingProduct) {
       onUpdateProduct({ ...editingProduct, ...newProduct as Product });
     } else {
+<<<<<<< HEAD
       const product: any = {
+=======
+      const product: Product = {
+        id: Math.random().toString(36).substr(2, 6).toUpperCase(),
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
         name: newProduct.name!.trim(),
         category: (newProduct.category as Product['category']),
         description: newProduct.description || '',
@@ -117,7 +146,11 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         stock: Math.floor(Number(newProduct.stock)),
         sku: newProduct.sku || `SKU-${Math.floor(Math.random() * 10000)}`,
         barcode: newProduct.barcode || '',
+<<<<<<< HEAD
         image: newProduct.image || 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?q=80&w=200&auto=format&fit=crop',
+=======
+        image: newProduct.image || 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?q=80&w=200&auto=format&fit=crop', 
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
         spec: newProduct.spec || ''
       };
       onAddProduct(product);
@@ -125,8 +158,13 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
     handleCloseModal();
   };
 
+<<<<<<< HEAD
   const filteredTableProducts = activeTab === 'Todos'
     ? products
+=======
+  const filteredTableProducts = activeTab === 'Todos' 
+    ? products 
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
     : products.filter(p => p.category === activeTab);
 
   return (
@@ -166,7 +204,11 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
             <h2 className="text-2xl lg:text-4xl font-black tracking-tight text-gray-900 uppercase leading-none">Controle de Performance</h2>
             <p className="text-gray-400 font-bold uppercase text-[10px] lg:text-[11px] tracking-[0.3em] mt-2 italic">Dashboard de Vendas e Inventário</p>
           </div>
+<<<<<<< HEAD
           <button
+=======
+          <button 
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
             onClick={() => setIsModalOpen(true)}
             className="bg-primary text-white font-black py-4 px-6 lg:px-10 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-primary/30 hover:brightness-110 transition-all uppercase text-[10px] lg:text-xs tracking-widest"
           >
@@ -179,6 +221,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         <section className="bg-white rounded-[2rem] lg:rounded-[4rem] shadow-sm border border-gray-100 p-6 lg:p-12 mb-8 lg:mb-16 animate-in slide-in-from-bottom-10 relative">
           <div className="flex flex-col md:flex-row justify-between items-start mb-10 gap-6">
             <div className="w-full md:w-auto">
+<<<<<<< HEAD
               <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter">Comparativo Unitário (Vendas x Estoque)</h3>
 
               {/* FILTROS DE DATA INLINE */}
@@ -234,6 +277,63 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                   )}
                 </div>
               </div>
+=======
+               <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter">Comparativo Unitário (Vendas x Estoque)</h3>
+               
+               {/* FILTROS DE DATA INLINE */}
+               <div className="flex flex-wrap gap-3 mt-6">
+                 <div className="relative">
+                    <button 
+                      onClick={() => setOpenFilter(openFilter === 'day' ? null : 'day')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${openFilter === 'day' ? 'bg-primary text-white border-primary shadow-lg' : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-primary/30'}`}
+                    >
+                      Dia: {filterDay}
+                      <span className="material-symbols-outlined text-sm">{openFilter === 'day' ? 'expand_less' : 'expand_more'}</span>
+                    </button>
+                    {openFilter === 'day' && (
+                      <div className="absolute top-full left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 grid grid-cols-7 gap-1 w-[260px] z-[60] animate-in slide-in-from-top-2">
+                        {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                          <button key={d} onClick={() => { setFilterDay(d); setOpenFilter(null); }} className={`size-7 rounded-lg flex items-center justify-center text-[9px] font-black transition-all ${filterDay === d ? 'bg-primary text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-primary/10'}`}>{d}</button>
+                        ))}
+                      </div>
+                    )}
+                 </div>
+
+                 <div className="relative">
+                    <button 
+                      onClick={() => setOpenFilter(openFilter === 'month' ? null : 'month')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${openFilter === 'month' ? 'bg-primary text-white border-primary shadow-lg' : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-primary/30'}`}
+                    >
+                      Mês: {months[filterMonth].name}
+                      <span className="material-symbols-outlined text-sm">{openFilter === 'month' ? 'expand_less' : 'expand_more'}</span>
+                    </button>
+                    {openFilter === 'month' && (
+                      <div className="absolute top-full left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 grid grid-cols-1 gap-1 w-full min-w-[150px] z-[60] animate-in slide-in-from-top-2">
+                        {months.map(m => (
+                          <button key={m.value} onClick={() => { setFilterMonth(m.value); setOpenFilter(null); }} className={`w-full text-left px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${filterMonth === m.value ? 'bg-primary text-white' : 'hover:bg-primary/5 text-gray-600'}`}>{m.name}</button>
+                        ))}
+                      </div>
+                    )}
+                 </div>
+
+                 <div className="relative">
+                    <button 
+                      onClick={() => setOpenFilter(openFilter === 'year' ? null : 'year')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${openFilter === 'year' ? 'bg-primary text-white border-primary shadow-lg' : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-primary/30'}`}
+                    >
+                      Ano: {filterYear}
+                      <span className="material-symbols-outlined text-sm">{openFilter === 'year' ? 'expand_less' : 'expand_more'}</span>
+                    </button>
+                    {openFilter === 'year' && (
+                      <div className="absolute top-full left-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 grid grid-cols-1 gap-1 w-full min-w-[110px] z-[60] animate-in slide-in-from-top-2">
+                        {years.map(y => (
+                          <button key={y} onClick={() => { setFilterYear(y); setOpenFilter(null); }} className={`w-full text-left px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${filterYear === y ? 'bg-primary text-white' : 'hover:bg-primary/5 text-gray-600'}`}>{y}</button>
+                        ))}
+                      </div>
+                    )}
+                 </div>
+               </div>
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
             </div>
 
             <div className="flex gap-4">
@@ -254,6 +354,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
                 <XAxis dataKey="displayName" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: '#94A3B8' }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: '#94A3B8' }} />
+<<<<<<< HEAD
                 <Tooltip cursor={{ fill: '#F8FAFC' }} contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 15px 30px rgba(0,0,0,0.05)', fontSize: '10px', fontWeight: '900' }} />
 
                 {/* Barras Empilhadas: Vendas (embaixo) e Estoque (em cima) */}
@@ -262,12 +363,23 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 </Bar>
                 <Bar dataKey="estoque" name="Estoque" stackId="stack_a" fill={COLORS.estoque} radius={[10, 10, 0, 0]}>
                   <LabelList dataKey="estoque" position="top" style={{ fontSize: 10, fontWeight: 900, fill: COLORS.estoque }} formatter={(val: number) => val > 0 ? `${val} est` : '0 est'} />
+=======
+                <Tooltip cursor={{fill: '#F8FAFC'}} contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 15px 30px rgba(0,0,0,0.05)', fontSize: '10px', fontWeight: '900'}} />
+                
+                {/* Barras Empilhadas: Vendas (embaixo) e Estoque (em cima) */}
+                <Bar dataKey="vendido" name="Vendas" stackId="stack_a" fill={COLORS.vendido}>
+                   <LabelList dataKey="vendido" position="center" style={{ fontSize: 10, fontWeight: 900, fill: '#FFFFFF' }} formatter={(val: number) => val > 0 ? `${val} v` : ''} />
+                </Bar>
+                <Bar dataKey="estoque" name="Estoque" stackId="stack_a" fill={COLORS.estoque} radius={[10, 10, 0, 0]}>
+                   <LabelList dataKey="estoque" position="top" style={{ fontSize: 10, fontWeight: 900, fill: COLORS.estoque }} formatter={(val: number) => `${val} e`} />
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           <div className="flex flex-wrap justify-center gap-2 pt-8 border-t border-gray-50">
+<<<<<<< HEAD
             {categories.map(cat => (
               <button
                 key={cat}
@@ -280,11 +392,27 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 {cat}
               </button>
             ))}
+=======
+              {categories.map(cat => (
+                <button 
+                  key={cat} 
+                  onClick={() => setChartCategoryFilter(cat)}
+                  className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${
+                    chartCategoryFilter === cat 
+                    ? 'bg-selected text-white border-selected shadow-lg' 
+                    : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-selected/40'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
           </div>
         </section>
 
         {/* DETALHAMENTO DE VALORES POR PRODUTO */}
         <section className="bg-white rounded-[2rem] lg:rounded-[3.5rem] shadow-sm border border-gray-100 p-6 lg:p-12 mb-8 lg:mb-16 animate-in slide-in-from-bottom-5">
+<<<<<<< HEAD
           <div className="mb-10">
             <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter">Vendas Analíticas por Produto</h3>
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic mt-2">Relatório do dia: {filterDay}/{filterMonth + 1}/{filterYear}</p>
@@ -350,15 +478,88 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
               )}
             </table>
           </div>
+=======
+           <div className="mb-10">
+              <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter">Vendas Analíticas por Produto</h3>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic mt-2">Relatório do dia: {filterDay}/{filterMonth+1}/{filterYear}</p>
+           </div>
+           
+           <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full text-left border-collapse min-w-[700px]">
+                 <thead>
+                    <tr className="bg-gray-50/50 border-b border-gray-100">
+                       <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Item</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Unidades</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Faturamento (R$)</th>
+                       <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Peso</th>
+                    </tr>
+                 </thead>
+                 <tbody className="divide-y divide-gray-50">
+                    {performanceData.filter(d => d.vendido > 0).map((d, idx) => {
+                       const totalGeral = performanceData.reduce((acc, curr) => acc + curr.valorTotal, 0);
+                       const participacao = totalGeral > 0 ? (d.valorTotal / totalGeral) * 100 : 0;
+                       
+                       return (
+                          <tr key={idx} className="hover:bg-gray-50/30 transition-colors">
+                             <td className="px-6 py-5">
+                                <p className="font-black text-xs text-gray-800 uppercase leading-none">{d.name}</p>
+                                <p className="text-[9px] text-gray-400 font-bold mt-1 tracking-widest">#{d.barcode}</p>
+                             </td>
+                             <td className="px-6 py-5 text-center font-black text-sm text-selected">
+                                {d.vendido} un.
+                             </td>
+                             <td className="px-6 py-5 text-right font-black text-base text-primary tracking-tighter">
+                                {d.valorTotal.toFixed(2).replace('.', ',')}
+                             </td>
+                             <td className="px-6 py-5 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                   <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                      <div className="h-full bg-primary" style={{ width: `${participacao}%` }}></div>
+                                   </div>
+                                   <span className="text-[9px] font-black text-gray-400">{participacao.toFixed(1)}%</span>
+                                </div>
+                             </td>
+                          </tr>
+                       );
+                    })}
+                    {performanceData.filter(d => d.vendido > 0).length === 0 && (
+                       <tr>
+                          <td colSpan={4} className="px-6 py-12 text-center text-[10px] font-black uppercase text-gray-300 tracking-[0.2em] italic">Sem vendas registradas para o período selecionado</td>
+                       </tr>
+                    )}
+                 </tbody>
+                 {performanceData.filter(d => d.vendido > 0).length > 0 && (
+                    <tfoot>
+                       <tr className="bg-primary/5">
+                          <td className="px-6 py-6 font-black text-xs uppercase text-primary">Consolidado Total</td>
+                          <td className="px-6 py-6 text-center font-black text-sm text-primary">
+                             {performanceData.reduce((acc, curr) => acc + curr.vendido, 0)} un.
+                          </td>
+                          <td className="px-6 py-6 text-right font-black text-xl text-primary tracking-tighter">
+                             R$ {performanceData.reduce((acc, curr) => acc + curr.valorTotal, 0).toFixed(2).replace('.', ',')}
+                          </td>
+                          <td></td>
+                       </tr>
+                    </tfoot>
+                 )}
+              </table>
+           </div>
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
         </section>
 
         {/* TABELA DE GESTÃO - INVENTÁRIO (Sempre Responsiva) */}
         <div className="mb-6">
           <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter mb-6">Gestão de Inventário Permanente</h3>
           <div className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+<<<<<<< HEAD
             {categories.map(cat => (
               <button key={cat} onClick={() => setActiveTab(cat)} className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap shadow-sm border ${activeTab === cat ? 'bg-selected text-white border-selected shadow-lg' : 'bg-white border-gray-100 text-gray-400'}`}>{cat}</button>
             ))}
+=======
+             {categories.map(cat => (
+               <button key={cat} onClick={() => setActiveTab(cat)} className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap shadow-sm border ${activeTab === cat ? 'bg-selected text-white border-selected shadow-lg' : 'bg-white border-gray-100 text-gray-400'}`}>{cat}</button>
+             ))}
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
           </div>
         </div>
 
@@ -396,7 +597,11 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                     <td className="px-8 py-6">
                       <div className="flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-2xl border border-gray-200 w-fit mx-auto shadow-inner">
                         <button onClick={() => onUpdateStock(p.id, Math.max(0, p.stock - 1))} className="size-8 flex items-center justify-center rounded-lg bg-white shadow-sm font-black text-primary hover:bg-primary hover:text-white transition-all">-</button>
+<<<<<<< HEAD
                         <input
+=======
+                        <input 
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                           type="number"
                           className="w-14 bg-transparent border-none text-center font-black text-xs focus:ring-0 p-0"
                           value={p.stock}
@@ -407,12 +612,21 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                     </td>
                     <td className="px-8 py-6 text-right pr-12">
                       <div className="flex items-center justify-end gap-3 opacity-100">
+<<<<<<< HEAD
                         <button onClick={() => handleOpenEdit(p)} className="size-11 bg-primary/5 text-primary rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm" title="Editar">
                           <span className="material-symbols-outlined text-sm font-black">edit</span>
                         </button>
                         <button onClick={() => onDeleteProduct(p.id)} className="size-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Excluir">
                           <span className="material-symbols-outlined text-sm font-black">delete</span>
                         </button>
+=======
+                         <button onClick={() => handleOpenEdit(p)} className="size-11 bg-primary/5 text-primary rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm" title="Editar">
+                           <span className="material-symbols-outlined text-sm font-black">edit</span>
+                         </button>
+                         <button onClick={() => onDeleteProduct(p.id)} className="size-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm" title="Excluir">
+                           <span className="material-symbols-outlined text-sm font-black">delete</span>
+                         </button>
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                       </div>
                     </td>
                   </tr>
@@ -437,6 +651,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 <span className="material-symbols-outlined font-black text-xl">close</span>
               </button>
             </div>
+<<<<<<< HEAD
 
             <form onSubmit={handleSubmit} className="p-10 grid grid-cols-2 gap-6">
               <div className="col-span-2">
@@ -463,6 +678,25 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                     <span className="material-symbols-outlined font-black">barcode_scanner</span>
                   </button>
                 </div>
+=======
+            
+            <form onSubmit={handleSubmit} className="p-10 grid grid-cols-2 gap-6">
+              <div className="col-span-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Nome Comercial</label>
+                <input required className="w-full bg-gray-50 border border-primary/10 rounded-2xl px-5 py-3 text-sm font-black outline-none focus:ring-4 focus:ring-primary/10" value={newProduct.name || ''} onChange={e => setNewProduct({...newProduct, name: e.target.value})} />
+              </div>
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Preço de Venda (R$)</label>
+                <input type="number" step="0.01" required className="w-full bg-primary/5 border-2 border-primary/20 rounded-2xl px-5 py-3 text-lg font-black text-primary outline-none" value={newProduct.price || ''} onChange={e => setNewProduct({...newProduct, price: Number(e.target.value)})} />
+              </div>
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Carga Inicial</label>
+                <input type="number" required className="w-full bg-gray-50 border border-primary/10 rounded-2xl px-5 py-3 text-sm font-black outline-none" value={newProduct.stock || ''} onChange={e => setNewProduct({...newProduct, stock: Number(e.target.value)})} />
+              </div>
+              <div className="col-span-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Código de Barras / SKU</label>
+                <input className="w-full bg-gray-50 border border-primary/10 rounded-2xl px-5 py-3 text-sm font-black outline-none" placeholder="Opcional" value={newProduct.barcode || ''} onChange={e => setNewProduct({...newProduct, barcode: e.target.value})} />
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
               </div>
               <div className="col-span-2 pt-4">
                 <button type="submit" className="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-2xl shadow-primary/30 hover:scale-[1.01] transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-4">
@@ -474,6 +708,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
           </div>
         </div>
       )}
+<<<<<<< HEAD
       {isScannerOpen && (
         <BarcodeScanner
           onResult={(result) => {
@@ -484,6 +719,8 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
           onClose={() => setIsScannerOpen(false)}
         />
       )}
+=======
+>>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
     </div>
   );
 };
