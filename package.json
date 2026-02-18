@@ -12,10 +12,14 @@
     "@google/genai": "^1.41.0",
     "@supabase/supabase-js": "^2.97.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "html5-qrcode": "^2.3.8",
     "mercadopago": "^2.12.0",
 =======
 >>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
+=======
+    "mercadopago": "^2.12.0",
+>>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "recharts": "^3.7.0"

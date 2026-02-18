@@ -10,9 +10,13 @@ import { POS } from './pages/POS';
 import { Customers } from './pages/Customers';
 import { Login } from './pages/Login';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Subscriptions } from './pages/Subscriptions';
 =======
 >>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
+=======
+import { Subscriptions } from './pages/Subscriptions';
+>>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
 import { ChatWidget } from './components/ChatWidget';
 import { supabase } from './services/supabaseClient';
 
@@ -341,7 +345,12 @@ const App: React.FC = () => {
         return <Customers setView={handleSetView} customers={customers} onAddCustomer={(c) => { setCustomers([c, ...customers]); showToast('Cliente cadastrado!'); }} />;
       case 'CHECKOUT':
         return <Checkout setView={handleSetView} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />;
+<<<<<<< HEAD
 >>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
+=======
+      case 'SUBSCRIPTIONS':
+        return <Subscriptions setView={handleSetView} />;
+>>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
       default:
         return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.length} />;
     }
