@@ -8,8 +8,9 @@ export interface Product {
   oldPrice?: number;
   stock: number;
   sku: string;
+  barcode?: string;
   image: string;
-  images?: string[]; // Para a galeria de fotos
+  images?: string[];
   spec?: string;
 }
 
@@ -29,6 +30,13 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface FiscalInfo {
+  cpfCnpj?: string;
+  razaoSocial?: string;
+  emitirNF: boolean;
+  tipoDocumento: 'NF-e' | 'NFS-e';
+}
+
 export interface Sale {
   id: string;
   date: string;
@@ -36,6 +44,7 @@ export interface Sale {
   total: number;
   paymentMethod: string;
   customerName?: string;
+  fiscal?: FiscalInfo;
 }
 
-export type ViewType = 'STOREFRONT' | 'DASHBOARD' | 'CATALOG' | 'CHECKOUT' | 'POS' | 'CUSTOMERS';
+export type ViewType = 'STOREFRONT' | 'DASHBOARD' | 'CATALOG' | 'CHECKOUT' | 'POS' | 'CUSTOMERS' | 'LOGIN' | 'SUBSCRIPTIONS' | 'SUPER_ADMIN';
