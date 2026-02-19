@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
 
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [isOrderComplete, setIsOrderComplete] = useState(false);
+
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const App: React.FC = () => {
       if (!itemsToProcess) {
         setCart([]);
         setCart([]);
-        // setIsOrderComplete(true); // Removed transition screen
+
         handleSetView('STOREFRONT');
       } else {
         showToast(isIncoming ? "Estoque atualizado (Fornecedor)!" : "Venda PDV concluída!", 'success');

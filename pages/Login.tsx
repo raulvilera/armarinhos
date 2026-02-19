@@ -79,17 +79,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
           </div>
 
           <div className="px-12 pt-8 pb-4">
-            {/* Indicador de Conexão */}
-            <div className={`p-4 rounded-2xl flex items-center gap-3 border ${connectionStatus.loading ? 'bg-gray-50 border-gray-100' :
-              connectionStatus.ok ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100'
-              }`}>
-              <div className={`size-3 rounded-full ${connectionStatus.loading ? 'bg-gray-300' :
-                connectionStatus.ok ? 'bg-green-500' : 'bg-red-500'
-                }`}></div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
-                {connectionStatus.loading ? 'Sincronizando...' : connectionStatus.message}
-              </span>
-            </div>
+
           </div>
 
           <form onSubmit={handleLogin} className="p-12 pt-4 space-y-6">
