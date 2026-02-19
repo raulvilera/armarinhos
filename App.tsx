@@ -25,21 +25,21 @@ const App: React.FC = () => {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
 
   useEffect(() => {
+    // Carregar dados iniciais independente da sessão
+    fetchData();
+
     // Verificar sessão atual
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchData();
-      }
     });
 
     // Escutar mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchData();
-      } else {
+      if (!session?.user) {
         setView('STOREFRONT');
+      } else {
+        fetchData(); // Recarregar dados com privilégios de admin se logado
       }
     });
 
