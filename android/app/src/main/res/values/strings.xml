@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Armarinhos Vicmar</string>
+    <string name="title_activity_main">Armarinhos Vicmar</string>
+    <string name="package_name">com.vicmar.armarinhos</string>
+    <string name="custom_url_scheme">com.vicmar.armarinhos</string>
+</resources>
