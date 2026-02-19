@@ -46,21 +46,28 @@ const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (retries = 3) => {
     setIsLoading(true);
     try {
-      const [{ data: productsData }, { data: customersData }, { data: salesData }] = await Promise.all([
+      const [{ data: productsData, error: pError }, { data: customersData, error: cError }, { data: salesData, error: sError }] = await Promise.all([
         supabase.from('products').select('*').order('name'),
         supabase.from('customers').select('*').order('name'),
         supabase.from('sales').select('*').order('created_at', { ascending: false })
       ]);
 
+      if (pError || cError || sError) throw pError || cError || sError;
+
       if (productsData) setProducts(productsData);
       if (customersData) setCustomers(customersData);
       if (salesData) setSales(salesData);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching data:', error);
-      showToast('Erro ao carregar dados do servidor', 'info');
+      if (retries > 0) {
+        console.log(`Retrying fetchData... (${retries} left)`);
+        setTimeout(() => fetchData(retries - 1), 2000);
+      } else {
+        showToast('Erro de conexão: Não foi possível carregar os dados.', 'info');
+      }
     } finally {
       setIsLoading(false);
     }

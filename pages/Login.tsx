@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { supabase } from '../services/supabaseClient';
+import React, { useState, useEffect } from 'react';
+import { supabase, checkSupabaseConnection } from '../services/supabaseClient';
 import { ViewType } from '../types';
 
 interface LoginProps {
@@ -12,25 +11,51 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [connectionStatus, setConnectionStatus] = useState<{ ok: boolean; message: string; loading: boolean }>({
+    ok: false,
+    message: 'Verificando conexão...',
+    loading: true
+  });
+
+  useEffect(() => {
+    const verifyConnection = async () => {
+      const result = await checkSupabaseConnection();
+      setConnectionStatus({ ...result, loading: false });
+    };
+    verifyConnection();
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
+    if (!connectionStatus.ok) {
+      setError(`Erro de conexão: ${connectionStatus.message}`);
+      return;
+    }
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: username.includes('@') ? username : `${username}@armarinhos.com`, // Fallback para usuários sem email completo
-        password: password,
+      const email = username.includes('@') ? username : `${username}@armarinhos.com`;
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
 
-      if (error) throw error;
+      if (authError) {
+        if (authError.message.includes('Invalid login credentials')) {
+          setError('Credenciais inválidas. Verifique seu usuário e senha.');
+        } else {
+          throw authError;
+        }
+        return;
+      }
 
       if (data.user) {
         onLogin();
         setView('DASHBOARD');
       }
     } catch (err: any) {
-      setError(err.message || 'Erro ao realizar login. Verifique suas credenciais.');
+      setError(err.message || 'Erro inesperado ao realizar login.');
     }
   };
 
@@ -40,15 +65,15 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
     const email = username.includes('@') ? username : `${username}@armarinhos.com`;
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
-        password: password,
+        password,
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
 
       if (data.user) {
-        setError('Conta criada com sucesso! Agora tente fazer login.');
+        setError('sucesso: Conta criada com sucesso! Agora você pode entrar.');
       }
     } catch (err: any) {
       setError(err.message || 'Erro ao realizar cadastro.');
@@ -74,11 +99,25 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
             </div>
           </div>
 
-          <form onSubmit={handleLogin} className="p-12 space-y-6">
+          <div className="px-12 pt-8 pb-4">
+            {/* Indicador de Conexão */}
+            <div className={`p-4 rounded-2xl flex items-center gap-3 border ${connectionStatus.loading ? 'bg-gray-50 border-gray-100' :
+                connectionStatus.ok ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100'
+              }`}>
+              <div className={`size-3 rounded-full ${connectionStatus.loading ? 'bg-gray-300 animate-pulse' :
+                  connectionStatus.ok ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
+              <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
+                {connectionStatus.loading ? 'Sincronizando...' : connectionStatus.message}
+              </span>
+            </div>
+          </div>
+
+          <form onSubmit={handleLogin} className="p-12 pt-4 space-y-6">
             {error && (
-              <div className={`p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border animate-pulse ${error.includes('sucesso') ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'
+              <div className={`p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border animate-in slide-in-from-top-4 duration-300 ${error.startsWith('sucesso') ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'
                 }`}>
-                {error}
+                {error.replace('sucesso: ', '')}
               </div>
             )}
 
@@ -89,6 +128,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
                 <input
                   type="text"
                   required
+                  autoComplete="username"
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
                   placeholder="Seu usuário"
                   value={username}
@@ -104,6 +144,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
                 <input
                   type="password"
                   required
+                  autoComplete="current-password"
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
                   placeholder="••••••••"
                   value={password}
@@ -115,7 +156,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
             <div className="space-y-3 mt-4">
               <button
                 type="submit"
-                className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+                disabled={connectionStatus.loading}
+                className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
               >
                 Entrar no Painel
               </button>
@@ -123,7 +165,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               <button
                 type="button"
                 onClick={handleSignUp}
-                className="w-full bg-white text-primary border-2 border-primary/20 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-primary/5 transition-all"
+                disabled={connectionStatus.loading}
+                className="w-full bg-white text-primary border-2 border-primary/20 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-primary/5 transition-all disabled:opacity-50"
               >
                 Cadastrar (Temporário)
               </button>
