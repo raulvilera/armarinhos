@@ -35,7 +35,11 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
                     frequency: 1,
                     frequency_type: 'months',
                     transaction_amount: plan.price,
-                    currency_id: 'BRL'
+                    currency_id: 'BRL',
+                    free_trial: {
+                        frequency: 15,
+                        frequency_type: 'days'
+                    }
                 }
             });
 

@@ -7,9 +7,13 @@ export const createSubscriptionPlan = async (data: {
     reason: string,
     auto_recurring: {
         frequency: number,
-        frequency_type: 'months',
+        frequency_type: 'months' | 'days',
         transaction_amount: number,
-        currency_id: 'BRL'
+        currency_id: 'BRL',
+        free_trial?: {
+            frequency: number,
+            frequency_type: 'months' | 'days'
+        }
     }
 }) => {
     try {
