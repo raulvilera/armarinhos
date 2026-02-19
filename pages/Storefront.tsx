@@ -61,7 +61,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
   return (
     <div className="flex flex-col min-h-screen bg-[#FDFCFD] animate-in fade-in duration-700 font-display text-text-main">
       {/* Header Premium */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
+      <header className="sticky top-0 z-40 bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); setView('STOREFRONT'); }}>
             <div className="bg-primary size-11 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-6 transition-transform">
@@ -98,7 +98,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
       </header>
 
       {/* Barra de Busca e Filtros Superior com efeito 3D */}
-      <div className="bg-white border-b border-gray-50 py-6 px-6 lg:px-20 sticky top-[89px] z-30 shadow-sm">
+      <div className="bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] border-b border-gray-50 py-6 px-6 lg:px-20 sticky top-[89px] z-30 shadow-sm">
         <div className="max-w-7xl mx-auto flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <button
@@ -115,8 +115,8 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
                     className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-4 shadow-sm hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                        ? 'bg-selected text-white border-selected/40 shadow-selected/20'
-                        : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
+                      ? 'bg-selected text-white border-selected/40 shadow-selected/20'
+                      : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
                       }`}
                   >
                     {cat}
@@ -150,8 +150,8 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={`w-full text-left px-4 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all border-b-4 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                      ? 'bg-primary text-white border-primary/40 shadow-primary/20'
-                      : 'bg-white text-gray-700 border-gray-100 hover:bg-gray-50'
+                    ? 'bg-primary text-white border-primary/40 shadow-primary/20'
+                    : 'bg-white text-gray-700 border-gray-100 hover:bg-gray-50'
                     }`}
                 >
                   {cat}
