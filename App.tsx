@@ -135,20 +135,20 @@ const App: React.FC = () => {
         const customer = customers.find(c => c.id === customerId);
         if (customer) {
           await supabase.from('customers').update({
-            total_spent: customer.totalSpent + finalTotal,
-            orders_count: customer.ordersCount + 1,
-            last_purchase: new Date().toISOString()
+            "totalSpent": customer.totalSpent + finalTotal,
+            "ordersCount": customer.ordersCount + 1,
+            "lastPurchase": new Date().toISOString()
           }).eq('id', customerId);
         }
       }
 
       // Registrar venda
       const newSale = {
-        customer_name: isIncoming ? 'Fornecedor / Suprimento' : (customers.find(c => c.id === customerId)?.name || 'Cliente Balcão'),
-        total: finalTotal,
-        payment_method: isIncoming ? `Entrada: ${paymentMethod}` : paymentMethod,
-        fiscal_info: fiscal,
-        items: list
+        "customerName": isIncoming ? 'Fornecedor / Suprimento' : (customers.find(c => c.id === customerId)?.name || 'Cliente Balcão'),
+        "total": finalTotal,
+        "paymentMethod": isIncoming ? `Entrada: ${paymentMethod}` : paymentMethod,
+        "fiscal": fiscal,
+        "items": list
       };
 
       await supabase.from('sales').insert([newSale]);
