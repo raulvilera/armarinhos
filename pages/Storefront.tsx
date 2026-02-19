@@ -62,14 +62,14 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
     <div className="flex flex-col min-h-screen bg-[#FDFCFD] animate-in fade-in duration-700 font-display text-text-main">
       {/* Header Premium */}
       <header className="sticky top-0 z-40 bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); setView('STOREFRONT'); }}>
-            <div className="bg-primary size-11 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-6 transition-transform">
-              <span className="material-symbols-outlined text-2xl font-black">architecture</span>
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 md:gap-6">
+          <div className="flex items-center gap-2 md:gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); setView('STOREFRONT'); }}>
+            <div className="bg-primary size-9 md:size-11 rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-6 transition-transform">
+              <span className="material-symbols-outlined text-xl md:text-2xl font-black">architecture</span>
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl font-black text-primary tracking-tighter uppercase leading-none text-left">Vicmar</h1>
-              <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest text-left">Armarinhos</span>
+              <h1 className="text-lg md:text-xl font-black text-primary tracking-tighter uppercase leading-none text-left">Vicmar</h1>
+              <span className="text-[8px] md:text-[9px] font-black text-gray-300 uppercase tracking-widest text-left">Armarinhos</span>
             </div>
           </div>
 
@@ -109,14 +109,14 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
             </button>
 
             <div className="flex flex-1 items-center gap-3 overflow-hidden relative">
-              <div ref={categoriesRef} className="flex items-center gap-3 overflow-x-auto scrollbar-hide px-1 py-2">
+              <div ref={categoriesRef} className="flex items-center gap-2 md:gap-3 overflow-x-auto scrollbar-hide px-1 py-1 md:py-2">
                 {categories.map(cat => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-4 shadow-sm hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                      ? 'bg-selected text-white border-selected/40 shadow-selected/20'
-                      : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
+                    className={`px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-2 md:border-b-4 shadow-sm hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
+                        ? 'bg-selected text-white border-selected/40 shadow-selected/20'
+                        : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
                       }`}
                   >
                     {cat}
@@ -140,9 +140,9 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
         </div>
       </div>
 
-      <main className="flex-1 max-w-7xl mx-auto px-6 lg:px-20 py-12 w-full">
-        <div className="flex flex-col md:flex-row gap-12 items-start">
-          <aside className="hidden md:flex w-64 shrink-0 flex-col gap-8 sticky top-[230px]">
+      <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 lg:px-20 py-8 md:py-12 w-full">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+          <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-8 sticky top-[230px]">
             <div className="flex flex-col space-y-3">
               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-1 px-2 text-left">Departamentos</h3>
               {sidebarCategories.map((cat) => (
@@ -161,7 +161,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
           </aside>
 
           <div className="flex-1 w-full">
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {filteredProducts.map((p) => (
                 <div
                   key={p.id}
