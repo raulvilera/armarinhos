@@ -34,6 +34,27 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
     }
   };
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    const email = username.includes('@') ? username : `${username}@armarinhos.com`;
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        setError('Conta criada com sucesso! Agora tente fazer login.');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Erro ao realizar cadastro.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background-light flex items-center justify-center p-6 font-display">
       <div className="w-full max-w-md animate-in zoom-in fade-in duration-500">
@@ -55,7 +76,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
 
           <form onSubmit={handleLogin} className="p-12 space-y-6">
             {error && (
-              <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-red-100 animate-pulse">
+              <div className={`p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border animate-pulse ${error.includes('sucesso') ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'
+                }`}>
                 {error}
               </div>
             )}
@@ -90,12 +112,22 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all mt-4"
-            >
-              Entrar no Painel
-            </button>
+            <div className="space-y-3 mt-4">
+              <button
+                type="submit"
+                className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+              >
+                Entrar no Painel
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSignUp}
+                className="w-full bg-white text-primary border-2 border-primary/20 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-primary/5 transition-all"
+              >
+                Cadastrar (Temporário)
+              </button>
+            </div>
 
             <button
               type="button"
