@@ -111,7 +111,8 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
         </div>
 
         <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden mb-12">
-          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 overflow-y-hidden">
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto scrollbar-hide -mx-4 px-4 overflow-y-hidden">
             <table className="w-full text-left min-w-[700px]">
               <thead>
                 <tr className="bg-neutral-light/30 border-b border-neutral-light">
@@ -151,6 +152,39 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden divide-y divide-gray-50">
+            {filteredCustomers.map(c => (
+              <div key={c.id} className="p-6 space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-lg">
+                    {c.name.charAt(0)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black text-xs text-gray-800 uppercase truncate">{c.name}</p>
+                    <p className={`text-[8px] font-black uppercase ${c.ordersCount > 10 ? 'text-primary' : 'text-text-muted opacity-60'}`}>
+                      {c.ordersCount > 10 ? 'Cliente VIP' : 'Cliente Ativo'}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-black text-primary tracking-tighter">R$ {c.totalSpent.toFixed(2).replace('.', ',')}</p>
+                    <p className="text-[8px] font-black text-gray-300 uppercase">{c.ordersCount} pedidos</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-1">
+                  <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">WhatsApp</p>
+                    <p className="text-[10px] font-black text-gray-700 truncate">{c.phone}</p>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Email</p>
+                    <p className="text-[10px] font-black text-gray-700 truncate">{c.email}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>

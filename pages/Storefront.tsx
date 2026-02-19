@@ -161,7 +161,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
           </aside>
 
           <div className="flex-1 w-full">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {filteredProducts.map((p) => (
                 <div
                   key={p.id}
@@ -217,12 +217,12 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
 
       {/* Modal de Detalhes - Kyte Premium Style */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 md:p-4">
           <div className="absolute inset-0 bg-background-dark/80 backdrop-blur-md" onClick={() => setSelectedProduct(null)}></div>
-          <div className="bg-white w-full max-w-5xl rounded-[3rem] overflow-hidden relative z-10 flex flex-col lg:flex-row shadow-2xl max-h-[90vh] border border-white/10">
+          <div className="bg-white w-full max-w-5xl rounded-[2.5rem] md:rounded-[3rem] overflow-hidden relative z-10 flex flex-col lg:flex-row shadow-2xl max-h-[95vh] md:max-h-[90vh] border border-white/10">
 
             {/* Galeria de Imagens do Modal */}
-            <div className="w-full lg:w-1/2 bg-gray-50 flex flex-col items-center justify-center p-8 lg:p-12 overflow-hidden relative border-r border-gray-100">
+            <div className="w-full lg:w-1/2 bg-gray-50 flex flex-col items-center justify-center p-6 md:p-8 lg:p-12 overflow-hidden relative border-r border-gray-100 shrink-0">
               <img src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image} className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-20" alt="" />
 
               <div className="relative z-10 w-full aspect-square flex items-center justify-center">
@@ -264,8 +264,8 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
             </div>
 
             {/* Informações do Produto (Painel Direito) */}
-            <div className="w-full lg:w-1/2 p-10 lg:p-16 flex flex-col bg-white overflow-y-auto text-left relative">
-              <button onClick={() => setSelectedProduct(null)} className="absolute top-10 right-10 size-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all border border-gray-100">
+            <div className="w-full lg:w-1/2 p-8 md:p-10 lg:p-16 flex flex-col bg-white overflow-y-auto text-left relative scrollbar-hide">
+              <button onClick={() => setSelectedProduct(null)} className="absolute top-6 md:top-10 right-6 md:right-10 size-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all border border-gray-100 z-20">
                 <span className="material-symbols-outlined font-black">close</span>
               </button>
 

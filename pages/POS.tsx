@@ -304,7 +304,7 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
          {isQuickAddOpen && (
             <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
                <div className="absolute inset-0 bg-background-dark/90 backdrop-blur-xl" onClick={() => setIsQuickAddOpen(false)}></div>
-               <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-[3rem] shadow-2xl relative z-10 overflow-hidden">
+               <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-[3rem] shadow-2xl relative z-10 overflow-hidden max-h-[95vh] overflow-y-auto">
                   <div className="bg-selected p-6 md:p-8 text-white flex justify-between items-center">
                      <div>
                         <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter leading-none">Produto Novo</h3>

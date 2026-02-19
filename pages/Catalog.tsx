@@ -279,7 +279,9 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         {/* TABELA ANALÍTICA */}
         <section className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-8 lg:p-12 mb-8 lg:mb-16">
           <h3 className="text-lg lg:text-2xl font-black text-gray-900 uppercase tracking-tighter mb-8">Vendas Analíticas</h3>
-          <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
+
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto scrollbar-hide -mx-6 px-6">
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
@@ -308,6 +310,30 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-4">
+            {performanceData.filter(d => d.vendido > 0).map((d, idx) => (
+              <div key={idx} className="bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <p className="font-black text-xs text-gray-800 uppercase leading-none">{d.name}</p>
+                    <p className="text-[8px] text-gray-400 font-black mt-1 uppercase">#{d.barcode}</p>
+                  </div>
+                  <span className="bg-selected/10 text-selected text-[10px] font-black px-3 py-1 rounded-full uppercase">{d.vendido} un.</span>
+                </div>
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Faturamento</p>
+                    <p className="font-black text-lg text-primary tracking-tighter">R$ {d.valorTotal.toFixed(2).replace('.', ',')}</p>
+                  </div>
+                  <div className="w-24 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary" style={{ width: `${(d.valorTotal / (performanceData.reduce((a, c) => a + c.valorTotal, 0) || 1)) * 100}%` }}></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* GESTÃO DE INVENTÁRIO */}
@@ -321,7 +347,8 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         </div>
 
         <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden mb-16">
-          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto scrollbar-hide -mx-4 px-4">
             <table className="w-full text-left min-w-[900px]">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
@@ -358,6 +385,36 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden divide-y divide-gray-50">
+            {filteredTableProducts.map(p => (
+              <div key={p.id} className="p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="size-16 rounded-2xl bg-gray-50 p-2 border border-gray-100 shrink-0">
+                    <img src={p.image} className="w-full h-full object-contain" alt={p.name} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black text-xs text-gray-800 uppercase truncate mb-1">{p.name}</p>
+                    <p className="text-[10px] font-black text-primary tracking-tight">R$ {p.price.toFixed(2).replace('.', ',')}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 pt-2">
+                  <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-xl border border-gray-200">
+                    <button onClick={() => onUpdateStock(p.id, Math.max(0, p.stock - 1))} className="size-8 flex items-center justify-center rounded-lg bg-white shadow-sm font-black text-primary">-</button>
+                    <span className="w-10 text-center font-black text-xs">{p.stock}</span>
+                    <button onClick={() => onUpdateStock(p.id, p.stock + 1)} className="size-8 flex items-center justify-center rounded-lg bg-white shadow-sm font-black text-primary">+</button>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button onClick={() => handleOpenEdit(p)} className="size-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center border border-primary/10 transition-all"><span className="material-symbols-outlined text-base">edit</span></button>
+                    <button onClick={() => onDeleteProduct(p.id)} className="size-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center border border-red-100 transition-all"><span className="material-symbols-outlined text-base">delete</span></button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </main>

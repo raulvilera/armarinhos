@@ -139,7 +139,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
           <button onClick={() => setView('STOREFRONT')} className="hidden lg:block px-8 py-3 bg-white border border-primary/20 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-sm text-primary hover:bg-primary hover:text-white transition-all">Ir para a Loja</button>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12">
           <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-center">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Receita Hoje</p>
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter">R$ {revenueToday.toFixed(2).replace('.', ',')}</h3>
