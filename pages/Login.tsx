@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { supabase } from '../services/supabaseClient';
 import { ViewType } from '../types';
 
 interface LoginProps {
@@ -12,14 +13,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulação de login: admin / vicmar
-    if (username === 'admin' && password === 'vicmar') {
-      onLogin();
-      setView('DASHBOARD');
-    } else {
-      setError('Credenciais incorretas. Tente admin / vicmar.');
+    setError('');
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: username.includes('@') ? username : `${username}@armarinhos.com`, // Fallback para usuários sem email completo
+        password: password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        onLogin();
+        setView('DASHBOARD');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Erro ao realizar login. Verifique suas credenciais.');
     }
   };
 
@@ -48,12 +59,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
                 {error}
               </div>
             )}
-            
+
             <div>
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Usuário</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl">person</span>
-                <input 
+                <input
                   type="text"
                   required
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
@@ -68,7 +79,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Senha</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl">lock_open</span>
-                <input 
+                <input
                   type="password"
                   required
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
@@ -79,14 +90,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               </div>
             </div>
 
-            <button 
+            <button
               type="submit"
               className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all mt-4"
             >
               Entrar no Painel
             </button>
 
-            <button 
+            <button
               type="button"
               onClick={() => setView('STOREFRONT')}
               className="w-full text-center text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-primary transition-colors mt-6"

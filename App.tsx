@@ -27,7 +27,25 @@ const App: React.FC = () => {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
 
   useEffect(() => {
-    fetchData();
+    // Verificar sessão atual
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchData();
+      }
+    });
+
+    // Escutar mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchData();
+      } else {
+        setView('STOREFRONT');
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const fetchData = async () => {
@@ -57,7 +75,7 @@ const App: React.FC = () => {
 
   const handleSetView = (newView: ViewType) => {
     const adminViews: ViewType[] = ['DASHBOARD', 'CATALOG', 'POS', 'CUSTOMERS'];
-    if (adminViews.includes(newView) && !isLoggedIn) {
+    if (adminViews.includes(newView) && !user) {
       setView('LOGIN');
       return;
     }
@@ -151,9 +169,26 @@ const App: React.FC = () => {
     }
   };
 
-  const updateProduct = (updated: Product) => {
-    setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
-    showToast('Produto atualizado!', 'success');
+  const updateProduct = async (updated: Product) => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update(updated)
+        .eq('id', updated.id);
+
+      if (error) throw error;
+
+      setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
+      showToast('Produto atualizado!', 'success');
+    } catch (err) {
+      showToast('Erro ao atualizar produto', 'info');
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    handleSetView('STOREFRONT');
   };
 
   const renderView = () => {
@@ -177,18 +212,44 @@ const App: React.FC = () => {
       case 'STOREFRONT':
         return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />;
       case 'LOGIN':
-        return <Login onLogin={() => setIsLoggedIn(true)} setView={handleSetView} />;
+        return <Login onLogin={() => { }} setView={handleSetView} />;
       case 'DASHBOARD':
-        return <Dashboard setView={handleSetView} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={() => setIsLoggedIn(false)} />;
+        return <Dashboard setView={handleSetView} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />;
       case 'CATALOG':
         return (
           <Catalog
             setView={handleSetView}
             products={products}
             sales={sales}
-            onAddProduct={(p) => setProducts([p, ...products])}
-            onDeleteProduct={(id) => setProducts(products.filter(p => p.id !== id))}
-            onUpdateStock={(id, stock) => setProducts(products.map(p => p.id === id ? { ...p, stock } : p))}
+            onAddProduct={async (p) => {
+              try {
+                const { data, error } = await supabase.from('products').insert([p]).select();
+                if (error) throw error;
+                if (data) setProducts([data[0], ...products]);
+                showToast('Produto cadastrado!', 'success');
+              } catch (err) {
+                showToast('Erro ao cadastrar produto', 'info');
+              }
+            }}
+            onDeleteProduct={async (id) => {
+              try {
+                const { error } = await supabase.from('products').delete().eq('id', id);
+                if (error) throw error;
+                setProducts(products.filter(p => p.id !== id));
+                showToast('Produto removido!', 'success');
+              } catch (err) {
+                showToast('Erro ao remover produto', 'info');
+              }
+            }}
+            onUpdateStock={async (id, stock) => {
+              try {
+                const { error } = await supabase.from('products').update({ stock }).eq('id', id);
+                if (error) throw error;
+                setProducts(products.map(p => p.id === id ? { ...p, stock } : p));
+              } catch (err) {
+                showToast('Erro ao atualizar estoque', 'info');
+              }
+            }}
             onUpdateProduct={updateProduct}
             showToast={showToast}
           />
@@ -196,7 +257,22 @@ const App: React.FC = () => {
       case 'POS':
         return <POS setView={handleSetView} products={products} sales={sales} customers={customers} onFinishSale={finishOrder} />;
       case 'CUSTOMERS':
-        return <Customers setView={handleSetView} customers={customers} onAddCustomer={(c) => { setCustomers([c, ...customers]); showToast('Cliente cadastrado!'); }} />;
+        return (
+          <Customers
+            setView={handleSetView}
+            customers={customers}
+            onAddCustomer={async (c: any) => {
+              try {
+                const { data, error } = await supabase.from('customers').insert([c]).select();
+                if (error) throw error;
+                if (data) setCustomers([data[0], ...customers]);
+                showToast('Cliente cadastrado!', 'success');
+              } catch (err) {
+                showToast('Erro ao cadastrar cliente', 'info');
+              }
+            }}
+          />
+        );
       case 'CHECKOUT':
         return <Checkout setView={handleSetView} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />;
       case 'SUBSCRIPTIONS':
