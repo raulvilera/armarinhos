@@ -1,7 +1,7 @@
-
 import React, { useState, useMemo } from 'react';
 import { ViewType, Product, Sale } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Legend } from 'recharts';
+import { BarcodeScanner } from '../components/BarcodeScanner';
 
 interface CatalogProps {
   setView: (v: ViewType) => void;
@@ -19,6 +19,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('Todos');
   const [chartCategoryFilter, setChartCategoryFilter] = useState('Todos');
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   // Filtros de Data
   const [filterDay, setFilterDay] = useState(new Date().getDate());
@@ -260,7 +261,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                   <LabelList dataKey="vendido" position="center" style={{ fontSize: 10, fontWeight: 900, fill: '#FFFFFF' }} formatter={(val: number) => val > 0 ? `${val} v` : ''} />
                 </Bar>
                 <Bar dataKey="estoque" name="Estoque" stackId="stack_a" fill={COLORS.estoque} radius={[10, 10, 0, 0]}>
-                  <LabelList dataKey="estoque" position="top" style={{ fontSize: 10, fontWeight: 900, fill: COLORS.estoque }} formatter={(val: number) => `${val} e`} />
+                  <LabelList dataKey="estoque" position="top" style={{ fontSize: 10, fontWeight: 900, fill: COLORS.estoque }} formatter={(val: number) => val > 0 ? `${val} est` : '0 est'} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -272,8 +273,8 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
                 key={cat}
                 onClick={() => setChartCategoryFilter(cat)}
                 className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${chartCategoryFilter === cat
-                    ? 'bg-selected text-white border-selected shadow-lg'
-                    : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-selected/40'
+                  ? 'bg-selected text-white border-selected shadow-lg'
+                  : 'bg-gray-50 border-gray-100 text-gray-500 hover:border-selected/40'
                   }`}
               >
                 {cat}
@@ -452,7 +453,16 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
               </div>
               <div className="col-span-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Código de Barras / SKU</label>
-                <input className="w-full bg-gray-50 border border-primary/10 rounded-2xl px-5 py-3 text-sm font-black outline-none" placeholder="Opcional" value={newProduct.barcode || ''} onChange={e => setNewProduct({ ...newProduct, barcode: e.target.value })} />
+                <div className="flex gap-3">
+                  <input className="flex-1 bg-gray-50 border border-primary/10 rounded-2xl px-5 py-3 text-sm font-black outline-none" placeholder="Opcional" value={newProduct.barcode || ''} onChange={e => setNewProduct({ ...newProduct, barcode: e.target.value })} />
+                  <button
+                    type="button"
+                    onClick={() => setIsScannerOpen(true)}
+                    className="bg-primary/5 text-primary size-12 rounded-2xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm border border-primary/10"
+                  >
+                    <span className="material-symbols-outlined font-black">barcode_scanner</span>
+                  </button>
+                </div>
               </div>
               <div className="col-span-2 pt-4">
                 <button type="submit" className="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-2xl shadow-primary/30 hover:scale-[1.01] transition-all text-sm uppercase tracking-widest flex items-center justify-center gap-4">
@@ -463,6 +473,16 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
             </form>
           </div>
         </div>
+      )}
+      {isScannerOpen && (
+        <BarcodeScanner
+          onResult={(result) => {
+            setNewProduct({ ...newProduct, barcode: result });
+            setIsScannerOpen(false);
+            showToast('Código capturado!', 'success');
+          }}
+          onClose={() => setIsScannerOpen(false)}
+        />
       )}
     </div>
   );

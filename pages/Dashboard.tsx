@@ -36,15 +36,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
     return DAYS.map((day, idx) => {
       const daySales = sales.filter(s => {
         const sDate = new Date(s.date);
-        return sDate.getDay() === idx && !s.paymentMethod.includes('Entrada');
+        return sDate.getDay() === idx;
       });
-      const total = daySales.reduce((acc, s) => acc + s.total, 0);
+
+      const venda = daySales
+        .filter(s => !s.paymentMethod.includes('Entrada'))
+        .reduce((acc, s) => acc + s.total, 0);
+
+      const estoque = daySales
+        .filter(s => s.paymentMethod.includes('Entrada'))
+        .reduce((acc, s) => acc + s.total, 0);
+
       return {
         name: day,
-        value: total || (idx === new Date().getDay() ? revenueToday : 0)
+        venda: venda,
+        estoque: estoque
       };
     });
-  }, [sales, revenueToday]);
+  }, [sales]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#F8F7F9]">
@@ -128,17 +137,26 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 bg-white p-10 rounded-[3.5rem] shadow-sm border border-gray-100">
-            <h4 className="text-xl font-black uppercase tracking-tight text-gray-800 mb-10">Histórico de Vendas (Semana)</h4>
+            <div className="flex justify-between items-center mb-10">
+              <h4 className="text-xl font-black uppercase tracking-tight text-gray-800">Fluxo Financeiro (Semana)</h4>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full bg-[#064e3b]"></div>
+                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest italic">Vendas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full bg-[#1e3a8a]"></div>
+                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest italic">Estoque</span>
+                </div>
+              </div>
+            </div>
             <div className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
+                <BarChart data={chartData} barSize={30}>
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: '#A1A1AA' }} />
                   <Tooltip cursor={{ fill: '#F9FAFB' }} contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)', fontSize: '10px', fontWeight: '900' }} />
-                  <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.name === DAYS[new Date().getDay()] ? '#1e3a8a' : '#E4E4E7'} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="venda" stackId="a" fill="#064e3b" />
+                  <Bar dataKey="estoque" stackId="a" fill="#1e3a8a" radius={[10, 10, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

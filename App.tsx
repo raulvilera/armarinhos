@@ -15,11 +15,10 @@ import { supabase } from './services/supabaseClient';
 
 const App: React.FC = () => {
   const [view, setView] = useState<ViewType>('STOREFRONT');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
+  const [user, setUser] = useState<any>(null);
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderComplete, setIsOrderComplete] = useState(false);
@@ -255,7 +254,28 @@ const App: React.FC = () => {
           />
         );
       case 'POS':
-        return <POS setView={handleSetView} products={products} sales={sales} customers={customers} onFinishSale={finishOrder} />;
+        return (
+          <POS
+            setView={handleSetView}
+            products={products}
+            sales={sales}
+            customers={customers}
+            onFinishSale={finishOrder}
+            onAddProduct={async (p) => {
+              try {
+                const { data, error } = await supabase.from('products').insert([p]).select();
+                if (error) throw error;
+                const newProd = data[0];
+                setProducts([newProd, ...products]);
+                showToast('Novo produto cadastrado!', 'success');
+                return newProd;
+              } catch (err) {
+                showToast('Erro ao cadastrar produto rápido', 'info');
+                return null;
+              }
+            }}
+          />
+        );
       case 'CUSTOMERS':
         return (
           <Customers
