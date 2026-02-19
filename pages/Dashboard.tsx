@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { ViewType, Product, Sale, Customer } from '../types';
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Global constant for days of the week to be used in charts and logic
 const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -18,15 +18,7 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, customers, showToast, onLogout }) => {
   const lowStockProducts = useMemo(() => products.filter(p => p.stock < 15), [products]);
   const totalStockItems = useMemo(() => products.reduce((acc, p) => acc + p.stock, 0), [products]);
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
-=======
-
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
   const revenueToday = useMemo(() => {
     const today = new Date().toDateString();
     return sales
@@ -34,31 +26,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
       .reduce((acc, s) => acc + s.total, 0);
   }, [sales]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   const totalRevenue = useMemo(() =>
     sales.filter(s => !s.paymentMethod.includes('Entrada')).reduce((acc, s) => acc + s.total, 0), [sales]);
 
   const topCustomers = useMemo(() =>
-=======
-  const totalRevenue = useMemo(() => 
-    sales.filter(s => !s.paymentMethod.includes('Entrada')).reduce((acc, s) => acc + s.total, 0), [sales]);
-
-  const topCustomers = useMemo(() => 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
-=======
-  const totalRevenue = useMemo(() =>
-    sales.filter(s => !s.paymentMethod.includes('Entrada')).reduce((acc, s) => acc + s.total, 0), [sales]);
-
-  const topCustomers = useMemo(() =>
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
     [...customers].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 5), [customers]);
 
   const chartData = useMemo(() => {
     return DAYS.map((day, idx) => {
       const daySales = sales.filter(s => {
         const sDate = new Date(s.date);
-<<<<<<< HEAD
         return sDate.getDay() === idx;
       });
 
@@ -77,17 +54,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
       };
     });
   }, [sales]);
-=======
-        return sDate.getDay() === idx && !s.paymentMethod.includes('Entrada');
-      });
-      const total = daySales.reduce((acc, s) => acc + s.total, 0);
-      return {
-        name: day,
-        value: total || (idx === new Date().getDay() ? revenueToday : 0)
-      };
-    });
-  }, [sales, revenueToday]);
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#F8F7F9]">
@@ -115,18 +81,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
           <button onClick={() => setView('CUSTOMERS')} className="w-full flex items-center gap-4 px-6 py-4 text-primary hover:bg-primary/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">
             <span className="material-symbols-outlined">group</span> Clientes
           </button>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <button onClick={() => setView('SUBSCRIPTIONS')} className="w-full flex items-center gap-4 px-6 py-4 text-primary hover:bg-primary/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">
             <span className="material-symbols-outlined">payments</span> Assinaturas
           </button>
-=======
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
-=======
-          <button onClick={() => setView('SUBSCRIPTIONS')} className="w-full flex items-center gap-4 px-6 py-4 text-primary hover:bg-primary/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">
-            <span className="material-symbols-outlined">payments</span> Assinaturas
-          </button>
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
         </nav>
 
         <div className="p-6 mt-auto space-y-4">
@@ -135,21 +92,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
             <p className="text-sm font-bold leading-tight mb-6">"{lowStockProducts.length > 0 ? `Cuidado: ${lowStockProducts.length} itens críticos.` : 'Seu estoque está em dia hoje!'}"</p>
             <button onClick={() => setView('CATALOG')} className="w-full bg-white text-primary text-[10px] font-black py-4 rounded-2xl uppercase tracking-widest hover:scale-105 transition-all">Repor Estoque</button>
           </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <button
-            onClick={() => setView('SUPER_ADMIN')}
-            className="w-full flex items-center justify-center gap-3 py-4 text-primary/40 font-black text-[9px] uppercase tracking-widest hover:bg-primary/5 rounded-2xl transition-all mb-2"
-          >
-            <span className="material-symbols-outlined text-base">security</span> Gerencial Master
-          </button>
-          <button
-=======
-          <button 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
-=======
-          <button
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
             onClick={() => { onLogout(); setView('STOREFRONT'); }}
             className="w-full flex items-center justify-center gap-3 py-4 text-red-600 font-black text-[10px] uppercase tracking-widest hover:bg-red-50 rounded-2xl transition-all"
           >
@@ -188,8 +131,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 bg-white p-10 rounded-[3.5rem] shadow-sm border border-gray-100">
-<<<<<<< HEAD
-<<<<<<< HEAD
             <div className="flex justify-between items-center mb-10">
               <h4 className="text-xl font-black uppercase tracking-tight text-gray-800">Fluxo Financeiro (Semana)</h4>
               <div className="flex gap-4">
@@ -235,69 +176,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
               )}
             </div>
             <button onClick={() => setView('CUSTOMERS')} className="w-full mt-10 py-4 bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary hover:text-white transition-all">Base de Clientes</button>
-=======
-             <h4 className="text-xl font-black uppercase tracking-tight text-gray-800 mb-10">Histórico de Vendas (Semana)</h4>
-             <div className="h-80 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                   <BarChart data={chartData}>
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900, fill: '#A1A1AA'}} />
-                      <Tooltip cursor={{fill: '#F9FAFB'}} contentStyle={{borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)', fontSize: '10px', fontWeight: '900'}} />
-                      <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-                         {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.name === DAYS[new Date().getDay()] ? '#1e3a8a' : '#E4E4E7'} />
-                         ))}
-                      </Bar>
-                   </BarChart>
-                </ResponsiveContainer>
-             </div>
-=======
-            <h4 className="text-xl font-black uppercase tracking-tight text-gray-800 mb-10">Histórico de Vendas (Semana)</h4>
-            <div className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: '#A1A1AA' }} />
-                  <Tooltip cursor={{ fill: '#F9FAFB' }} contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)', fontSize: '10px', fontWeight: '900' }} />
-                  <Bar dataKey="value" radius={[10, 10, 0, 0]}>
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.name === DAYS[new Date().getDay()] ? '#1e3a8a' : '#E4E4E7'} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
-          </div>
-
-          <div className="bg-white p-10 rounded-[3.5rem] shadow-sm border border-gray-100">
-            <h4 className="text-xl font-black uppercase tracking-tight text-gray-800 mb-8">Top Compradores</h4>
-            <div className="space-y-6">
-              {topCustomers.map(c => (
-                <div key={c.id} className="flex items-center gap-4 group">
-                  <div className="size-12 rounded-full bg-primary/5 flex items-center justify-center text-primary font-black border border-primary/10">
-                    {c.name.charAt(0)}
-                  </div>
-<<<<<<< HEAD
-                ))}
-                {topCustomers.length === 0 && (
-                  <p className="text-center py-10 text-gray-300 text-[10px] font-black uppercase tracking-widest italic">Nenhum cliente com pedidos</p>
-                )}
-             </div>
-             <button onClick={() => setView('CUSTOMERS')} className="w-full mt-10 py-4 bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary hover:text-white transition-all">Base de Clientes</button>
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
-=======
-                  <div className="flex-1">
-                    <p className="text-[11px] font-black text-gray-900 uppercase truncate">{c.name}</p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase">{c.ordersCount} pedidos realizados</p>
-                  </div>
-                  <p className="text-sm font-black text-primary tracking-tighter">R$ {c.totalSpent.toFixed(2).replace('.', ',')}</p>
-                </div>
-              ))}
-              {topCustomers.length === 0 && (
-                <p className="text-center py-10 text-gray-300 text-[10px] font-black uppercase tracking-widest italic">Nenhum cliente com pedidos</p>
-              )}
-            </div>
-            <button onClick={() => setView('CUSTOMERS')} className="w-full mt-10 py-4 bg-gray-50 rounded-2xl text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary hover:text-white transition-all">Base de Clientes</button>
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
           </div>
         </div>
       </main>

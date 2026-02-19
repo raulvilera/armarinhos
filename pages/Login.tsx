@@ -1,9 +1,6 @@
 
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import { supabase } from '../services/supabaseClient';
-=======
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
 import { ViewType } from '../types';
 
 interface LoginProps {
@@ -16,7 +13,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-<<<<<<< HEAD
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -35,16 +31,6 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
       }
     } catch (err: any) {
       setError(err.message || 'Erro ao realizar login. Verifique suas credenciais.');
-=======
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulação de login: admin / vicmar
-    if (username === 'admin' && password === 'vicmar') {
-      onLogin();
-      setView('DASHBOARD');
-    } else {
-      setError('Credenciais incorretas. Tente admin / vicmar.');
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
     }
   };
 
@@ -73,20 +59,12 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
                 {error}
               </div>
             )}
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
             <div>
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Usuário</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl">person</span>
-<<<<<<< HEAD
                 <input
-=======
-                <input 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                   type="text"
                   required
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
@@ -101,11 +79,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 block">Senha</label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-xl">lock_open</span>
-<<<<<<< HEAD
                 <input
-=======
-                <input 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
                   type="password"
                   required
                   className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-sm font-black focus:ring-4 focus:ring-primary/5 outline-none transition-all"
@@ -116,22 +90,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
               </div>
             </div>
 
-<<<<<<< HEAD
             <button
-=======
-            <button 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
               type="submit"
               className="w-full bg-primary text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all mt-4"
             >
               Entrar no Painel
             </button>
 
-<<<<<<< HEAD
             <button
-=======
-            <button 
->>>>>>> dd7af30 (initial: setup project with Supabase and SaaS structure)
               type="button"
               onClick={() => setView('STOREFRONT')}
               className="w-full text-center text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-primary transition-colors mt-6"

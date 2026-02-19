@@ -7,7 +7,6 @@ export const createSubscriptionPlan = async (data: {
     reason: string,
     auto_recurring: {
         frequency: number,
-<<<<<<< HEAD
         frequency_type: 'months' | 'days',
         transaction_amount: number,
         currency_id: 'BRL',
@@ -15,11 +14,6 @@ export const createSubscriptionPlan = async (data: {
             frequency: number,
             frequency_type: 'months' | 'days'
         }
-=======
-        frequency_type: 'months',
-        transaction_amount: number,
-        currency_id: 'BRL'
->>>>>>> 25cf02f (update: SaaS subscription module and Supabase integration)
     }
 }) => {
     try {
