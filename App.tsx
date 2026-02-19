@@ -85,12 +85,8 @@ const App: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setView(newView);
-      setIsLoading(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 400);
+    setView(newView);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const addToCart = (product: Product) => {
@@ -310,18 +306,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFCFD] text-text-main font-display selection:bg-primary/20 overflow-x-hidden">
-      {isLoading && (
-        <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center animate-in fade-in duration-300">
-          <div className="relative">
-            <div className="bg-primary size-24 rounded-[2.5rem] flex items-center justify-center text-white animate-spin shadow-2xl shadow-primary/40 relative z-10">
-              <span className="material-symbols-outlined text-4xl font-black">auto_fix_high</span>
-            </div>
-            <div className="absolute inset-0 bg-primary/20 rounded-[2.5rem] animate-ping"></div>
-          </div>
-          <p className="mt-12 text-[10px] font-black text-primary uppercase tracking-[0.6em] animate-pulse">Vicmar • Sincronizando Dados</p>
-        </div>
-      )}
-
       {toast && (
         <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-8 duration-500 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-background-dark border-primary text-white'
           }`}>

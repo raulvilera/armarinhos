@@ -202,7 +202,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         </header>
 
         {/* DASHBOARD GRÁFICO */}
-        <section className="bg-white rounded-[2rem] lg:rounded-[4rem] shadow-sm border border-gray-100 p-6 lg:p-12 mb-8 lg:mb-16 animate-in slide-in-from-bottom-10 relative overflow-hidden">
+        <section className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-8 lg:p-12 mb-8 lg:mb-16 animate-in slide-in-from-bottom-10 relative overflow-hidden">
           <div className="flex flex-col xl:flex-row justify-between items-start mb-10 gap-8">
             <div className="w-full">
               <h3 className="text-xl lg:text-2xl font-black text-gray-900 uppercase tracking-tighter">Performance (Vendas x Estoque)</h3>
@@ -277,7 +277,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
         </section>
 
         {/* TABELA ANALÍTICA */}
-        <section className="bg-white rounded-[2rem] lg:rounded-[3.5rem] shadow-sm border border-gray-100 p-6 lg:p-12 mb-8 lg:mb-16">
+        <section className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-8 lg:p-12 mb-8 lg:mb-16">
           <h3 className="text-lg lg:text-2xl font-black text-gray-900 uppercase tracking-tighter mb-8">Vendas Analíticas</h3>
           <div className="overflow-x-auto scrollbar-hide -mx-6 px-6">
             <table className="w-full text-left border-collapse min-w-[650px]">
@@ -320,7 +320,7 @@ export const Catalog: React.FC<CatalogProps> = ({ setView, products, sales, onAd
           </div>
         </div>
 
-        <div className="bg-white rounded-[2rem] lg:rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden mb-16">
+        <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden mb-16">
           <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
             <table className="w-full text-left min-w-[900px]">
               <thead>

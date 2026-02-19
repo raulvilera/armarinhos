@@ -56,8 +56,8 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
         <div className="p-4 md:p-8 max-w-5xl mx-auto bg-[#F8F7F9] min-h-screen">
             <header className="flex justify-between items-center mb-8 md:mb-12">
                 <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-black text-primary uppercase tracking-tighter">Assinaturas</h1>
-                    <p className="text-gray-400 font-bold uppercase tracking-widest text-[9px] md:text-xs mt-1">Configuração do seu SaaS Armarinhos</p>
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 uppercase tracking-tight leading-none">Assinaturas</h1>
+                    <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[9px] md:text-[11px] mt-2 italic">Configuração do seu SaaS • Vicmar</p>
                 </div>
                 <button
                     onClick={() => setView('DASHBOARD')}
@@ -67,9 +67,9 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
                 </button>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                 {plans.map(plan => (
-                    <div key={plan.id} className="bg-white border-2 border-gray-100 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] hover:border-primary/20 transition-all group flex flex-col shadow-sm">
+                    <div key={plan.id} className="bg-white p-8 md:p-10 rounded-[2.5rem] hover:border-primary/20 transition-all group flex flex-col shadow-sm border border-gray-100">
                         <div className="flex justify-between items-start mb-6">
                             <span className="bg-primary/10 text-primary text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">
                                 {plan.name}
@@ -98,9 +98,9 @@ export const Subscriptions: React.FC<{ setView: (v: any) => void }> = ({ setView
                 </button>
             </div>
 
-            <div className="mt-12 md:mt-16 bg-white p-8 md:p-12 rounded-[2.5rem] md:rounded-[4rem] border border-gray-100 shadow-sm text-center max-w-3xl mx-auto">
-                <div className="bg-primary/5 size-16 md:size-20 rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center mx-auto mb-6">
-                    <span className="material-symbols-outlined text-3xl md:text-4xl text-primary font-black">payments</span>
+            <div className="mt-12 md:mt-16 bg-white p-10 md:p-16 rounded-[2.5rem] border border-gray-100 shadow-sm text-center max-w-4xl mx-auto">
+                <div className="bg-primary/5 size-20 md:size-24 rounded-[2rem] flex items-center justify-center mx-auto mb-8">
+                    <span className="material-symbols-outlined text-4xl md:text-5xl text-primary font-black">payments</span>
                 </div>
                 <h2 className="text-xl md:text-2xl font-black text-primary uppercase mb-3">Integração Financeira</h2>
                 <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto mb-8 leading-relaxed">Conecte sua conta do <b>Mercado Pago</b> para automatizar as cobranças mensais dos seus clientes com segurança e agilidade.</p>

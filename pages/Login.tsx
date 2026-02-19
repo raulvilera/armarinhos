@@ -62,7 +62,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
   return (
     <div className="min-h-screen bg-background-light flex items-center justify-center p-6 font-display">
       <div className="w-full max-w-md animate-in zoom-in fade-in duration-500">
-        <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100">
           <div className="bg-primary p-12 text-center text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8 opacity-10">
               <span className="material-symbols-outlined text-9xl">lock</span>

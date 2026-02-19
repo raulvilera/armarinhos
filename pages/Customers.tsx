@@ -36,20 +36,23 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
 
   const NavContent = () => (
     <>
-      <div className="p-8 flex items-center gap-3">
-        <div className="bg-primary size-9 rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
-          <span className="material-symbols-outlined text-xl">group</span>
+      <div className="p-10 flex items-center gap-4">
+        <div className="bg-primary size-12 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/30">
+          <span className="material-symbols-outlined text-3xl font-black">group</span>
         </div>
-        <h1 className="text-lg font-black tracking-tighter uppercase text-primary">Vicmar</h1>
+        <div>
+          <h1 className="text-2xl font-black tracking-tighter uppercase text-primary leading-none">Vicmar</h1>
+          <p className="text-[10px] uppercase tracking-[0.3em] font-black text-gray-400 mt-1 italic">Gestão Admin</p>
+        </div>
       </div>
-      <nav className="flex-1 px-4 mt-6 space-y-2">
-        <button onClick={() => { setView('DASHBOARD'); setIsMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-text-muted hover:bg-neutral-light/50 rounded-xl transition-all font-bold text-xs uppercase tracking-widest text-left">
-          <span className="material-symbols-outlined">home</span> Dashboard
+      <nav className="flex-1 px-6 mt-10 space-y-2">
+        <button onClick={() => { setView('DASHBOARD'); setIsMenuOpen(false); }} className="w-full flex items-center gap-4 px-6 py-4 text-primary hover:bg-primary/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-left">
+          <span className="material-symbols-outlined">grid_view</span> Dashboard
         </button>
-        <button onClick={() => { setView('CATALOG'); setIsMenuOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-text-muted hover:bg-neutral-light/50 rounded-xl transition-all font-bold text-xs uppercase tracking-widest text-left">
+        <button onClick={() => { setView('CATALOG'); setIsMenuOpen(false); }} className="w-full flex items-center gap-4 px-6 py-4 text-primary hover:bg-primary/5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-left">
           <span className="material-symbols-outlined">inventory_2</span> Estoque
         </button>
-        <button className="w-full flex items-center gap-3 px-4 py-3 bg-primary/5 text-primary rounded-xl font-black text-xs uppercase tracking-widest text-left">
+        <button className="w-full flex items-center gap-4 px-6 py-4 bg-selected/10 text-selected rounded-2xl font-black text-xs uppercase tracking-widest transition-all text-left">
           <span className="material-symbols-outlined">group</span> Clientes
         </button>
       </nav>
@@ -68,15 +71,15 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
 
       {/* Sidebar Lateral */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-[60] w-64 bg-white border-r border-primary/10 flex flex-col transition-transform duration-500 transform
+        fixed lg:static inset-y-0 left-0 z-[60] w-80 bg-white border-r border-gray-100 flex flex-col shadow-sm transition-transform duration-500 transform
         ${isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <NavContent />
       </aside>
 
       <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 scrollbar-hide">
-        <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 md:mb-10 gap-6">
-          <div className="flex items-center justify-between w-full md:w-auto">
+        <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 md:mb-12 gap-6">
+          <div className="flex items-center justify-between w-full lg:w-auto">
             <button
               onClick={() => setIsMenuOpen(true)}
               className="lg:hidden size-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm border border-gray-100"
@@ -84,15 +87,15 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
               <span className="material-symbols-outlined font-black">menu</span>
             </button>
             <div className="text-right md:text-left flex-1 md:flex-none ml-4 lg:ml-0">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight">Base de Clientes</h2>
-              <p className="text-text-muted font-medium italic text-[10px] md:text-xs">Gestão de fidelização e histórico</p>
+              <h2 className="text-2xl lg:text-4xl font-black tracking-tight text-gray-900 uppercase leading-none">Base de Clientes</h2>
+              <p className="text-gray-400 font-bold uppercase text-[9px] lg:text-[11px] tracking-[0.3em] mt-2 italic">Gestão de Fidelização • Vicmar</p>
             </div>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full md:w-auto bg-primary text-white font-black py-4 px-8 rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all uppercase text-[10px] md:text-xs tracking-widest"
+            className="w-full md:w-auto bg-primary text-white font-black py-4 px-10 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-primary/30 hover:brightness-110 transition-all uppercase text-[10px] lg:text-xs tracking-widest"
           >
-            <span className="material-symbols-outlined">person_add</span>
+            <span className="material-symbols-outlined font-black">person_add</span>
             Novo Cliente
           </button>
         </header>
@@ -107,7 +110,7 @@ export const Customers: React.FC<CustomersProps> = ({ setView, customers, onAddC
           />
         </div>
 
-        <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-neutral-light overflow-hidden mb-12">
+        <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden mb-12">
           <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 overflow-y-hidden">
             <table className="w-full text-left min-w-[700px]">
               <thead>

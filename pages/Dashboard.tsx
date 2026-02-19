@@ -139,27 +139,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
           <button onClick={() => setView('STOREFRONT')} className="hidden lg:block px-8 py-3 bg-white border border-primary/20 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-sm text-primary hover:bg-primary hover:text-white transition-all">Ir para a Loja</button>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-12">
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-gray-100">
-            <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 md:mb-4">Receita Hoje</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-12">
+          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-center">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Receita Hoje</p>
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter">R$ {revenueToday.toFixed(2).replace('.', ',')}</h3>
           </div>
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-gray-100">
-            <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 md:mb-4">Volume de Estoque</p>
+          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-center">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Volume de Estoque</p>
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter">{totalStockItems} un.</h3>
           </div>
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-gray-100">
-            <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 md:mb-4">Faturamento Total</p>
+          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-center">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Faturamento Total</p>
             <h3 className="text-2xl md:text-3xl font-black text-selected tracking-tighter">R$ {totalRevenue.toFixed(2).replace('.', ',')}</h3>
           </div>
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-gray-100">
-            <p className="text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 md:mb-4">Clientes Registrados</p>
+          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-sm border border-gray-100 flex flex-col justify-center">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Clientes Registrados</p>
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter">{customers.length}</h3>
           </div>
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 md:gap-12">
-          <div className="xl:col-span-2 bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] shadow-sm border border-gray-100">
+          <div className="xl:col-span-2 bg-white p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-gray-100">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 md:mb-10">
               <h4 className="text-lg md:text-xl font-black uppercase tracking-tight text-gray-800">Fluxo Financeiro (Semana)</h4>
               <div className="flex gap-4">
@@ -185,7 +185,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
             </div>
           </div>
 
-          <div className="bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] shadow-sm border border-gray-100">
+          <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-gray-100">
             <h4 className="text-lg md:text-xl font-black uppercase tracking-tight text-gray-800 mb-8">Top Compradores</h4>
             <div className="space-y-6">
               {topCustomers.map(c => (

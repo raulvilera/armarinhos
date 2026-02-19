@@ -145,36 +145,37 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
          </div>
 
          {/* Left Aside (Navigation & History) - Hidden on Mobile */}
-         <aside className="hidden lg:flex w-24 xl:w-80 bg-white border-r border-gray-200 flex-col shadow-2xl z-40 transition-all shrink-0">
-            <div className="p-8 flex flex-col items-center xl:items-start gap-10">
+         <aside className="hidden lg:flex w-80 bg-white border-r border-gray-100 flex-col shadow-sm z-40 transition-all shrink-0">
+            <div className="p-10 flex flex-col items-start gap-10">
                <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setView('DASHBOARD')}>
-                  <div className="bg-primary size-12 rounded-[1.25rem] flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-12 transition-transform">
+                  <div className="bg-primary size-12 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/30 group-hover:rotate-6 transition-transform">
                      <span className="material-symbols-outlined text-3xl font-black">terminal</span>
                   </div>
-                  <div className="hidden xl:block">
-                     <h1 className="text-xl font-black tracking-tighter uppercase text-primary leading-none">Vicmar POS</h1>
-                     <p className="text-[10px] uppercase font-black text-gray-300 mt-1 tracking-widest">SaaS Professional</p>
+                  <div>
+                     <h1 className="text-2xl font-black tracking-tighter uppercase text-primary leading-none">Vicmar</h1>
+                     <p className="text-[10px] uppercase tracking-[0.3em] font-black text-gray-400 mt-1 italic">Gestão Admin</p>
                   </div>
                </div>
                <div className="w-full space-y-3">
-                  <button onClick={() => { setMode('SALE'); setCartItems([]); }} className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'SALE' ? 'bg-primary text-white shadow-xl shadow-primary/30' : 'text-gray-400 hover:bg-gray-50'}`}>
+                  <button onClick={() => { setMode('SALE'); setCartItems([]); }} className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'SALE' ? 'bg-primary text-white shadow-xl shadow-primary/30' : 'text-gray-400 hover:bg-primary/5'}`}>
                      <span className="material-symbols-outlined text-xl">shopping_cart</span>
-                     <span className="hidden xl:block">Frente de Caixa</span>
+                     <span>Frente de Caixa</span>
                   </button>
-                  <button onClick={() => { setMode('SUPPLIER'); setCartItems([]); }} className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'SUPPLIER' ? 'bg-selected text-white shadow-xl shadow-selected/30' : 'text-gray-400 hover:bg-gray-50'}`}>
+                  <button onClick={() => { setMode('SUPPLIER'); setCartItems([]); }} className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'SUPPLIER' ? 'bg-selected text-white shadow-xl shadow-selected/30' : 'text-gray-400 hover:bg-primary/5'}`}>
                      <span className="material-symbols-outlined text-xl">local_shipping</span>
-                     <span className="hidden xl:block">Entrada de Fornecedor</span>
+                     <span>Entrada Fornecedor</span>
                   </button>
                </div>
             </div>
             <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-hide space-y-4">
-               {sales.slice(0, 15).map(s => (
-                  <div key={s.id} className="p-4 rounded-3xl bg-gray-50 border border-gray-100 hover:border-primary/20 transition-all cursor-pointer group">
-                     <div className="flex justify-between items-center mb-2">
+               {sales.slice(0, 5).map(s => (
+                  <div key={s.id} className="p-5 rounded-3xl bg-gray-50 border border-gray-100/50 hover:border-primary/20 transition-all cursor-pointer group">
+                     <div className="flex justify-between items-center mb-1">
                         <span className={`text-[8px] font-black px-2 py-0.5 rounded uppercase ${s.paymentMethod.includes('Entrada') ? 'bg-selected/10 text-selected' : 'bg-primary/10 text-primary'}`}>#{s.id}</span>
+                        <span className="text-[8px] font-black text-gray-300 uppercase">{new Date(s.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                      </div>
-                     <p className="text-[10px] font-black text-gray-800 truncate uppercase mb-1">{s.customerName}</p>
-                     <p className="text-xs font-black text-gray-900 tracking-tighter">R$ {s.total.toFixed(2)}</p>
+                     <p className="text-[10px] font-black text-gray-800 truncate uppercase">{s.customerName}</p>
+                     <p className="text-xs font-black text-primary tracking-tighter">R$ {s.total.toFixed(2)}</p>
                   </div>
                ))}
             </div>
@@ -205,9 +206,9 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
                </div>
             </header>
             <div className="flex-1 overflow-y-auto scrollbar-hide">
-               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-8">
+               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8">
                   {filteredProducts.map(p => (
-                     <div key={p.id} onClick={() => addToCart(p)} className={`bg-white p-4 md:p-6 rounded-[2rem] md:rounded-[3rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer group relative overflow-hidden flex flex-col ${p.stock <= 0 && mode === 'SALE' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
+                     <div key={p.id} onClick={() => addToCart(p)} className={`bg-white p-6 md:p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer group relative overflow-hidden flex flex-col ${p.stock <= 0 && mode === 'SALE' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
                         <div className="aspect-square bg-gray-50 rounded-[1.5rem] md:rounded-[2.5rem] mb-4 md:mb-6 p-4 md:p-6 flex items-center justify-center relative group-hover:bg-primary/5 transition-colors">
                            <img src={p.image} className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110" alt={p.name} />
                         </div>
@@ -226,7 +227,7 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
 
          {/* Cart Aside (Desktop version or mobile slide-up) */}
          <aside className={`
-            fixed lg:static inset-y-0 right-0 z-[60] w-full lg:w-[450px] xl:w-[550px] bg-white border-l border-gray-200 flex flex-col shadow-2xl transition-transform duration-500 transform
+            fixed lg:static inset-y-0 right-0 z-[60] w-full lg:w-[450px] xl:w-[500px] bg-white border-l border-gray-100 flex flex-col shadow-sm transition-transform duration-500 transform
             ${showCartMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
          `}>
             {/* Cart Header (includes closing button for mobile) */}

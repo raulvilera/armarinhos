@@ -38,10 +38,10 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-8 lg:px-20 py-8 md:py-12">
+      <main className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12">
         <div className="flex flex-col sm:flex-row items-center sm:items-baseline gap-3 md:gap-4 mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight uppercase leading-none text-gray-900">Minha Sacola</h2>
-          <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-widest">{cart.length} itens</span>
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 uppercase leading-none">Minha Sacola</h2>
+          <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[9px] md:text-[11px] italic">Finalização do Pedido • Vicmar</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
@@ -49,7 +49,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
           <div className="lg:col-span-8 space-y-8 md:space-y-12">
             <section>
               {cart.length === 0 ? (
-                <div className="bg-white p-12 md:p-20 rounded-[2.5rem] md:rounded-[3rem] border border-dashed border-gray-200 flex flex-col items-center text-center shadow-sm">
+                <div className="bg-white p-12 md:p-20 rounded-[2.5rem] border border-dashed border-gray-200 flex flex-col items-center text-center shadow-sm">
                   <div className="size-20 md:size-24 bg-primary/5 rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center mb-6 text-primary">
                     <span className="material-symbols-outlined text-4xl md:text-5xl font-black">shopping_basket</span>
                   </div>
@@ -132,7 +132,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
 
           {/* Resumo (Sticky) */}
           <div className="lg:col-span-4">
-            <div className="bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-2xl shadow-primary/5 border border-gray-100 sticky top-28 overflow-hidden">
+            <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-gray-100 sticky top-28 overflow-hidden">
               <div className="absolute -top-6 -right-6 opacity-5 rotate-12 pointer-events-none">
                 <span className="material-symbols-outlined text-[120px] text-primary font-black">receipt_long</span>
               </div>
