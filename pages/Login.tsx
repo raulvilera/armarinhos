@@ -61,7 +61,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
 
   return (
     <div className="min-h-screen bg-background-light flex items-center justify-center p-6 font-display">
-      <div className="w-full max-w-md animate-in zoom-in fade-in duration-500">
+      <div className="w-full max-w-md">
         <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100">
           <div className="bg-primary p-12 text-center text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8 opacity-10">
@@ -83,7 +83,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
             <div className={`p-4 rounded-2xl flex items-center gap-3 border ${connectionStatus.loading ? 'bg-gray-50 border-gray-100' :
               connectionStatus.ok ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100'
               }`}>
-              <div className={`size-3 rounded-full ${connectionStatus.loading ? 'bg-gray-300 animate-pulse' :
+              <div className={`size-3 rounded-full ${connectionStatus.loading ? 'bg-gray-300' :
                 connectionStatus.ok ? 'bg-green-500' : 'bg-red-500'
                 }`}></div>
               <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
@@ -94,7 +94,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
 
           <form onSubmit={handleLogin} className="p-12 pt-4 space-y-6">
             {error && (
-              <div className={`p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border animate-in slide-in-from-top-4 duration-300 bg-red-50 text-red-600 border-red-100`}>
+              <div className={`p-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border bg-red-50 text-red-600 border-red-100`}>
                 {error}
               </div>
             )}

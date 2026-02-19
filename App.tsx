@@ -21,25 +21,21 @@ const App: React.FC = () => {
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderComplete, setIsOrderComplete] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
 
   useEffect(() => {
-    // Carregar dados iniciais independente da sessão
     fetchData();
 
-    // Verificar sessão atual
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
 
-    // Escutar mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (!session?.user) {
         setView('STOREFRONT');
       } else {
-        fetchData(); // Recarregar dados com privilégios de admin se logado
+        fetchData();
       }
     });
 
@@ -47,7 +43,6 @@ const App: React.FC = () => {
   }, []);
 
   const fetchData = async (retries = 3) => {
-    setIsLoading(true);
     try {
       const [{ data: productsData, error: pError }, { data: customersData, error: cError }, { data: salesData, error: sError }] = await Promise.all([
         supabase.from('products').select('*').order('name'),
@@ -63,13 +58,10 @@ const App: React.FC = () => {
     } catch (error: any) {
       console.error('Error fetching data:', error);
       if (retries > 0) {
-        console.log(`Retrying fetchData... (${retries} left)`);
         setTimeout(() => fetchData(retries - 1), 2000);
       } else {
         showToast('Erro de conexão: Não foi possível carregar os dados.', 'info');
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -86,7 +78,7 @@ const App: React.FC = () => {
     }
 
     setView(newView);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   const addToCart = (product: Product) => {
@@ -112,12 +104,10 @@ const App: React.FC = () => {
     const list = itemsToProcess || cart;
     if (list.length === 0) return;
 
-    setIsLoading(true);
     try {
       const subtotal = list.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
       const finalTotal = paymentMethod === 'Pix' && !itemsToProcess ? subtotal * 0.95 : subtotal;
 
-      // Atualizar estoque no Supabase
       for (const item of list) {
         const newStock = isIncoming
           ? item.product.stock + item.quantity
@@ -126,7 +116,6 @@ const App: React.FC = () => {
         await supabase.from('products').update({ stock: newStock }).eq('id', item.product.id);
       }
 
-      // Atualizar cliente se necessário
       if (customerId && !isIncoming) {
         const customer = customers.find(c => c.id === customerId);
         if (customer) {
@@ -138,7 +127,6 @@ const App: React.FC = () => {
         }
       }
 
-      // Registrar venda
       const newSale = {
         "customerName": isIncoming ? 'Fornecedor / Suprimento' : (customers.find(c => c.id === customerId)?.name || 'Cliente Balcão'),
         "total": finalTotal,
@@ -148,37 +136,26 @@ const App: React.FC = () => {
       };
 
       await supabase.from('sales').insert([newSale]);
-
-      // Recarregar dados
       await fetchData();
 
       if (!itemsToProcess) {
         setCart([]);
-        setIsOrderComplete(true);
-        setTimeout(() => {
-          setIsOrderComplete(false);
-          handleSetView('STOREFRONT');
-        }, 2500);
+        setCart([]);
+        // setIsOrderComplete(true); // Removed transition screen
+        handleSetView('STOREFRONT');
       } else {
         showToast(isIncoming ? "Estoque atualizado (Fornecedor)!" : "Venda PDV concluída!", 'success');
       }
     } catch (err) {
       console.error(err);
       showToast('Erro ao processar venda no servidor', 'info');
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const updateProduct = async (updated: Product) => {
     try {
-      const { error } = await supabase
-        .from('products')
-        .update(updated)
-        .eq('id', updated.id);
-
+      const { error } = await supabase.from('products').update(updated).eq('id', updated.id);
       if (error) throw error;
-
       setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
       showToast('Produto atualizado!', 'success');
     } catch (err) {
@@ -193,22 +170,6 @@ const App: React.FC = () => {
   };
 
   const renderView = () => {
-    if (isOrderComplete) {
-      return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white text-center p-10 animate-in fade-in zoom-in duration-700">
-          <div className="size-40 bg-primary text-white rounded-[3rem] flex items-center justify-center mb-10 shadow-2xl shadow-primary/30 border-8 border-primary/5 animate-bounce">
-            <span className="material-symbols-outlined text-7xl font-black">celebration</span>
-          </div>
-          <h2 className="text-5xl font-black text-primary mb-4 tracking-tighter uppercase">Obrigado!</h2>
-          <p className="text-gray-400 font-bold text-lg max-w-sm uppercase tracking-widest italic leading-relaxed">Seu pedido no Armarinhos Vicmar foi processado com sucesso.</p>
-          <div className="mt-12 flex flex-col items-center">
-            <div className="w-1 bg-primary/10 h-16 mb-4"></div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary/40">Redirecionando para a loja</p>
-          </div>
-        </div>
-      );
-    }
-
     switch (view) {
       case 'STOREFRONT':
         return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />;
@@ -307,7 +268,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FDFCFD] text-text-main font-display selection:bg-primary/20 overflow-x-hidden">
       {toast && (
-        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-8 duration-500 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-background-dark border-primary text-white'
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-background-dark border-primary text-white'
           }`}>
           <div className={`size-8 rounded-full flex items-center justify-center ${toast.type === 'success' ? 'bg-green-100' : 'bg-primary/20'}`}>
             <span className="material-symbols-outlined text-lg font-black">{toast.type === 'success' ? 'check' : 'info'}</span>

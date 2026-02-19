@@ -288,7 +288,7 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                <div className="absolute inset-0 bg-background-dark/95 backdrop-blur-3xl" onClick={() => setLastReceipt(null)}></div>
                <div className="bg-white w-full max-w-2xl rounded-[3rem] md:rounded-[5rem] shadow-2xl relative z-10 overflow-hidden border border-white/10 flex flex-col max-h-[90vh] p-8 md:p-14 items-center">
-                  <div className="bg-selected text-white size-20 md:size-28 rounded-[2rem] md:rounded-[3rem] flex items-center justify-center mb-6 md:mb-10 shadow-2xl animate-bounce">
+                  <div className="bg-selected text-white size-20 md:size-28 rounded-[2rem] md:rounded-[3rem] flex items-center justify-center mb-6 md:mb-10 shadow-2xl">
                      <span className="material-symbols-outlined text-4xl md:text-6xl font-black">check_circle</span>
                   </div>
                   <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-4 text-gray-900 text-center leading-none">Operação Efetuada</h3>
@@ -304,7 +304,7 @@ export const POS: React.FC<POSProps> = ({ setView, products, sales, customers, o
          {isQuickAddOpen && (
             <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
                <div className="absolute inset-0 bg-background-dark/90 backdrop-blur-xl" onClick={() => setIsQuickAddOpen(false)}></div>
-               <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-[3rem] shadow-2xl relative z-10 overflow-hidden animate-in zoom-in duration-300">
+               <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-[3rem] shadow-2xl relative z-10 overflow-hidden">
                   <div className="bg-selected p-6 md:p-8 text-white flex justify-between items-center">
                      <div>
                         <h3 className="text-lg md:text-xl font-black uppercase tracking-tighter leading-none">Produto Novo</h3>

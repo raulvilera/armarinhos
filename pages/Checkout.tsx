@@ -93,7 +93,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
               )}
             </section>
 
-            <section className={cart.length === 0 ? 'opacity-20 pointer-events-none' : 'animate-in fade-in slide-in-from-bottom-5'}>
+            <section className={cart.length === 0 ? 'opacity-20 pointer-events-none' : ''}>
               <h3 className="text-lg md:text-xl font-black uppercase tracking-tight mb-8 flex items-center gap-4 text-gray-900">
                 <span className="bg-primary text-white size-8 rounded-full flex items-center justify-center text-xs font-black">02</span>
                 Forma de Pagamento
@@ -105,8 +105,8 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
                 >
                   <span className={`material-symbols-outlined text-3xl font-black ${paymentMethod === 'Pix' ? 'text-selected' : 'text-gray-300'}`}>pix</span>
                   <p className={`font-black uppercase text-[10px] md:text-xs ${paymentMethod === 'Pix' ? 'text-selected' : 'text-gray-400'}`}>Pix</p>
-                  <p className="text-[9px] text-selected font-black uppercase tracking-widest animate-pulse">5% OFF</p>
-                  {paymentMethod === 'Pix' && <div className="absolute top-4 right-4 text-selected animate-in zoom-in"><span className="material-symbols-outlined font-black">check_circle</span></div>}
+                  <p className="text-[9px] text-selected font-black uppercase tracking-widest">5% OFF</p>
+                  {paymentMethod === 'Pix' && <div className="absolute top-4 right-4 text-selected"><span className="material-symbols-outlined font-black">check_circle</span></div>}
                 </div>
                 <div
                   onClick={() => setPaymentMethod('Cartão')}
@@ -115,7 +115,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
                   <span className={`material-symbols-outlined text-3xl font-black ${paymentMethod === 'Cartão' ? 'text-selected' : 'text-gray-300'}`}>credit_card</span>
                   <p className={`font-black uppercase text-[10px] md:text-xs ${paymentMethod === 'Cartão' ? 'text-selected' : 'text-gray-400'}`}>Cartão</p>
                   <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest">Em até 6x</p>
-                  {paymentMethod === 'Cartão' && <div className="absolute top-4 right-4 text-selected animate-in zoom-in"><span className="material-symbols-outlined font-black">check_circle</span></div>}
+                  {paymentMethod === 'Cartão' && <div className="absolute top-4 right-4 text-selected"><span className="material-symbols-outlined font-black">check_circle</span></div>}
                 </div>
                 <div
                   onClick={() => setPaymentMethod('Boleto')}
@@ -124,7 +124,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
                   <span className={`material-symbols-outlined text-3xl font-black ${paymentMethod === 'Boleto' ? 'text-selected' : 'text-gray-300'}`}>payments</span>
                   <p className={`font-black uppercase text-[10px] md:text-xs ${paymentMethod === 'Boleto' ? 'text-selected' : 'text-gray-400'}`}>Boleto</p>
                   <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest">À vista</p>
-                  {paymentMethod === 'Boleto' && <div className="absolute top-4 right-4 text-selected animate-in zoom-in"><span className="material-symbols-outlined font-black">check_circle</span></div>}
+                  {paymentMethod === 'Boleto' && <div className="absolute top-4 right-4 text-selected"><span className="material-symbols-outlined font-black">check_circle</span></div>}
                 </div>
               </div>
             </section>
@@ -147,7 +147,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
                   <span className="text-selected font-black uppercase">Grátis</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-selected font-black text-[10px] uppercase tracking-widest animate-in slide-in-from-left">
+                  <div className="flex justify-between text-selected font-black text-[10px] uppercase tracking-widest">
                     <span>Desconto Pagamento</span>
                     <span>- R$ {discount.toFixed(2)}</span>
                   </div>

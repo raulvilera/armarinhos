@@ -59,7 +59,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FDFCFD] animate-in fade-in duration-700 font-display text-text-main">
+    <div className="flex flex-col min-h-screen bg-[#FDFCFD] font-display text-text-main">
       {/* Header Premium */}
       <header className="sticky top-0 z-40 bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 md:gap-6">
@@ -81,7 +81,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
             >
               <span className="material-symbols-outlined text-2xl font-black">shopping_basket</span>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-selected text-white size-5 rounded-full text-[10px] flex items-center justify-center font-black ring-4 ring-white shadow-lg animate-in zoom-in">
+                <span className="absolute -top-2 -right-2 bg-selected text-white size-5 rounded-full text-[10px] flex items-center justify-center font-black ring-4 ring-white shadow-lg">
                   {cartCount}
                 </span>
               )}
@@ -115,8 +115,8 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
                     className={`px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-2 md:border-b-4 shadow-sm hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                        ? 'bg-selected text-white border-selected/40 shadow-selected/20'
-                        : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
+                      ? 'bg-selected text-white border-selected/40 shadow-selected/20'
+                      : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
                       }`}
                   >
                     {cat}
@@ -127,7 +127,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
           </div>
 
           {isSearchVisible && (
-            <div className="animate-in slide-in-from-top-2 duration-300">
+            <div>
               <input
                 autoFocus
                 className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-gray-300 shadow-inner font-black"
@@ -166,17 +166,17 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
                 <div
                   key={p.id}
                   onClick={() => openProductDetail(p)}
-                  className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group cursor-pointer flex flex-col h-full relative"
+                  className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 group cursor-pointer flex flex-col h-full relative"
                 >
                   <div className="relative overflow-hidden bg-gray-50 aspect-square flex items-center justify-center">
                     <img
                       src={p.image}
-                      className="absolute inset-0 w-full h-full object-cover blur-[18px] opacity-40 scale-125 transition-transform group-hover:scale-150 duration-1000"
+                      className="absolute inset-0 w-full h-full object-cover blur-[18px] opacity-40 scale-125"
                       alt=""
                     />
                     <img
                       src={p.image}
-                      className="relative z-10 w-4/5 h-4/5 object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-2xl"
+                      className="relative z-10 w-4/5 h-4/5 object-contain drop-shadow-2xl"
                       alt={p.name}
                     />
                     {p.stock <= 0 && (
@@ -218,8 +218,8 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
       {/* Modal de Detalhes - Kyte Premium Style */}
       {selectedProduct && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-background-dark/80 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setSelectedProduct(null)}></div>
-          <div className="bg-white w-full max-w-5xl rounded-[3rem] overflow-hidden relative z-10 flex flex-col lg:flex-row animate-in zoom-in duration-500 shadow-2xl max-h-[90vh] border border-white/10">
+          <div className="absolute inset-0 bg-background-dark/80 backdrop-blur-md" onClick={() => setSelectedProduct(null)}></div>
+          <div className="bg-white w-full max-w-5xl rounded-[3rem] overflow-hidden relative z-10 flex flex-col lg:flex-row shadow-2xl max-h-[90vh] border border-white/10">
 
             {/* Galeria de Imagens do Modal */}
             <div className="w-full lg:w-1/2 bg-gray-50 flex flex-col items-center justify-center p-8 lg:p-12 overflow-hidden relative border-r border-gray-100">
@@ -228,7 +228,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
               <div className="relative z-10 w-full aspect-square flex items-center justify-center">
                 <img
                   src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image}
-                  className="w-full h-full object-contain mix-blend-multiply animate-in fade-in zoom-in duration-500 drop-shadow-xl"
+                  className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
                   alt={selectedProduct.name}
                 />
 
@@ -256,7 +256,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
                     <li
                       key={idx}
                       onClick={() => setCurrentImgIndex(idx)}
-                      className={`size-2.5 rounded-full transition-all duration-300 cursor-pointer ${idx === currentImgIndex ? 'bg-primary w-8 shadow-lg shadow-primary/20' : 'bg-primary/20 hover:bg-primary/40'}`}
+                      className={`size-2.5 rounded-full cursor-pointer ${idx === currentImgIndex ? 'bg-primary w-8 shadow-lg shadow-primary/20' : 'bg-primary/20 hover:bg-primary/40'}`}
                     />
                   ))}
                 </ul>

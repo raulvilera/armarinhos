@@ -106,21 +106,21 @@ export const Dashboard: React.FC<DashboardProps> = ({ setView, products, sales, 
       {/* Sidebar Mobile Overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-50 lg:hidden backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 bg-black/50 z-50 lg:hidden backdrop-blur-sm"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Sidebar - Desktop & Tablet */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-[60] w-80 bg-white border-r border-gray-100 flex flex-col shadow-sm transition-transform duration-500 transform
+        fixed lg:static inset-y-0 left-0 z-[60] w-80 bg-white border-r border-gray-100 flex flex-col shadow-sm transform
         ${isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <NavContent />
       </aside>
 
       <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 scrollbar-hide">
-        <header className="flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6 animate-in fade-in">
+        <header className="flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
           <div className="flex items-center justify-between w-full lg:w-auto">
             <button
               onClick={() => setIsMenuOpen(true)}
