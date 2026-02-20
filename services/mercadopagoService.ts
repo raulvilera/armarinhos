@@ -1,7 +1,5 @@
-// @ts-ignore
-const ACCESS_TOKEN = import.meta.env.VITE_MP_ACCESS_TOKEN;
-// @ts-ignore
-const PUBLIC_KEY = import.meta.env.VITE_MP_PUBLIC_KEY;
+import { supabase } from './supabaseClient';
+
 
 export const createSubscriptionPlan = async (data: {
     reason: string,
@@ -17,20 +15,21 @@ export const createSubscriptionPlan = async (data: {
     }
 }) => {
     try {
-        const response = await fetch('https://api.mercadopago.com/preapproval_plan', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${ACCESS_TOKEN}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ...data,
-                back_url: window.location.origin
-            })
+        const { data: response, error } = await supabase.functions.invoke('mercadopago', {
+            body: {
+                url: 'https://api.mercadopago.com/preapproval_plan',
+                method: 'POST',
+                body: {
+                    ...data,
+                    back_url: window.location.origin
+                }
+            }
         });
-        return await response.json();
+
+        if (error) throw error;
+        return response;
     } catch (error) {
-        console.error('Error creating MP plan:', error);
+        console.error('Error creating MP plan via proxy:', error);
         throw error;
     }
 };
@@ -39,13 +38,17 @@ export const initMPCheckout = async (preapprovalPlanId: string) => {
     // O checkout de assinatura do MP geralmente requer redirecionamento para o init_point do plano
     // ou uso do Brick de assinaturas. Para simplicidade inicial, buscaremos o link de pagamento.
     try {
-        const response = await fetch(`https://api.mercadopago.com/preapproval_plan/${preapprovalPlanId}`, {
-            headers: { 'Authorization': `Bearer ${ACCESS_TOKEN}` }
+        const { data: plan, error } = await supabase.functions.invoke('mercadopago', {
+            body: {
+                url: `https://api.mercadopago.com/preapproval_plan/${preapprovalPlanId}`,
+                method: 'GET'
+            }
         });
-        const plan = await response.json();
+
+        if (error) throw error;
         return plan.init_point;
     } catch (error) {
-        console.error('Error getting MP plan init point:', error);
+        console.error('Error getting MP plan init point via proxy:', error);
         throw error;
     }
 };
