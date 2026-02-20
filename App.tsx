@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ViewType, Product, CartItem, Customer, Sale, FiscalInfo } from './types';
 import { Storefront } from './pages/Storefront';
 import { Dashboard } from './pages/Dashboard';
@@ -11,17 +12,16 @@ import { Login } from './pages/Login';
 import { Subscriptions } from './pages/Subscriptions';
 import { ChatWidget } from './components/ChatWidget';
 import { supabase } from './services/supabaseClient';
+import DashboardLayout from './components/DashboardLayout';
 
-const App: React.FC = () => {
-  const [view, setView] = useState<ViewType>('STOREFRONT');
+const AppContent: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
   const [user, setUser] = useState<any>(null);
-
   const [cart, setCart] = useState<CartItem[]>([]);
-
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' } | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     fetchData();
@@ -32,9 +32,7 @@ const App: React.FC = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (!session?.user) {
-        setView('STOREFRONT');
-      } else {
+      if (session?.user) {
         fetchData();
       }
     });
@@ -68,17 +66,6 @@ const App: React.FC = () => {
   const showToast = (message: string, type: 'success' | 'info' = 'info') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
-  };
-
-  const handleSetView = (newView: ViewType) => {
-    const adminViews: ViewType[] = ['DASHBOARD', 'CATALOG', 'POS', 'CUSTOMERS', 'SUBSCRIPTIONS'];
-    if (adminViews.includes(newView) && !user) {
-      setView('LOGIN');
-      return;
-    }
-
-    setView(newView);
-    window.scrollTo(0, 0);
   };
 
   const addToCart = (product: Product) => {
@@ -140,9 +127,6 @@ const App: React.FC = () => {
 
       if (!itemsToProcess) {
         setCart([]);
-        setCart([]);
-
-        handleSetView('STOREFRONT');
       } else {
         showToast(isIncoming ? "Estoque atualizado (Fornecedor)!" : "Venda PDV concluída!", 'success');
       }
@@ -166,109 +150,17 @@ const App: React.FC = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    handleSetView('STOREFRONT');
   };
 
-  const renderView = () => {
-    switch (view) {
-      case 'STOREFRONT':
-        return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />;
-      case 'LOGIN':
-        return <Login onLogin={() => { }} setView={handleSetView} />;
-      case 'DASHBOARD':
-        return <Dashboard setView={handleSetView} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />;
-      case 'CATALOG':
-        return (
-          <Catalog
-            setView={handleSetView}
-            products={products}
-            sales={sales}
-            onAddProduct={async (p) => {
-              try {
-                const { data, error } = await supabase.from('products').insert([p]).select();
-                if (error) throw error;
-                if (data) setProducts([data[0], ...products]);
-                showToast('Produto cadastrado!', 'success');
-              } catch (err) {
-                showToast('Erro ao cadastrar produto', 'info');
-              }
-            }}
-            onDeleteProduct={async (id) => {
-              try {
-                const { error } = await supabase.from('products').delete().eq('id', id);
-                if (error) throw error;
-                setProducts(products.filter(p => p.id !== id));
-                showToast('Produto removido!', 'success');
-              } catch (err) {
-                showToast('Erro ao remover produto', 'info');
-              }
-            }}
-            onUpdateStock={async (id, stock) => {
-              try {
-                const { error } = await supabase.from('products').update({ stock }).eq('id', id);
-                if (error) throw error;
-                setProducts(products.map(p => p.id === id ? { ...p, stock } : p));
-              } catch (err) {
-                showToast('Erro ao atualizar estoque', 'info');
-              }
-            }}
-            onUpdateProduct={updateProduct}
-            showToast={showToast}
-          />
-        );
-      case 'POS':
-        return (
-          <POS
-            setView={handleSetView}
-            products={products}
-            sales={sales}
-            customers={customers}
-            onFinishSale={finishOrder}
-            onAddProduct={async (p) => {
-              try {
-                const { data, error } = await supabase.from('products').insert([p]).select();
-                if (error) throw error;
-                const newProd = data[0];
-                setProducts([newProd, ...products]);
-                showToast('Novo produto cadastrado!', 'success');
-                return newProd;
-              } catch (err) {
-                showToast('Erro ao cadastrar produto rápido', 'info');
-                return null;
-              }
-            }}
-          />
-        );
-      case 'CUSTOMERS':
-        return (
-          <Customers
-            setView={handleSetView}
-            customers={customers}
-            onAddCustomer={async (c: any) => {
-              try {
-                const { data, error } = await supabase.from('customers').insert([c]).select();
-                if (error) throw error;
-                if (data) setCustomers([data[0], ...customers]);
-                showToast('Cliente cadastrado!', 'success');
-              } catch (err) {
-                showToast('Erro ao cadastrar cliente', 'info');
-              }
-            }}
-          />
-        );
-      case 'CHECKOUT':
-        return <Checkout setView={handleSetView} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />;
-      case 'SUBSCRIPTIONS':
-        return <Subscriptions setView={handleSetView} />;
-      default:
-        return <Storefront setView={handleSetView} addToCart={addToCart} products={products} cartCount={cart.length} />;
-    }
+  const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    if (!user) return <Navigate to="/login" replace />;
+    return <>{children}</>;
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFCFD] text-text-main font-display selection:bg-primary/20 overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-x-hidden">
       {toast && (
-        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-background-dark border-primary text-white'
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-sidebar-bg border-primary text-white'
           }`}>
           <div className={`size-8 rounded-full flex items-center justify-center ${toast.type === 'success' ? 'bg-green-100' : 'bg-primary/20'}`}>
             <span className="material-symbols-outlined text-lg font-black">{toast.type === 'success' ? 'check' : 'info'}</span>
@@ -277,10 +169,134 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {renderView()}
-      <ChatWidget currentView={view} products={products} />
+      <Routes>
+        <Route path="/" element={<Storefront setView={() => { }} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />} />
+        <Route path="/login" element={<Login onLogin={() => { }} setView={() => { }} />} />
+
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Painel de Controle" subtitle="Visão geral do seu negócio">
+              <Dashboard setView={() => { }} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/catalogo" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Catálogo de Produtos" subtitle="Gerencie seus itens e estoque">
+              <Catalog
+                setView={() => { }}
+                products={products}
+                sales={sales}
+                onAddProduct={async (p) => {
+                  try {
+                    const { data, error } = await supabase.from('products').insert([p]).select();
+                    if (error) throw error;
+                    if (data) setProducts([data[0], ...products]);
+                    showToast('Produto cadastrado!', 'success');
+                  } catch (err) {
+                    showToast('Erro ao cadastrar produto', 'info');
+                  }
+                }}
+                onDeleteProduct={async (id) => {
+                  try {
+                    const { error } = await supabase.from('products').delete().eq('id', id);
+                    if (error) throw error;
+                    setProducts(products.filter(p => p.id !== id));
+                    showToast('Produto removido!', 'success');
+                  } catch (err) {
+                    showToast('Erro ao remover produto', 'info');
+                  }
+                }}
+                onUpdateStock={async (id, stock) => {
+                  try {
+                    const { error } = await supabase.from('products').update({ stock }).eq('id', id);
+                    if (error) throw error;
+                    setProducts(products.map(p => p.id === id ? { ...p, stock } : p));
+                  } catch (err) {
+                    showToast('Erro ao atualizar estoque', 'info');
+                  }
+                }}
+                onUpdateProduct={updateProduct}
+                showToast={showToast}
+              />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/pos" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Ponto de Venda (PDV)" subtitle="Realize vendas rápidas no balcão">
+              <POS
+                setView={() => { }}
+                products={products}
+                sales={sales}
+                customers={customers}
+                onFinishSale={finishOrder}
+                onAddProduct={async (p) => {
+                  try {
+                    const { data, error } = await supabase.from('products').insert([p]).select();
+                    if (error) throw error;
+                    const newProd = data[0];
+                    setProducts([newProd, ...products]);
+                    showToast('Novo produto cadastrado!', 'success');
+                    return newProd;
+                  } catch (err) {
+                    showToast('Erro ao cadastrar produto rápido', 'info');
+                    return null;
+                  }
+                }}
+              />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/clientes" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Clientes" subtitle="Gestão de base de clientes e histórico">
+              <Customers
+                setView={() => { }}
+                customers={customers}
+                onAddCustomer={async (c: any) => {
+                  try {
+                    const { data, error } = await supabase.from('customers').insert([c]).select();
+                    if (error) throw error;
+                    if (data) setCustomers([data[0], ...customers]);
+                    showToast('Cliente cadastrado!', 'success');
+                  } catch (err) {
+                    showToast('Erro ao cadastrar cliente', 'info');
+                  }
+                }}
+              />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/checkout" element={<Checkout setView={() => { }} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />} />
+
+        <Route path="/assinaturas" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Assinaturas" subtitle="Gerencie planos e pagamentos">
+              <Subscriptions setView={() => { }} />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      <ChatWidget currentView={location.pathname.toUpperCase().replace('/', '') as any} products={products} />
     </div>
   );
 };
 
+const App: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+};
+
 export default App;
+
