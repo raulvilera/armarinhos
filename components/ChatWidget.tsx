@@ -54,40 +54,39 @@ export const ChatWidget: React.FC<{ currentView: string; products?: Product[] }>
               <span className="material-symbols-outlined">close</span>
             </button>
           </div>
-          
+
           <div ref={scrollRef} className="flex-1 p-6 overflow-y-auto space-y-4 bg-neutral-light/10">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed shadow-sm ${
-                  m.sender === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-white text-text-main rounded-bl-none border border-gray-100'
-                }`}>
+                <div className={`max-w-[85%] p-4 rounded-3xl text-sm leading-relaxed shadow-sm ${m.sender === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-white text-text-main rounded-bl-none border border-gray-100'
+                  }`}>
                   {m.text}
                 </div>
               </div>
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white p-4 rounded-3xl text-sm italic text-primary animate-pulse flex items-center gap-2 border border-gray-100 shadow-sm">
-                   <div className="flex gap-1">
-                      <div className="size-1 bg-primary rounded-full animate-bounce"></div>
-                      <div className="size-1 bg-primary rounded-full animate-bounce delay-75"></div>
-                      <div className="size-1 bg-primary rounded-full animate-bounce delay-150"></div>
-                   </div>
-                   Pensando...
+                <div className="bg-white p-4 rounded-3xl text-sm italic text-primary flex items-center gap-2 border border-gray-100 shadow-sm">
+                  <div className="flex gap-1">
+                    <div className="size-1 bg-primary rounded-full"></div>
+                    <div className="size-1 bg-primary rounded-full"></div>
+                    <div className="size-1 bg-primary rounded-full"></div>
+                  </div>
+                  Pensando...
                 </div>
               </div>
             )}
           </div>
 
           <div className="p-6 bg-white border-t border-gray-100 flex gap-3">
-            <input 
+            <input
               className="flex-1 bg-gray-50 rounded-2xl px-5 py-3 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-gray-300"
               placeholder="Digite sua dúvida..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button 
+            <button
               onClick={handleSend}
               className="bg-primary text-white size-12 rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20"
             >
@@ -96,7 +95,7 @@ export const ChatWidget: React.FC<{ currentView: string; products?: Product[] }>
           </div>
         </div>
       ) : (
-        <button 
+        <button
           onClick={() => setIsOpen(true)}
           className="bg-primary text-white size-16 rounded-full shadow-2xl shadow-primary/40 flex items-center justify-center hover:scale-110 active:scale-95 transition-all relative overflow-hidden group"
         >

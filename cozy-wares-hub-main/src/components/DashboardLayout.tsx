@@ -14,7 +14,7 @@ const DashboardLayout = ({ children, title, subtitle }: DashboardLayoutProps) =>
       <Sidebar />
       <main className="flex-1 ml-64 p-8">
         <DashboardHeader title={title} subtitle={subtitle} />
-        <div className="animate-fade-in">{children}</div>
+        <div>{children}</div>
       </main>
     </div>
   );
