@@ -17,6 +17,8 @@ const navItems = [
     { icon: Package, label: "Catálogo", path: "/catalogo" },
     { icon: ShoppingCart, label: "Vendas (PDV)", path: "/pos" },
     { icon: Users, label: "Clientes", path: "/clientes" },
+    { icon: Landmark, label: "Financeiro", path: "/financeiro" },
+    { icon: Settings, label: "Ajustes", path: "/ajustes" },
     { icon: Landmark, label: "Assinaturas", path: "/assinaturas" },
     { icon: Home, label: "Ver Loja", path: "/" },
 ];

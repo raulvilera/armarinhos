@@ -10,6 +10,8 @@ import { POS } from './pages/POS';
 import { Customers } from './pages/Customers';
 import { Login } from './pages/Login';
 import { Subscriptions } from './pages/Subscriptions';
+import { Financial } from './pages/Financial';
+import { Settings } from './pages/Settings';
 import { ChatWidget } from './components/ChatWidget';
 import { supabase } from './services/supabaseClient';
 import DashboardLayout from './components/DashboardLayout';
@@ -275,6 +277,22 @@ const AppContent: React.FC = () => {
           <ProtectedRoute>
             <DashboardLayout title="Assinaturas" subtitle="Gerencie planos e pagamentos">
               <Subscriptions />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/financeiro" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Gestão Financeira" subtitle="Controle de receitas, despesas e lucratividade">
+              <Financial />
+            </DashboardLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/ajustes" element={
+          <ProtectedRoute>
+            <DashboardLayout title="Configurações" subtitle="Ajustes da loja, perfil e integrações">
+              <Settings />
             </DashboardLayout>
           </ProtectedRoute>
         } />
