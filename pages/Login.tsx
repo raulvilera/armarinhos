@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase, checkSupabaseConnection } from '../services/supabaseClient';
-import { ViewType } from '../types';
 
 interface LoginProps {
   onLogin: () => void;
-  setView: (v: ViewType) => void;
 }
 
-export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
+export const Login: React.FC<LoginProps> = ({ onLogin }) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,7 +51,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
 
       if (data.user) {
         onLogin();
-        setView('DASHBOARD');
+        navigate('/dashboard');
       }
     } catch (err: any) {
       setError(err.message || 'Erro inesperado ao realizar login.');
@@ -133,7 +132,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, setView }) => {
 
             <button
               type="button"
-              onClick={() => setView('STOREFRONT')}
+              onClick={() => navigate('/')}
               className="w-full text-center text-[10px] font-black text-gray-300 uppercase tracking-widest hover:text-primary transition-colors mt-6"
             >
               Voltar para a Loja

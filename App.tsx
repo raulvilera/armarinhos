@@ -170,13 +170,13 @@ const AppContent: React.FC = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<Storefront setView={() => { }} addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />} />
-        <Route path="/login" element={<Login onLogin={() => { }} setView={() => { }} />} />
+        <Route path="/" element={<Storefront addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />} />
+        <Route path="/login" element={<Login onLogin={() => { }} />} />
 
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <DashboardLayout title="Painel de Controle" subtitle="Visão geral do seu negócio">
-              <Dashboard setView={() => { }} products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />
+              <Dashboard products={products} sales={sales} customers={customers} showToast={showToast} onLogout={handleLogout} />
             </DashboardLayout>
           </ProtectedRoute>
         } />
@@ -185,7 +185,6 @@ const AppContent: React.FC = () => {
           <ProtectedRoute>
             <DashboardLayout title="Catálogo de Produtos" subtitle="Gerencie seus itens e estoque">
               <Catalog
-                setView={() => { }}
                 products={products}
                 sales={sales}
                 onAddProduct={async (p) => {
@@ -228,7 +227,6 @@ const AppContent: React.FC = () => {
           <ProtectedRoute>
             <DashboardLayout title="Ponto de Venda (PDV)" subtitle="Realize vendas rápidas no balcão">
               <POS
-                setView={() => { }}
                 products={products}
                 sales={sales}
                 customers={customers}
@@ -255,7 +253,6 @@ const AppContent: React.FC = () => {
           <ProtectedRoute>
             <DashboardLayout title="Clientes" subtitle="Gestão de base de clientes e histórico">
               <Customers
-                setView={() => { }}
                 customers={customers}
                 onAddCustomer={async (c: any) => {
                   try {
@@ -272,12 +269,12 @@ const AppContent: React.FC = () => {
           </ProtectedRoute>
         } />
 
-        <Route path="/checkout" element={<Checkout setView={() => { }} cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />} />
+        <Route path="/checkout" element={<Checkout cart={cart} removeFromCart={(id) => setCart(cart.filter(i => i.product.id !== id))} updateQuantity={(id, d) => setCart(cart.map(i => i.product.id === id ? { ...i, quantity: Math.max(1, i.quantity + d) } : i))} onFinish={(method) => finishOrder(undefined, method)} />} />
 
         <Route path="/assinaturas" element={
           <ProtectedRoute>
             <DashboardLayout title="Assinaturas" subtitle="Gerencie planos e pagamentos">
-              <Subscriptions setView={() => { }} />
+              <Subscriptions />
             </DashboardLayout>
           </ProtectedRoute>
         } />

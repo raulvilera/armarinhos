@@ -1,16 +1,15 @@
-
-import React, { useRef, useState, useMemo } from 'react';
-import { ViewType, Product } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { Product } from '../types';
 import { SHOP_CONTACTS } from '../constants';
 
 interface StorefrontProps {
-  setView: (v: ViewType) => void;
   addToCart: (p: Product) => void;
   products: Product[];
   cartCount: number;
 }
 
-export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, products, cartCount }) => {
+export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, cartCount }) => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('Início');
   const [search, setSearch] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -63,7 +62,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
       {/* Header Premium */}
       <header className="sticky top-0 z-40 bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 md:gap-6">
-          <div className="flex items-center gap-2 md:gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); setView('STOREFRONT'); }}>
+          <div className="flex items-center gap-2 md:gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); navigate('/'); }}>
             <div className="bg-primary size-9 md:size-11 rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-6 transition-transform">
               <span className="material-symbols-outlined text-xl md:text-2xl font-black">architecture</span>
             </div>
@@ -75,7 +74,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
 
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setView('CHECKOUT')}
+              onClick={() => navigate('/checkout')}
               className="relative size-12 bg-white border border-gray-100 border-b-4 rounded-2xl text-primary hover:bg-gray-50 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 transition-all flex items-center justify-center group"
               aria-label="Ver Carrinho"
             >
@@ -87,7 +86,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ setView, addToCart, prod
               )}
             </button>
             <button
-              onClick={() => setView('LOGIN')}
+              onClick={() => navigate('/login')}
               className="size-12 bg-gray-50 border border-gray-100 border-b-4 rounded-2xl flex items-center justify-center text-primary hover:bg-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 transition-all"
               aria-label="Área do Lojista"
             >

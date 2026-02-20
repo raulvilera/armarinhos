@@ -1,16 +1,16 @@
-
 import React, { useState } from 'react';
-import { ViewType, CartItem } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { CartItem } from '../types';
 
 interface CheckoutProps {
-  setView: (v: ViewType) => void;
   cart: CartItem[];
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   onFinish: (method: string) => void;
 }
 
-export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCart, updateQuantity, onFinish }) => {
+export const Checkout: React.FC<CheckoutProps> = ({ cart, removeFromCart, updateQuantity, onFinish }) => {
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState<'Pix' | 'Cartão' | 'Boleto'>('Pix');
 
   const subtotal = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
@@ -21,14 +21,14 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
     <div className="min-h-screen bg-[#F8F7F9] font-display selection:bg-primary/10">
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 px-4 md:px-8 lg:px-20">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div onClick={() => setView('STOREFRONT')} className="flex items-center gap-2 md:gap-3 cursor-pointer group">
+          <div onClick={() => navigate('/')} className="flex items-center gap-2 md:gap-3 cursor-pointer group">
             <div className="bg-primary size-8 md:size-10 rounded-xl flex items-center justify-center text-white transition-transform group-hover:rotate-6 shadow-lg shadow-primary/20">
               <span className="material-symbols-outlined font-black text-lg md:text-xl">architecture</span>
             </div>
             <h1 className="text-base md:text-lg font-black text-primary uppercase tracking-tighter leading-none">Vicmar</h1>
           </div>
           <button
-            onClick={() => setView('STOREFRONT')}
+            onClick={() => navigate('/')}
             className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-primary hover:text-selected flex items-center gap-2 transition-colors"
           >
             <span className="material-symbols-outlined text-sm md:text-base">arrow_back</span>
@@ -55,7 +55,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ setView, cart, removeFromCar
                   </div>
                   <p className="text-lg md:text-xl font-black text-gray-400 mb-6 uppercase tracking-tight">Sua sacola está vazia</p>
                   <button
-                    onClick={() => setView('STOREFRONT')}
+                    onClick={() => navigate('/')}
                     className="bg-primary text-white px-8 md:px-10 py-4 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-xl shadow-primary/20"
                   >
                     Ir para Vitrine
