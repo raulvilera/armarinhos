@@ -188,7 +188,7 @@ export const Financial: React.FC = () => {
                         <span>Custo Total</span>
                         <span className="text-right">Lucro Líquido</span>
                     </div>
-                    {monthlyData.reverse().map((data) => (
+                    {[...monthlyData].reverse().map((data) => (
                         <div key={data.month} className="grid grid-cols-4 py-6 border-b border-gray-50 items-center group hover:bg-gray-50/50 transition-all rounded-xl px-2">
                             <span className="font-black text-gray-900 uppercase text-sm">{data.month}</span>
                             <span className="font-bold text-gray-600">R$ {data.receita.toFixed(2)}</span>

@@ -43,13 +43,14 @@ export const Subscriptions: React.FC = () => {
                 }
             });
 
-            if (mpPlan.init_point) {
+            if (mpPlan && mpPlan.init_point) {
                 window.location.href = mpPlan.init_point;
             } else {
-                alert('Erro ao gerar link de pagamento. Verifique suas credenciais.');
+                console.error('MP Plan Response:', mpPlan);
+                alert('Atenção: A integração com o Mercado Pago não retornou um link de pagamento. Certifique-se de que seu MP_ACCESS_TOKEN está configurado corretamente na área de Ajustes.');
             }
         } catch (err) {
-            alert('Erro ao processar assinatura: ' + err);
+            alert('Erro técnico ao processar assinatura. Verifique se o token do Mercado Pago está ativo e configurado corretamente nas variáveis de ambiente da Edge Function.');
         }
     };
 

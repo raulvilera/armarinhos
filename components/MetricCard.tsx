@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -33,7 +33,11 @@ const MetricCard = ({
                     <h3 className="text-4xl font-black text-gray-950 tracking-tighter mb-4">{value}</h3>
                 </div>
                 <div className="size-16 bg-[#eef4ff] text-primary rounded-full flex items-center justify-center border border-primary/5 transition-transform group-hover:scale-110 duration-500 shrink-0 ml-4">
-                    {React.cloneElement(icon as React.ReactElement, { className: "w-7 h-7" })}
+                    {icon && React.isValidElement(icon) ? (
+                        React.cloneElement(icon as React.ReactElement<any>, { className: "w-7 h-7" })
+                    ) : (
+                        icon
+                    )}
                 </div>
             </div>
 

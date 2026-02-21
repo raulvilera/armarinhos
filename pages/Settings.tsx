@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Save, Store, User, Bell, Shield, CreditCard } from "lucide-react";
+import { Save, Store, User, Bell, Shield, CreditCard, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { cn } from "../lib/utils";
+import { checkMPConnection } from '../services/mercadopagoService';
 
 export const Settings: React.FC = () => {
     const [storeName, setStoreName] = useState("Armarinhos Vicmar");
@@ -8,6 +10,21 @@ export const Settings: React.FC = () => {
     const [phone, setPhone] = useState("(11) 95270-9128");
     const [notifications, setNotifications] = useState(true);
     const [saved, setSaved] = useState(false);
+    const [mpStatus, setMpStatus] = useState<{ ok: boolean; message: string; loading: boolean }>({
+        ok: false,
+        message: 'Verificando conexão...',
+        loading: true
+    });
+
+    React.useEffect(() => {
+        verifyMP();
+    }, []);
+
+    const verifyMP = async () => {
+        setMpStatus(prev => ({ ...prev, loading: true }));
+        const result = await checkMPConnection();
+        setMpStatus({ ...result, loading: false });
+    };
 
     const handleSave = () => {
         setSaved(true);
@@ -119,16 +136,49 @@ export const Settings: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-6 p-6 border-2 border-dashed border-gray-100 rounded-3xl">
-                        <img src="https://logodownload.org/wp-content/uploads/2019/06/mercado-pago-logo.png" className="h-6 grayscale opacity-40" alt="Mercado Pago" />
-                        <div className="flex-1 text-center sm:text-left">
-                            <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Status da Integração</p>
-                            <p className="text-xs font-black text-gray-300 uppercase mt-1">Não configurada ou requerendo atenção</p>
+                    <div className={cn(
+                        "flex flex-col sm:flex-row items-center gap-6 p-8 border-2 rounded-[2rem] transition-all",
+                        mpStatus.loading ? "border-gray-100 bg-gray-50/50" :
+                            mpStatus.ok ? "border-green-100 bg-green-50/30" : "border-red-100 bg-red-50/30"
+                    )}>
+                        <div className="size-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-gray-100">
+                            <img src="https://logodownload.org/wp-content/uploads/2019/06/mercado-pago-logo.png" className={cn("h-4 transition-all", !mpStatus.ok && !mpStatus.loading && "grayscale opacity-50")} alt="Mercado Pago" />
                         </div>
-                        <button className="bg-sidebar-bg text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-800 transition-all">
-                            Conectar API
+                        <div className="flex-1 text-center sm:text-left">
+                            <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                                <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Status da Integração</p>
+                                {mpStatus.loading ? (
+                                    <RefreshCw className="w-3 h-3 text-primary animate-spin" />
+                                ) : mpStatus.ok ? (
+                                    <CheckCircle className="w-3 h-3 text-green-500" />
+                                ) : (
+                                    <XCircle className="w-3 h-3 text-red-500" />
+                                )}
+                            </div>
+                            <p className={cn(
+                                "text-xs font-black uppercase",
+                                mpStatus.loading ? "text-gray-400" :
+                                    mpStatus.ok ? "text-green-600" : "text-red-600"
+                            )}>
+                                {mpStatus.message}
+                            </p>
+                        </div>
+                        <button
+                            onClick={verifyMP}
+                            disabled={mpStatus.loading}
+                            className="bg-sidebar-bg text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg active:scale-95 disabled:opacity-50"
+                        >
+                            {mpStatus.loading ? "Testando..." : "Testar Conexão"}
                         </button>
                     </div>
+
+                    {!mpStatus.ok && !mpStatus.loading && (
+                        <div className="mt-6 p-6 bg-red-50/50 rounded-2xl border border-red-100/50">
+                            <p className="text-[10px] font-bold text-red-700 uppercase leading-relaxed">
+                                <b>Importante:</b> O token de acesso do Mercado Pago (MP_ACCESS_TOKEN) não foi detectado ou é inválido nas variáveis de ambiente do servidor. Sem ele, a plataforma não poderá processar assinaturas.
+                            </p>
+                        </div>
+                    )}
                 </section>
 
                 <div className="flex gap-4 pt-4">

@@ -52,3 +52,19 @@ export const initMPCheckout = async (preapprovalPlanId: string) => {
         throw error;
     }
 };
+export const checkMPConnection = async () => {
+    try {
+        const { data, error } = await supabase.functions.invoke('mercadopago', {
+            body: {
+                url: 'https://api.mercadopago.com/users/me',
+                method: 'GET'
+            }
+        });
+
+        if (error) return { ok: false, message: error.message };
+        if (data && data.id) return { ok: true, message: 'Conectado com sucesso' };
+        return { ok: false, message: data?.message || 'Erro Desconhecido' };
+    } catch (error: any) {
+        return { ok: false, message: error.message };
+    }
+};
