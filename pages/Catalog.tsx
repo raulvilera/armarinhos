@@ -1,3 +1,4 @@
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product, Sale } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';

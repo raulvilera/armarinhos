@@ -1,3 +1,4 @@
+import React, { useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product, CartItem, Sale, Customer, FiscalInfo } from '../types';
 import { BarcodeScanner } from '../components/BarcodeScanner';

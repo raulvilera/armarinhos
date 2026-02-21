@@ -1,11 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../services/supabaseClient';
-import { createSubscriptionPlan, initMPCheckout } from '../services/mercadopagoService';
-
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
-import { createSubscriptionPlan } from '../services/mercadopagoService';
+import { createSubscriptionPlan, initMPCheckout } from '../services/mercadopagoService';
 
 export const Subscriptions: React.FC = () => {
     const navigate = useNavigate();
