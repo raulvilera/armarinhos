@@ -140,6 +140,33 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
         </div>
       </div>
 
+      {/* Banner da Loja Premium */}
+      <section className="px-6 lg:px-20 py-4 max-w-7xl mx-auto w-full">
+        <div className="relative h-48 md:h-80 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl border border-white/20 group">
+          {/* Imagem do Banner */}
+          <img
+            src="/assets/store-banner.jpg"
+            alt="Armarinhos Vicmar"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+
+          {/* Overlay de Gradiente */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
+            <div className="flex flex-col gap-1 md:gap-2">
+              <span className="text-[10px] md:text-xs font-black text-selected uppercase tracking-[0.3em] drop-shadow-lg">Bem-vindo à nossa loja</span>
+              <h2 className="text-2xl md:text-5xl font-black text-white uppercase tracking-tighter drop-shadow-2xl">Tradição e Variedade</h2>
+              <p className="text-white/80 text-[10px] md:text-sm font-bold uppercase tracking-widest max-w-md drop-shadow-lg">Tudo em aviamentos, fios e acessórios para sua costura.</p>
+            </div>
+
+            {/* Badge de Endereço */}
+            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full hidden sm:flex items-center gap-2">
+              <span className="material-symbols-outlined text-white text-sm">location_on</span>
+              <span className="text-[9px] font-black text-white uppercase tracking-widest">Av. Imperador 4877</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 lg:px-20 py-8 md:py-12 w-full">
         <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
           <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-8 sticky top-[230px]">
