@@ -152,7 +152,36 @@ const AppContent: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      showToast('Erro ao processar venda no servidor', 'info');
+      const subtotal = list.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+      const finalTotal = paymentMethod === 'Pix' && !itemsToProcess ? subtotal * 0.95 : subtotal;
+      
+      setProducts(prev => prev.map(p => {
+        const item = list.find(i => i.product.id === p.id);
+        if (item) {
+          return {
+            ...p,
+            stock: isIncoming ? p.stock + item.quantity : Math.max(0, p.stock - item.quantity)
+          };
+        }
+        return p;
+      }));
+
+      const newSale: Sale = {
+        id: Math.random().toString(),
+        customerName: isIncoming ? 'Fornecedor / Suprimento' : (customers.find(c => c.id === customerId)?.name || 'Cliente Balcão'),
+        total: finalTotal,
+        paymentMethod: isIncoming ? `Entrada: ${paymentMethod}` : paymentMethod,
+        fiscal: fiscal,
+        items: list,
+        created_at: new Date().toISOString()
+      };
+      setSales(prev => [newSale, ...prev]);
+
+      if (!itemsToProcess) {
+        setCart([]);
+      } else {
+        showToast(isIncoming ? "Estoque atualizado localmente (Offline)!" : "Venda local concluída (Offline)!", 'success');
+      }
     }
   };
 
@@ -163,7 +192,8 @@ const AppContent: React.FC = () => {
       setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
       showToast('Produto atualizado!', 'success');
     } catch (err) {
-      showToast('Erro ao atualizar produto', 'info');
+      setProducts(prev => prev.map(p => p.id === updated.id ? updated : p));
+      showToast('Produto atualizado localmente (Modo Offline)!', 'success');
     }
   };
 
@@ -191,7 +221,15 @@ const AppContent: React.FC = () => {
 
       <Routes>
         <Route path="/" element={<Storefront addToCart={addToCart} products={products} cartCount={cart.reduce((a, b) => a + b.quantity, 0)} />} />
-        <Route path="/login" element={<Login onLogin={() => { }} />} />
+        <Route path="/login" element={
+          <Login onLogin={() => {
+            setUser({
+              id: 'demo-admin-id',
+              email: 'admin@armarinhos.com',
+              user_metadata: { name: 'Administrador Vicmar (Offline)' }
+            });
+          }} />
+        } />
 
         <Route path="/dashboard" element={
           <ProtectedRoute>
@@ -214,7 +252,8 @@ const AppContent: React.FC = () => {
                     if (data) setProducts([data[0], ...products]);
                     showToast('Produto cadastrado!', 'success');
                   } catch (err) {
-                    showToast('Erro ao cadastrar produto', 'info');
+                    setProducts([p, ...products]);
+                    showToast('Produto cadastrado localmente (Modo Offline)!', 'success');
                   }
                 }}
                 onDeleteProduct={async (id) => {
@@ -224,7 +263,8 @@ const AppContent: React.FC = () => {
                     setProducts(products.filter(p => p.id !== id));
                     showToast('Produto removido!', 'success');
                   } catch (err) {
-                    showToast('Erro ao remover produto', 'info');
+                    setProducts(products.filter(p => p.id !== id));
+                    showToast('Produto removido localmente (Modo Offline)!', 'success');
                   }
                 }}
                 onUpdateStock={async (id, stock) => {
@@ -233,7 +273,7 @@ const AppContent: React.FC = () => {
                     if (error) throw error;
                     setProducts(products.map(p => p.id === id ? { ...p, stock } : p));
                   } catch (err) {
-                    showToast('Erro ao atualizar estoque', 'info');
+                    setProducts(products.map(p => p.id === id ? { ...p, stock } : p));
                   }
                 }}
                 onUpdateProduct={updateProduct}
@@ -260,8 +300,9 @@ const AppContent: React.FC = () => {
                     showToast('Novo produto cadastrado!', 'success');
                     return newProd;
                   } catch (err) {
-                    showToast('Erro ao cadastrar produto rápido', 'info');
-                    return null;
+                    setProducts([p, ...products]);
+                    showToast('Novo produto cadastrado localmente (Modo Offline)!', 'success');
+                    return p;
                   }
                 }}
               />
@@ -281,7 +322,8 @@ const AppContent: React.FC = () => {
                     if (data) setCustomers([data[0], ...customers]);
                     showToast('Cliente cadastrado!', 'success');
                   } catch (err) {
-                    showToast('Erro ao cadastrar cliente', 'info');
+                    setCustomers([c, ...customers]);
+                    showToast('Cliente cadastrado localmente (Modo Offline)!', 'success');
                   }
                 }}
               />

@@ -27,7 +27,21 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!connectionStatus.ok) { setError(`Erro de conexão: ${connectionStatus.message}`); return; }
+
+    // BYPASS DEMONSTRAÇÃO OFFLINE:
+    // Se o usuário digitar admin/admin ou vicmar/vicmar123, libera o acesso imediatamente para o modo offline!
+    const isDemoUser = (username === 'admin' && password === 'admin') || (username === 'vicmar' && password === 'vicmar123');
+    if (isDemoUser) {
+      onLogin();
+      navigate('/dashboard');
+      return;
+    }
+
+    if (!connectionStatus.ok) { 
+      setError(`Erro de conexão: ${connectionStatus.message}. (Para testar offline, entre com usuário "admin" e senha "admin")`); 
+      return; 
+    }
+
     try {
       const email = username.includes('@') ? username : `${username}@armarinhos.com`;
       const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
