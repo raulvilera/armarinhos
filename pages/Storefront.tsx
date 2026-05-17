@@ -13,326 +13,357 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('Início');
   const [search, setSearch] = useState('');
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [addingId, setAddingId] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-
   const categoriesRef = useRef<HTMLDivElement>(null);
 
   const categories = ['Início', 'Acessórios p/ máquina', 'Linhas e fios', 'Barbantes', 'Luminária p/ máquina', 'Aparelhos', 'Outros'];
   const sidebarCategories = ['Acessórios p/ máquina', 'Linhas e fios', 'Barbantes', 'Luminária p/ máquina', 'Aparelhos', 'Outros'];
 
-  const filteredProducts = useMemo(() => {
-    return products.filter(p => {
-      const matchesCategory = activeCategory === 'Início' || p.category === activeCategory;
-      const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.description.toLowerCase().includes(search.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [products, activeCategory, search]);
+  const filteredProducts = useMemo(() => products.filter(p => {
+    const matchesCategory = activeCategory === 'Início' || p.category === activeCategory;
+    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.description.toLowerCase().includes(search.toLowerCase());
+    return matchesCategory && matchesSearch;
+  }), [products, activeCategory, search]);
 
   const handleAddToCart = (e: React.MouseEvent, p: Product) => {
     e.stopPropagation();
     if (p.stock > 0) {
       setAddingId(p.id);
       addToCart(p);
-      setTimeout(() => setAddingId(null), 800);
+      setTimeout(() => setAddingId(null), 900);
     }
   };
 
-  const openProductDetail = (p: Product) => {
-    setSelectedProduct(p);
-    setCurrentImgIndex(0);
-  };
+  const openProductDetail = (p: Product) => { setSelectedProduct(p); setCurrentImgIndex(0); };
+  const nextImage = () => { if (selectedProduct?.images) setCurrentImgIndex(i => (i + 1) % selectedProduct.images!.length); };
+  const prevImage = () => { if (selectedProduct?.images) setCurrentImgIndex(i => (i - 1 + selectedProduct.images!.length) % selectedProduct.images!.length); };
 
-  const nextImage = () => {
-    if (selectedProduct?.images) {
-      setCurrentImgIndex((prev) => (prev + 1) % selectedProduct.images!.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedProduct?.images) {
-      setCurrentImgIndex((prev) => (prev - 1 + selectedProduct.images!.length) % selectedProduct.images!.length);
-    }
+  const categoryIcons: Record<string, string> = {
+    'Acessórios p/ máquina': 'settings',
+    'Linhas e fios': 'network_node',
+    'Barbantes': 'rotate_right',
+    'Luminária p/ máquina': 'light_mode',
+    'Aparelhos': 'devices',
+    'Outros': 'category',
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FDFCFD] font-display text-text-main">
-      {/* Header Premium */}
-      <header className="sticky top-0 z-40 bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] backdrop-blur-md border-b border-gray-100 py-6 px-6 lg:px-20 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 md:gap-6">
-          <div className="flex items-center gap-2 md:gap-3 cursor-pointer group" onClick={() => { setActiveCategory('Início'); navigate('/'); }}>
-            <div className="bg-primary size-9 md:size-11 rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 group-hover:rotate-6 transition-transform">
-              <span className="material-symbols-outlined text-xl md:text-2xl font-black">architecture</span>
+    <div className="flex flex-col min-h-screen store-hero-bg store-texture font-sans text-foreground">
+
+      {/* ── HEADER ── */}
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-amber-100/80 shadow-sm">
+        <div className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between gap-4">
+
+          {/* Logo */}
+          <button
+            onClick={() => { setActiveCategory('Início'); navigate('/'); }}
+            className="flex items-center gap-3 group"
+          >
+            <div className="relative">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
+                style={{ background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
+                <span className="material-symbols-outlined text-lg font-black">architecture</span>
+              </div>
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-amber-400 border-2 border-white" />
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-lg md:text-xl font-black text-primary tracking-tighter uppercase leading-none text-left">Vicmar</h1>
-              <span className="text-[8px] md:text-[9px] font-black text-gray-300 uppercase tracking-widest text-left">Armarinhos</span>
+            <div className="text-left leading-none">
+              <div className="text-[15px] font-bold text-stone-800 tracking-tight">Vicmar</div>
+              <div className="text-[9px] font-semibold text-amber-600 uppercase tracking-[0.25em]">Armarinhos</div>
             </div>
+          </button>
+
+          {/* Center: category pills (desktop) */}
+          <div className="hidden md:flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+            {categories.map(cat => (
+              <button key={cat} onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
+                  activeCategory === cat
+                    ? 'text-white shadow-md'
+                    : 'text-stone-500 hover:text-stone-800 hover:bg-amber-50'
+                }`}
+                style={activeCategory === cat ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+                {cat}
+              </button>
+            ))}
           </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/checkout')}
-              className="relative size-12 bg-white border border-gray-100 border-b-4 rounded-2xl text-primary hover:bg-gray-50 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 transition-all flex items-center justify-center group"
-              aria-label="Ver Carrinho"
-            >
-              <span className="material-symbols-outlined text-2xl font-black">shopping_basket</span>
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            <button onClick={() => setIsSearchOpen(v => !v)}
+              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${isSearchOpen ? 'text-white shadow-md' : 'text-stone-500 bg-white border border-amber-100 hover:bg-amber-50'}`}
+              style={isSearchOpen ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+              <span className="material-symbols-outlined text-[18px]">search</span>
+            </button>
+            <button onClick={() => navigate('/checkout')}
+              className="relative w-9 h-9 rounded-xl bg-white border border-amber-100 flex items-center justify-center text-stone-600 hover:bg-amber-50 transition-all">
+              <span className="material-symbols-outlined text-[18px]">shopping_basket</span>
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-selected text-white size-5 rounded-full text-[10px] flex items-center justify-center font-black ring-4 ring-white shadow-lg">
+                <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 min-w-[18px] rounded-full text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-white shadow-sm"
+                  style={{ background: 'hsl(35 72% 44%)' }}>
                   {cartCount}
                 </span>
               )}
             </button>
-            <button
-              onClick={() => navigate('/login')}
-              className="size-12 bg-gray-50 border border-gray-100 border-b-4 rounded-2xl flex items-center justify-center text-primary hover:bg-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 transition-all"
-              aria-label="Área do Lojista"
-            >
-              <span className="material-symbols-outlined text-2xl font-black">admin_panel_settings</span>
+            <button onClick={() => navigate('/login')}
+              className="hidden sm:flex items-center gap-2 h-9 px-4 rounded-xl bg-stone-800 text-white text-[11px] font-semibold hover:bg-stone-700 transition-all">
+              <span className="material-symbols-outlined text-[14px]">admin_panel_settings</span>
+              Lojista
             </button>
+          </div>
+        </div>
+
+        {/* Search bar */}
+        {isSearchOpen && (
+          <div className="border-t border-amber-100/60 bg-white/95 px-5 lg:px-10 py-3">
+            <div className="max-w-7xl mx-auto relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-amber-500">search</span>
+              <input autoFocus value={search} onChange={e => setSearch(e.target.value)}
+                className="w-full pl-11 pr-4 py-2.5 bg-amber-50 border border-amber-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-300/50 placeholder:text-stone-400"
+                placeholder="Busque por linhas, correias, agulhas..." />
+            </div>
+          </div>
+        )}
+
+        {/* Mobile categories */}
+        <div className="md:hidden border-t border-amber-100/60 bg-white/80 px-4 py-2.5 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 w-max">
+            {categories.map(cat => (
+              <button key={cat} onClick={() => setActiveCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
+                  activeCategory === cat ? 'text-white shadow-sm' : 'text-stone-500 bg-stone-100'
+                }`}
+                style={activeCategory === cat ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
       </header>
 
-      {/* Barra de Busca e Filtros Superior com efeito 3D */}
-      <div className="bg-[linear-gradient(to_bottom,#ffffff_50%,#f0f9ff_50%)] border-b border-gray-50 py-6 px-6 lg:px-20 sticky top-[89px] z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col gap-6">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsSearchVisible(!isSearchVisible)}
-              className={`size-12 rounded-2xl flex items-center justify-center border-b-4 transition-all ${isSearchVisible ? 'bg-primary text-white border-primary/40 shadow-lg' : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'}`}
-            >
-              <span className="material-symbols-outlined font-black">search</span>
-            </button>
-
-            <div className="flex flex-1 items-center gap-3 overflow-hidden relative">
-              <div ref={categoriesRef} className="flex items-center gap-2 md:gap-3 overflow-x-auto scrollbar-hide px-1 py-1 md:py-2">
-                {categories.map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-2 md:border-b-4 shadow-sm hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                      ? 'bg-selected text-white border-selected/40 shadow-selected/20'
-                      : 'bg-white border-gray-100 text-gray-700 hover:bg-gray-50'
-                      }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+      {/* ── HERO BANNER ── */}
+      <section className="px-5 lg:px-10 pt-8 pb-4 max-w-7xl mx-auto w-full">
+        <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden group">
+          <img src="/assets/store-banner.jpg" alt="Vicmar Armarinhos"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12"
+            style={{ background: 'linear-gradient(to top, hsl(25 50% 8% / 0.85) 0%, transparent 60%)' }}>
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-300">Bem-vindo à nossa loja</p>
+              <h2 className="font-serif text-2xl md:text-4xl text-white font-bold leading-tight">
+                Tradição &amp; Variedade<br className="hidden md:block" />
+                <span className="text-amber-300 italic"> em Aviamentos</span>
+              </h2>
             </div>
           </div>
-
-          {isSearchVisible && (
-            <div>
-              <input
-                autoFocus
-                className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-sm font-bold focus:ring-4 focus:ring-primary/5 outline-none transition-all placeholder:text-gray-300 shadow-inner font-black"
-                placeholder="Busque por linhas, correias, agulhas..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Banner da Loja Premium */}
-      <section className="px-6 lg:px-20 py-4 max-w-7xl mx-auto w-full">
-        <div className="relative h-48 md:h-80 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl border border-white/20 group">
-          {/* Imagem do Banner */}
-          <img
-            src="/assets/store-banner.jpg"
-            alt="Armarinhos Vicmar"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-
-          {/* Overlay de Gradiente */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
-            <div className="flex flex-col gap-1 md:gap-2">
-              <span className="text-[10px] md:text-xs font-black text-selected uppercase tracking-[0.3em] drop-shadow-lg">Bem-vindo à nossa loja</span>
-              <h2 className="text-2xl md:text-5xl font-black text-white uppercase tracking-tighter drop-shadow-2xl">Tradição e Variedade</h2>
-              <p className="text-white/80 text-[10px] md:text-sm font-bold uppercase tracking-widest max-w-md drop-shadow-lg">Tudo em aviamentos, fios e acessórios para sua costura.</p>
-            </div>
-
-            {/* Badge de Endereço */}
-            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full hidden sm:flex items-center gap-2">
-              <span className="material-symbols-outlined text-white text-sm">location_on</span>
-              <span className="text-[9px] font-black text-white uppercase tracking-widest">Av. Imperador 4877</span>
-            </div>
+          <div className="absolute top-5 right-5 hidden sm:flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full">
+            <span className="material-symbols-outlined text-white text-sm">location_on</span>
+            <span className="text-[10px] font-semibold text-white/90">Av. Imperador 4877</span>
           </div>
         </div>
       </section>
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 lg:px-20 py-8 md:py-12 w-full">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-          <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-8 sticky top-[230px]">
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-1 px-2 text-left">Departamentos</h3>
-              {sidebarCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`w-full text-left px-4 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all border-b-4 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-1 active:border-b-0 ${activeCategory === cat
-                    ? 'bg-primary text-white border-primary/40 shadow-primary/20'
-                    : 'bg-white text-gray-700 border-gray-100 hover:bg-gray-50'
-                    }`}
-                >
-                  {cat}
-                </button>
-              ))}
+      {/* ── MAIN CONTENT ── */}
+      <main className="flex-1 max-w-7xl mx-auto px-5 lg:px-10 py-6 w-full">
+        <div className="flex gap-8 items-start">
+
+          {/* Sidebar */}
+          <aside className="hidden lg:flex w-56 shrink-0 flex-col gap-2 sticky top-40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-stone-400 px-3 mb-1">Departamentos</p>
+            {sidebarCategories.map(cat => (
+              <button key={cat} onClick={() => setActiveCategory(cat)}
+                className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-[12px] font-semibold transition-all text-left ${
+                  activeCategory === cat
+                    ? 'text-white shadow-md'
+                    : 'text-stone-500 hover:text-stone-800 bg-white hover:bg-amber-50 border border-amber-100/60 shadow-sm'
+                }`}
+                style={activeCategory === cat ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+                <span className={`material-symbols-outlined text-[16px] ${activeCategory === cat ? 'text-white/80' : 'text-amber-500'}`}>
+                  {categoryIcons[cat] || 'category'}
+                </span>
+                {cat}
+              </button>
+            ))}
+
+            {/* Contact card */}
+            <div className="mt-4 p-4 rounded-xl border border-amber-100 bg-white shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 mb-2">Atendimento</p>
+              <p className="text-[11px] text-stone-500 mb-3 leading-snug">Dúvidas sobre produtos? Fale conosco!</p>
+              <a href={SHOP_CONTACTS.whatsappUrl} target="_blank" rel="noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-white text-[11px] font-semibold"
+                style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>
+                <span className="material-symbols-outlined text-[14px]">call</span>
+                WhatsApp
+              </a>
             </div>
           </aside>
 
-          <div className="flex-1 w-full">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {filteredProducts.map((p) => (
-                <div
-                  key={p.id}
-                  onClick={() => openProductDetail(p)}
-                  className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 group cursor-pointer flex flex-col h-full relative"
-                >
-                  <div className="relative overflow-hidden bg-gray-50 aspect-square flex items-center justify-center">
-                    <img
-                      src={p.image}
-                      className="absolute inset-0 w-full h-full object-cover blur-[18px] opacity-40 scale-125"
-                      alt=""
-                    />
-                    <img
-                      src={p.image}
-                      className="relative z-10 w-4/5 h-4/5 object-contain drop-shadow-2xl"
-                      alt={p.name}
-                    />
+          {/* Product grid */}
+          <div className="flex-1 w-full min-w-0">
+            {/* Header row */}
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-serif text-lg md:text-xl font-semibold text-stone-800">
+                {activeCategory === 'Início' ? 'Todos os Produtos' : activeCategory}
+              </h3>
+              <span className="text-[11px] text-stone-400 font-medium">{filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'itens'}</span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredProducts.map(p => (
+                <div key={p.id} onClick={() => openProductDetail(p)}
+                  className="bg-white rounded-2xl border border-amber-100/70 overflow-hidden cursor-pointer card-lift group relative flex flex-col shadow-sm">
+
+                  {/* Image */}
+                  <div className="relative aspect-square bg-amber-50/50 flex items-center justify-center overflow-hidden">
+                    <img src={p.image} className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-25 scale-110" alt="" />
+                    <img src={p.image} className="relative z-10 w-4/5 h-4/5 object-contain drop-shadow-lg transition-transform duration-500 group-hover:scale-105" alt={p.name} />
                     {p.stock <= 0 && (
-                      <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 flex items-center justify-center">
-                        <span className="bg-red-500 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Esgotado</span>
+                      <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] z-20 flex items-center justify-center">
+                        <span className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-red-500">Esgotado</span>
+                      </div>
+                    )}
+                    {p.stock > 0 && p.stock <= 5 && (
+                      <div className="absolute top-2.5 left-2.5 z-10">
+                        <span className="px-2 py-1 rounded-full text-[9px] font-bold uppercase text-amber-700 bg-amber-100 border border-amber-200">Últimas un.</span>
                       </div>
                     )}
                   </div>
 
-                  <div className="p-5 pt-4 text-center flex-1 flex flex-col justify-between">
-                    <div>
-                      <p className="text-[8px] font-black text-primary/40 uppercase tracking-[0.2em] mb-1">{p.category}</p>
-                      <p className="text-[11px] font-black text-gray-800 mb-4 line-clamp-2 uppercase leading-tight h-8">{p.name}</p>
-                    </div>
-                    <div className="border-t border-gray-50 pt-4 flex items-center justify-between">
-                      <p className="text-lg font-black text-gray-900 tracking-tighter"><span className="text-[10px] uppercase text-gray-300 mr-1">R$</span>{p.price.toFixed(2).replace('.', ',')}</p>
-                      <button
-                        disabled={p.stock <= 0}
-                        onClick={(e) => handleAddToCart(e, p)}
-                        className={`size-10 rounded-xl flex items-center justify-center transition-all shadow-lg ${addingId === p.id ? 'bg-selected text-white scale-110 shadow-selected/20' : 'bg-primary text-white hover:bg-primary/90'}`}
-                      >
-                        <span className="material-symbols-outlined font-black text-base">{addingId === p.id ? 'done' : 'add_shopping_cart'}</span>
+                  {/* Info */}
+                  <div className="p-3.5 flex flex-col flex-1">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-amber-600/70 mb-1">{p.category}</p>
+                    <p className="text-[11px] font-semibold text-stone-700 leading-tight line-clamp-2 flex-1">{p.name}</p>
+                    <div className="mt-3 pt-3 border-t border-amber-50 flex items-center justify-between">
+                      <div className="font-mono-price">
+                        <p className="text-[9px] text-stone-300 font-medium">R$</p>
+                        <p className="text-base font-bold text-stone-800 leading-none">{p.price.toFixed(2).replace('.', ',')}</p>
+                      </div>
+                      <button disabled={p.stock <= 0} onClick={e => handleAddToCart(e, p)}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                          addingId === p.id
+                            ? 'bg-green-500 text-white scale-110 shadow-md'
+                            : p.stock <= 0
+                            ? 'bg-stone-100 text-stone-300 cursor-not-allowed'
+                            : 'text-white shadow-sm hover:shadow-md hover:-translate-y-0.5'
+                        }`}
+                        style={addingId === p.id || p.stock <= 0 ? {} : { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
+                        <span className="material-symbols-outlined text-[14px] font-black">
+                          {addingId === p.id ? 'done' : 'add_shopping_cart'}
+                        </span>
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
             {filteredProducts.length === 0 && (
-              <div className="py-20 text-center flex flex-col items-center opacity-30">
-                <span className="material-symbols-outlined text-7xl font-black mb-4">search_off</span>
-                <p className="font-black uppercase tracking-widest">Nenhum produto encontrado</p>
+              <div className="py-24 flex flex-col items-center gap-4 text-stone-300">
+                <span className="material-symbols-outlined text-6xl">search_off</span>
+                <p className="text-sm font-semibold uppercase tracking-wider">Nenhum produto encontrado</p>
               </div>
             )}
           </div>
         </div>
       </main>
 
-      {/* Modal de Detalhes - Kyte Premium Style */}
+      {/* ── PRODUCT MODAL ── */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 md:p-4">
-          <div className="absolute inset-0 bg-background-dark/80 backdrop-blur-md" onClick={() => setSelectedProduct(null)}></div>
-          <div className="bg-white w-full max-w-5xl rounded-[2.5rem] md:rounded-[3rem] overflow-hidden relative z-10 flex flex-col lg:flex-row shadow-2xl max-h-[95vh] md:max-h-[90vh] border border-white/10">
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm" onClick={() => setSelectedProduct(null)} />
+          <div className="relative z-10 w-full max-w-4xl bg-white rounded-t-3xl sm:rounded-2xl overflow-hidden flex flex-col lg:flex-row shadow-2xl max-h-[95vh] sm:max-h-[88vh] border border-amber-100/30 animate-fade-in">
 
-            {/* Galeria de Imagens do Modal */}
-            <div className="w-full lg:w-1/2 bg-gray-50 flex flex-col items-center justify-center p-6 md:p-8 lg:p-12 overflow-hidden relative border-r border-gray-100 shrink-0">
-              <img src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image} className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-20" alt="" />
-
+            {/* Image panel */}
+            <div className="w-full lg:w-5/12 shrink-0 bg-amber-50/60 relative flex items-center justify-center p-8 min-h-[260px] lg:min-h-[auto]">
+              <img src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image}
+                className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-15" alt="" />
               <div className="relative z-10 w-full aspect-square flex items-center justify-center">
-                <img
-                  src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image}
-                  className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
-                  alt={selectedProduct.name}
-                />
-
-                {selectedProduct.images && selectedProduct.images.length > 1 && (
-                  <div className="absolute inset-0 flex items-center justify-between pointer-events-none px-2">
-                    <button
-                      onClick={prevImage}
-                      className="pointer-events-auto bg-white/95 size-12 rounded-full flex items-center justify-center shadow-xl hover:bg-white transition-all text-primary active:scale-90 border border-gray-100"
-                    >
-                      <span className="material-symbols-outlined font-black text-3xl">chevron_left</span>
+                <img src={selectedProduct.images?.[currentImgIndex] || selectedProduct.image}
+                  className="w-full h-full object-contain drop-shadow-xl" alt={selectedProduct.name} />
+              </div>
+              {selectedProduct.images && selectedProduct.images.length > 1 && (
+                <>
+                  <div className="absolute inset-x-3 inset-y-0 flex items-center justify-between pointer-events-none">
+                    <button onClick={prevImage} className="pointer-events-auto w-9 h-9 bg-white/90 rounded-full flex items-center justify-center shadow-md border border-amber-100 text-stone-600 hover:bg-white transition-all">
+                      <span className="material-symbols-outlined text-xl">chevron_left</span>
                     </button>
-                    <button
-                      onClick={nextImage}
-                      className="pointer-events-auto bg-white/95 size-12 rounded-full flex items-center justify-center shadow-xl hover:bg-white transition-all text-primary active:scale-90 border border-gray-100"
-                    >
-                      <span className="material-symbols-outlined font-black text-3xl">chevron_right</span>
+                    <button onClick={nextImage} className="pointer-events-auto w-9 h-9 bg-white/90 rounded-full flex items-center justify-center shadow-md border border-amber-100 text-stone-600 hover:bg-white transition-all">
+                      <span className="material-symbols-outlined text-xl">chevron_right</span>
                     </button>
                   </div>
-                )}
-              </div>
-
-              {selectedProduct.images && selectedProduct.images.length > 1 && (
-                <ul className="flex gap-2 mt-8 relative z-10">
-                  {selectedProduct.images.map((_, idx) => (
-                    <li
-                      key={idx}
-                      onClick={() => setCurrentImgIndex(idx)}
-                      className={`size-2.5 rounded-full cursor-pointer ${idx === currentImgIndex ? 'bg-primary w-8 shadow-lg shadow-primary/20' : 'bg-primary/20 hover:bg-primary/40'}`}
-                    />
-                  ))}
-                </ul>
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
+                    {selectedProduct.images.map((_, idx) => (
+                      <button key={idx} onClick={() => setCurrentImgIndex(idx)}
+                        className={`h-1.5 rounded-full transition-all ${idx === currentImgIndex ? 'w-6 bg-amber-500' : 'w-1.5 bg-amber-300/50'}`} />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
-            {/* Informações do Produto (Painel Direito) */}
-            <div className="w-full lg:w-1/2 p-8 md:p-10 lg:p-16 flex flex-col bg-white overflow-y-auto text-left relative scrollbar-hide">
-              <button onClick={() => setSelectedProduct(null)} className="absolute top-6 md:top-10 right-6 md:right-10 size-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all border border-gray-100 z-20">
-                <span className="material-symbols-outlined font-black">close</span>
+            {/* Info panel */}
+            <div className="flex-1 flex flex-col p-6 md:p-8 overflow-y-auto scrollbar-hide relative">
+              <button onClick={() => setSelectedProduct(null)}
+                className="absolute top-5 right-5 w-8 h-8 bg-stone-100 rounded-full flex items-center justify-center hover:bg-red-100 hover:text-red-500 transition-all text-stone-500">
+                <span className="material-symbols-outlined text-[16px]">close</span>
               </button>
 
               <div className="mb-auto">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary bg-primary/5 px-6 py-3 rounded-full border border-primary/10 mb-8 inline-block">{selectedProduct.category}</span>
-                <h2 className="text-3xl lg:text-4xl font-black text-gray-900 leading-none uppercase tracking-tighter mb-6">{selectedProduct.name}</h2>
-                <p className="text-gray-500 leading-relaxed font-bold text-base mb-10">{selectedProduct.description}</p>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-wider mb-4 border"
+                  style={{ color: 'hsl(35 72% 44%)', background: 'hsl(38 60% 94%)', borderColor: 'hsl(38 40% 85%)' }}>
+                  <span className="material-symbols-outlined text-[12px]">{categoryIcons[selectedProduct.category] || 'category'}</span>
+                  {selectedProduct.category}
+                </span>
 
-                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 mb-8">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">Detalhes e Especificações</p>
-                  <p className="text-sm font-black text-gray-700 uppercase leading-snug">{selectedProduct.spec || 'Uso Profissional • Armarinhos Vicmar'}</p>
+                <h2 className="font-serif text-2xl md:text-3xl font-bold text-stone-800 leading-tight mb-3">{selectedProduct.name}</h2>
+                <p className="text-stone-500 text-sm leading-relaxed mb-5">{selectedProduct.description}</p>
+
+                {selectedProduct.spec && (
+                  <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600 mb-1">Especificações</p>
+                    <p className="text-[12px] text-stone-600 font-medium leading-snug">{selectedProduct.spec}</p>
+                  </div>
+                )}
+
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold border ${
+                  selectedProduct.stock <= 0 ? 'bg-red-50 border-red-100 text-red-600'
+                  : selectedProduct.stock <= 5 ? 'bg-amber-50 border-amber-200 text-amber-700'
+                  : 'bg-green-50 border-green-100 text-green-700'}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${
+                    selectedProduct.stock <= 0 ? 'bg-red-500'
+                    : selectedProduct.stock <= 5 ? 'bg-amber-500'
+                    : 'bg-green-500'}`} />
+                  {selectedProduct.stock <= 0 ? 'Esgotado'
+                    : selectedProduct.stock <= 5 ? `Últimas ${selectedProduct.stock} unidades`
+                    : `${selectedProduct.stock} unidades em estoque`}
                 </div>
               </div>
 
-              <div className="mt-12 pt-10 border-t border-gray-100 flex flex-col gap-6">
-                <div className="flex items-center justify-between">
-                  <p className="text-5xl font-black text-primary tracking-tighter"><span className="text-lg mr-2">R$</span>{selectedProduct.price.toFixed(2).replace('.', ',')}</p>
-                  <div className="text-right">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-1">Status de Disponibilidade</p>
-                    <span className={`text-[10px] font-black uppercase px-4 py-2 rounded-full ${selectedProduct.stock > 10 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                      {selectedProduct.stock > 0 ? `${selectedProduct.stock} un. em estoque` : 'Esgotado'}
-                    </span>
+              <div className="mt-6 pt-6 border-t border-amber-100">
+                <div className="flex items-end justify-between mb-5">
+                  <div className="font-mono-price">
+                    <p className="text-[10px] font-medium text-stone-400">Preço</p>
+                    <p className="text-4xl font-bold text-stone-800 leading-none">
+                      <span className="text-lg mr-1 text-stone-400">R$</span>
+                      {selectedProduct.price.toFixed(2).replace('.', ',')}
+                    </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button
-                    disabled={selectedProduct.stock <= 0}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button disabled={selectedProduct.stock <= 0}
                     onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }}
-                    className="bg-primary text-white py-6 rounded-[1.5rem] font-black text-base shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:grayscale disabled:opacity-50"
-                  >
-                    {selectedProduct.stock > 0 ? 'Adicionar ao Carrinho' : 'Avise-me'}
+                    className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold btn-store-primary disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                    {selectedProduct.stock > 0 ? 'Adicionar ao Carrinho' : 'Indisponível'}
                   </button>
-                  <a
-                    href={`${SHOP_CONTACTS.whatsappUrl}?text=Olá! Gostaria de mais informações sobre: ${selectedProduct.name}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bg-[#25D366] text-white py-6 rounded-[1.5rem] font-black text-base shadow-xl shadow-green-500/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3"
-                  >
-                    <span className="material-symbols-outlined">call</span>
-                    Tire suas Dúvidas
+                  <a href={`${SHOP_CONTACTS.whatsappUrl}?text=Olá! Gostaria de informações sobre: ${selectedProduct.name}`}
+                    target="_blank" rel="noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold btn-whatsapp">
+                    <span className="material-symbols-outlined text-[18px]">call</span>
+                    Perguntar no WhatsApp
                   </a>
                 </div>
               </div>
@@ -341,20 +372,34 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
         </div>
       )}
 
-      <footer className="py-20 px-6 lg:px-20 bg-white border-t border-gray-100 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="text-center md:text-left">
-            <h4 className="text-xl font-black text-primary uppercase tracking-tighter leading-none">Armarinhos Vicmar</h4>
-            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em] mt-3 italic">Tradição e Qualidade em Aviamentos • Av. Imperador 4877</p>
+      {/* ── FOOTER ── */}
+      <footer className="mt-12 border-t border-amber-100 bg-white">
+        <div className="max-w-7xl mx-auto px-5 lg:px-10 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3 text-center md:text-left">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
+              <span className="material-symbols-outlined text-lg">architecture</span>
+            </div>
+            <div>
+              <p className="font-serif text-base font-bold text-stone-800">Armarinhos Vicmar</p>
+              <p className="text-[10px] text-stone-400 font-medium tracking-wider">Tradição e qualidade · Av. Imperador 4877</p>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <a href={SHOP_CONTACTS.whatsappUrl} target="_blank" className="size-12 bg-gray-50 text-primary rounded-2xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm border border-gray-100">
-              <span className="material-symbols-outlined font-black">call</span>
+          <div className="flex items-center gap-3">
+            <a href={SHOP_CONTACTS.whatsappUrl} target="_blank"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-[12px] font-semibold shadow-sm"
+              style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>
+              <span className="material-symbols-outlined text-[15px]">call</span>
+              WhatsApp
             </a>
-            <a href={SHOP_CONTACTS.instagramUrl} target="_blank" className="size-12 bg-gray-50 text-primary rounded-2xl flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm border border-gray-100">
-              <span className="material-symbols-outlined font-black">photo_camera</span>
+            <a href={SHOP_CONTACTS.instagramUrl} target="_blank"
+              className="w-10 h-10 rounded-xl flex items-center justify-center border border-amber-100 text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition-all">
+              <span className="material-symbols-outlined text-[18px]">photo_camera</span>
             </a>
           </div>
+        </div>
+        <div className="border-t border-amber-50 py-4 text-center">
+          <p className="text-[10px] text-stone-300 font-medium">© 2025 Armarinhos Vicmar · Todos os direitos reservados</p>
         </div>
       </footer>
     </div>
