@@ -15,9 +15,10 @@ import { Settings } from './pages/Settings';
 import { ChatWidget } from './components/ChatWidget';
 import { supabase } from './services/supabaseClient';
 import DashboardLayout from './components/DashboardLayout';
+import { INITIAL_PRODUCTS } from './constants';
 
 const AppContent: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
   const [user, setUser] = useState<any>(null);
@@ -44,23 +45,40 @@ const AppContent: React.FC = () => {
 
   const fetchData = async (retries = 3) => {
     try {
-      const [{ data: productsData, error: pError }, { data: customersData, error: cError }, { data: salesData, error: sError }] = await Promise.all([
-        supabase.from('products').select('*').order('name'),
-        supabase.from('customers').select('*').order('name'),
-        supabase.from('sales').select('*').order('created_at', { ascending: false })
-      ]);
+      // 1. Buscamos sempre os produtos (público)
+      const { data: productsData, error: pError } = await supabase
+        .from('products')
+        .select('*')
+        .order('name');
 
-      if (pError || cError || sError) throw pError || cError || sError;
+      if (pError) throw pError;
+      if (productsData && productsData.length > 0) {
+        setProducts(productsData);
+      } else {
+        setProducts(INITIAL_PRODUCTS);
+      }
 
-      if (productsData) setProducts(productsData);
-      if (customersData) setCustomers(customersData);
-      if (salesData) setSales(salesData);
+      // 2. Verificamos se há uma sessão ativa antes de buscar dados protegidos
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        const [{ data: customersData, error: cError }, { data: salesData, error: sError }] = await Promise.all([
+          supabase.from('customers').select('*').order('name'),
+          supabase.from('sales').select('*').order('created_at', { ascending: false })
+        ]);
+
+        if (cError || sError) throw cError || sError;
+
+        if (customersData) setCustomers(customersData);
+        if (salesData) setSales(salesData);
+      }
     } catch (error: any) {
       console.error('Error fetching data:', error);
       if (retries > 0) {
         setTimeout(() => fetchData(retries - 1), 2000);
       } else {
-        showToast('Erro de conexão: Não foi possível carregar os dados.', 'info');
+        showToast('Erro de conexão: Exibindo produtos offline do catálogo.', 'info');
+        setProducts(INITIAL_PRODUCTS);
       }
     }
   };

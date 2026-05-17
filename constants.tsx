@@ -248,7 +248,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: '40500dae-f6d8-412e-bde4-9e91019d99e1',
     name: 'Aparelho de viés de 2 dobras (Reta Industrial)',
-    category: 'Acessórios p/ máquina',
+    category: 'Aparelhos',
     description: 'Aparelho importado para aplicação de viés com duas dobras em máquina reta.',
     price: 45.00,
     stock: 8,
@@ -259,7 +259,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: '8d0057f1-b7be-49c5-b73c-f7ff427ca2b8',
     name: 'Aparelho de elástico (Overloque Nacional)',
-    category: 'Acessórios p/ máquina',
+    category: 'Aparelhos',
     description: 'Tensora de elástico nacional para máquinas overloque.',
     price: 125.00,
     stock: 5,
@@ -270,7 +270,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: '45b67c5f-13ae-4d23-89d1-b3f0422c216d',
     name: 'Aparelho de viés de 2 dobras (Galoneira)',
-    category: 'Acessórios p/ máquina',
+    category: 'Aparelhos',
     description: 'Guia de viés importado para galoneira industrial.',
     price: 60.00,
     stock: 6,
