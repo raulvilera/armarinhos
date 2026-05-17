@@ -79,11 +79,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ products, sales, customers
 
   return (
     <DashboardLayout title="Dashboard Lojista" subtitle="Bem-vinda de volta, Maria!">
-      <div className="space-y-10 animate-fade-in">
+      <div className="space-y-7 animate-fade-in">
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <MetricCard
             title="Vendas Hoje"
+            accent="green"
             value={`R$ ${revenueToday.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
             icon={<DollarSign />}
             change="+12.5%"
@@ -91,12 +92,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ products, sales, customers
           />
           <MetricCard
             title="Novos Pedidos"
+            accent="amber"
             value={sales.filter(s => new Date(s.date).toDateString() === new Date().toDateString()).length.toString()}
             icon={<ShoppingBag />}
             extraInfo="5 em processamento"
           />
           <MetricCard
             title="Clientes Ativos"
+            accent="blue"
             value={customers.length.toString()}
             icon={<Users />}
             change="+5%"
@@ -105,6 +108,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ products, sales, customers
           />
           <MetricCard
             title="Status de Estoque"
+            accent="red"
             value={totalStockItems < 30 ? "Crítico" : "Saudável"}
             icon={<Package />}
             positive={totalStockItems >= 30}
@@ -116,7 +120,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ products, sales, customers
         {/* Charts and Alerts Section */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
           {/* Main Chart */}
-          <div className="xl:col-span-2 bg-white p-10 md:p-12 rounded-[3rem] shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col">
+          <div className="xl:col-span-2 bg-white p-7 rounded-2xl shadow-sm border border-stone-100 flex flex-col">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
               <div>
                 <h4 className="text-xl md:text-2xl font-black text-gray-950">Vendas Semanais</h4>
