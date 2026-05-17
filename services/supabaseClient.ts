@@ -1,13 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
+const dummyUrl = 'https://placeholder-project.supabase.co';
+const dummyAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE1Nzg0MDU3MDgsImV4cCI6MTg5NDAxNzcwOH0.dummy-key';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("ERRO: VITE_SUPABASE_URL ou VITE_SUPABASE_ANON_KEY não encontrados no .env.local");
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() || dummyUrl;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() || dummyAnonKey;
+
+if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+  console.warn("AVISO: VITE_SUPABASE_URL ou VITE_SUPABASE_ANON_KEY não encontrados no .env. Utilizando credenciais de fallback.");
 }
 
-export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
  * Verifica se a conexão com o Supabase está ativa e funcional.
