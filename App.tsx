@@ -77,7 +77,7 @@ const AppContent: React.FC = () => {
       if (retries > 0) {
         setTimeout(() => fetchData(retries - 1), 2000);
       } else {
-        showToast('Erro de conexão: Exibindo produtos offline do catálogo.', 'info');
+        console.warn('Conexão Supabase offline: carregando produtos locais.');
         setProducts(INITIAL_PRODUCTS);
       }
     }
