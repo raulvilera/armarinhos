@@ -147,7 +147,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
       {/* ── HERO BANNER ── */}
       <section className="px-5 lg:px-10 pt-8 pb-4 max-w-7xl mx-auto w-full">
         <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden group">
-          <img src="/assets/store-banner.jpg" alt="Vicmar Armarinhos"
+          <img src="https://images.unsplash.com/photo-1582298538104-fc2f0a5a8278?auto=format&fit=crop&w=1200&q=80" alt="Vicmar Armarinhos"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
           <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12"
             style={{ background: 'linear-gradient(to top, hsl(25 50% 8% / 0.85) 0%, transparent 60%)' }}>
