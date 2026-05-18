@@ -146,11 +146,50 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
 
       {/* ── HERO BANNER ── */}
       <section className="px-5 lg:px-10 pt-8 pb-4 max-w-7xl mx-auto w-full">
-        <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden group">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Merceria_de_l%27Eixample_de_Barcelona.jpg/1200px-Merceria_de_l%27Eixample_de_Barcelona.jpg" alt="Vicmar Armarinhos"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12"
-            style={{ background: 'linear-gradient(to top, hsl(25 50% 8% / 0.85) 0%, transparent 60%)' }}>
+        <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden group shadow-lg border border-amber-200/20 bg-gradient-to-tr from-stone-900 via-stone-800 to-amber-950/90">
+          
+          {/* Decorative Vector Grid & Sewing Thread Paths (Lines) */}
+          <div className="absolute inset-0 opacity-25 pointer-events-none">
+            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(245, 158, 11, 0.15)" strokeWidth="1"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+              {/* Elegant curved threads representing sewing patterns */}
+              <path d="M-100,100 C300,50 400,250 800,150 C1200,50 1300,300 1700,200" fill="none" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="3" strokeDasharray="8 6" />
+              <path d="M-50,150 C350,100 450,300 850,200 C1250,100 1350,350 1750,250" fill="none" stroke="rgba(245, 158, 11, 0.2)" strokeWidth="1.5" />
+            </svg>
+          </div>
+
+          {/* Floating Sewing Spools & Scissors Vector Art (Desktop Spools Shelf Graphic) */}
+          <div className="absolute right-12 bottom-0 top-0 w-80 hidden md:flex items-center justify-center opacity-85 pointer-events-none select-none">
+            <svg viewBox="0 0 200 200" className="w-full h-full text-amber-500/20">
+              {/* Main Spool */}
+              <g transform="translate(10, 20)">
+                <rect x="50" y="30" width="80" height="120" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="rgba(245, 158, 11, 0.3)" strokeWidth="2" />
+                {/* Spooled thread lines */}
+                {Array.from({ length: 18 }).map((_, i) => (
+                  <line key={i} x1="53" y1={42 + i * 6} x2="127" y2={42 + i * 6} stroke="rgba(245, 158, 11, 0.45)" strokeWidth="3" />
+                ))}
+                <ellipse cx="90" cy="30" rx="45" ry="12" fill="rgba(120, 113, 108, 0.2)" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="1.5" />
+                <ellipse cx="90" cy="150" rx="45" ry="12" fill="rgba(120, 113, 108, 0.2)" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="1.5" />
+              </g>
+              {/* Secondary Spool */}
+              <g transform="translate(90, 60) scale(0.7)">
+                <rect x="50" y="30" width="80" height="120" rx="10" fill="rgba(217, 119, 6, 0.05)" stroke="rgba(217, 119, 6, 0.25)" strokeWidth="2" />
+                {/* Spooled thread lines */}
+                {Array.from({ length: 18 }).map((_, i) => (
+                  <line key={i} x1="53" y1={42 + i * 6} x2="127" y2={42 + i * 6} stroke="rgba(217, 119, 6, 0.35)" strokeWidth="3" />
+                ))}
+                <ellipse cx="90" cy="30" rx="45" ry="12" fill="rgba(120, 113, 108, 0.15)" stroke="rgba(217, 119, 6, 0.3)" strokeWidth="1.5" />
+                <ellipse cx="90" cy="150" rx="45" ry="12" fill="rgba(120, 113, 108, 0.15)" stroke="rgba(217, 119, 6, 0.3)" strokeWidth="1.5" />
+              </g>
+            </svg>
+          </div>
+
+          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent">
             <div className="space-y-1.5">
               <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-300">Bem-vindo à nossa loja</p>
               <h2 className="font-serif text-2xl md:text-4xl text-white font-bold leading-tight">
