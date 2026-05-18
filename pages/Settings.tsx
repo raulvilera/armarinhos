@@ -10,6 +10,13 @@ export const Settings: React.FC = () => {
     const [phone, setPhone] = useState("(11) 95270-9128");
     const [notifications, setNotifications] = useState(true);
     const [saved, setSaved] = useState(false);
+    
+    // Access credentials states
+    const [emailAccess, setEmailAccess] = useState("vicmar@armarinhos.com");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
     const [mpStatus, setMpStatus] = useState<{ ok: boolean; message: string; loading: boolean }>({
         ok: false,
         message: 'Verificando conexão...',
@@ -28,6 +35,9 @@ export const Settings: React.FC = () => {
 
     const handleSave = () => {
         setSaved(true);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
         setTimeout(() => setSaved(false), 2000);
     };
 
@@ -93,6 +103,61 @@ export const Settings: React.FC = () => {
                                 className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-6 py-4 text-sm font-black focus:bg-white focus:border-primary/20 focus:outline-none transition-all"
                                 value={ownerName}
                                 onChange={(e) => setOwnerName(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Segurança e Acesso (Login / Senha) */}
+                <section className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 relative overflow-hidden group">
+                    <div className="flex items-center gap-4 mb-10 border-b border-gray-50 pb-6">
+                        <div className="size-12 bg-primary/5 text-primary rounded-2xl flex items-center justify-center">
+                            <Shield className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h3 className="font-black text-xl text-gray-900 uppercase tracking-tighter">Segurança e Acesso</h3>
+                            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">Alterar credenciais de login e senha</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">E-mail de Acesso (Login)</label>
+                            <input
+                                type="email"
+                                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-6 py-4 text-sm font-black focus:bg-white focus:border-primary/20 focus:outline-none transition-all"
+                                value={emailAccess}
+                                onChange={(e) => setEmailAccess(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Senha Atual</label>
+                            <input
+                                type="password"
+                                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-6 py-4 text-sm font-black focus:bg-white focus:border-primary/20 focus:outline-none transition-all"
+                                placeholder="••••••••"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Nova Senha</label>
+                            <input
+                                type="password"
+                                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-6 py-4 text-sm font-black focus:bg-white focus:border-primary/20 focus:outline-none transition-all"
+                                placeholder="Mínimo 6 caracteres"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Confirmar Nova Senha</label>
+                            <input
+                                type="password"
+                                className="w-full bg-gray-50 border-2 border-transparent rounded-2xl px-6 py-4 text-sm font-black focus:bg-white focus:border-primary/20 focus:outline-none transition-all"
+                                placeholder="Repita a nova senha"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                             />
                         </div>
                     </div>
