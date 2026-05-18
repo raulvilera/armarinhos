@@ -20,6 +20,10 @@ export default defineConfig(({ mode }) => {
           short_name: 'Vicmar',
           description: 'Gestão Inteligente para Armarinhos',
           theme_color: '#1e3a8a',
+          background_color: '#faf6f0',
+          display: 'standalone',
+          start_url: '/',
+          orientation: 'portrait-primary',
           icons: [
             {
               src: 'pwa-192x192.png',
