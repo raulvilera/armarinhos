@@ -99,6 +99,18 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            {/* Lojista / Admin shortcut (Same w-9 h-9 size as other actions, placed to the left of them) */}
+            <button onClick={() => navigate('/login')}
+              className="w-9 h-9 rounded-xl text-white flex items-center justify-center transition-all border-b border-black/15 border-t border-white/30"
+              style={{
+                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+                boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
+              }}
+              title="Área do Lojista"
+            >
+              <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+            </button>
+
             <button onClick={() => setIsSearchOpen(v => !v)}
               className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all border-b border-black/15 ${isSearchOpen ? 'text-white border-t border-white/30 shadow-md' : 'text-stone-500 bg-white border border-blue-100 hover:bg-blue-50/60'}`}
               style={isSearchOpen ? { 
@@ -107,6 +119,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
               } : {}}>
               <span className="material-symbols-outlined text-[18px]">search</span>
             </button>
+
             <button onClick={() => navigate('/checkout')}
               className="relative w-9 h-9 rounded-xl bg-white border border-blue-100 flex items-center justify-center text-stone-600 hover:bg-blue-50/60 transition-all">
               <span className="material-symbols-outlined text-[18px]">shopping_basket</span>
@@ -119,15 +132,6 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
                   {cartCount}
                 </span>
               )}
-            </button>
-            <button onClick={() => navigate('/login')}
-              className="hidden sm:flex items-center gap-2 h-9 px-4 rounded-xl text-white text-[11px] font-bold transition-all border-b border-black/15 border-t border-white/30"
-              style={{
-                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
-                boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
-              }}>
-              <span className="material-symbols-outlined text-[14px]">admin_panel_settings</span>
-              Lojista
             </button>
           </div>
         </div>
@@ -147,19 +151,6 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
         {/* Mobile categories */}
         <div className="md:hidden border-t border-blue-100/60 bg-white/80 px-4 py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 w-max">
-            {/* Lojista admin shortcut at the far-left of the mobile categories bar */}
-            <button
-              onClick={() => navigate('/login')}
-              className="px-3.5 py-1.5 rounded-full text-[10px] text-white font-bold whitespace-nowrap transition-all border-b border-black/15 border-t border-white/30 flex items-center gap-1 shadow-sm"
-              style={{
-                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
-                boxShadow: '0 3px 8px rgba(30, 58, 138, 0.25), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -1.5px 2px rgba(0, 0, 0, 0.25)'
-              }}
-            >
-              <span className="material-symbols-outlined text-[13px] font-bold">admin_panel_settings</span>
-              Admin
-            </button>
-
             {categories.map(cat => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap transition-all border-b border-black/15 ${
