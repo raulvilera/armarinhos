@@ -60,62 +60,85 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   return (
     <div className="min-h-screen flex font-sans" style={{ background: 'hsl(40 20% 97%)' }}>
 
-      {/* Left panel - decorative */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-between p-12"
-        style={{ background: 'linear-gradient(160deg, hsl(215 38% 9%) 0%, hsl(215 42% 6%) 100%)' }}>
-        {/* Grain texture overlay */}
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
-
-        {/* Gold decorative circles */}
-        <div className="absolute top-1/4 -right-20 w-64 h-64 rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, hsl(43 96% 56%), transparent 70%)' }} />
-        <div className="absolute bottom-1/3 -left-12 w-48 h-48 rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, hsl(38 90% 50%), transparent 70%)' }} />
-
-        {/* Logo */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, hsl(43 96% 56%), hsl(38 90% 46%))' }}>
-            <span className="material-symbols-outlined text-xl text-stone-900">architecture</span>
-          </div>
-          <div className="leading-none">
-            <p className="text-[15px] font-bold text-white">Vicmar</p>
-            <p className="text-[9px] font-semibold uppercase tracking-[0.25em] mt-0.5" style={{ color: 'hsl(43 70% 65%)' }}>Armarinhos</p>
-          </div>
+      {/* Left panel - standardized split banner design */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col bg-[#faf6f0] border-r border-blue-100">
+        
+        {/* TOP HALF: Realistic Store Shelves Image */}
+        <div className="w-full h-1/2 relative overflow-hidden shrink-0">
+          <img 
+            src="/assets/banner-orig.jpg" 
+            alt="Prateleiras de Aviamentos Vicmar" 
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Smooth blend overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#faf6f0] via-[#faf6f0]/10 to-transparent pointer-events-none" />
         </div>
 
-        {/* Center text */}
-        <div className="relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.2em] border"
-            style={{ color: 'hsl(43 80% 70%)', borderColor: 'hsl(43 60% 30%)', background: 'hsl(43 60% 15% / 0.5)' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            Sistema de Gestão
+        {/* BOTTOM HALF: Elegant Calligraphy & System Info */}
+        <div className="flex-1 flex flex-col justify-between p-12 relative text-left">
+          {/* Decorative swirls path */}
+          <div className="absolute top-4 right-8 opacity-10 pointer-events-none select-none">
+            <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 35 C 30 10, 80 50, 115 5" stroke="#db2777" strokeWidth="1.5" strokeDasharray="3 3"/>
+            </svg>
           </div>
-          <h2 className="font-serif text-4xl font-bold text-white leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Gestão inteligente<br />
-            <span style={{ color: 'hsl(43 80% 65%)' }}>para sua retrosaria</span>
-          </h2>
-          <p className="text-[13px] leading-relaxed" style={{ color: 'hsl(215 15% 55%)' }}>
-            Controle de estoque, vendas, clientes e financeiro — tudo em um só lugar.
-          </p>
-        </div>
 
-        {/* Features */}
-        <div className="relative z-10 grid grid-cols-2 gap-3">
-          {[
-            { icon: 'inventory_2', label: 'Estoque' },
-            { icon: 'point_of_sale', label: 'Vendas' },
-            { icon: 'group', label: 'Clientes' },
-            { icon: 'bar_chart', label: 'Relatórios' },
-          ].map(f => (
-            <div key={f.label} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
-              style={{ background: 'hsl(215 30% 14%)', border: '1px solid hsl(215 28% 18%)' }}>
-              <span className="material-symbols-outlined text-[16px]" style={{ color: 'hsl(43 80% 60%)' }}>{f.icon}</span>
-              <span className="text-[11px] font-medium" style={{ color: 'hsl(215 15% 65%)' }}>{f.label}</span>
+          {/* Top Branding */}
+          <div className="space-y-1">
+            <h3 className="font-sans text-stone-500 text-[13px] font-semibold tracking-wide uppercase">
+              Vicmar Armarinhos
+            </h3>
+            <h2 className="font-serif text-[28px] lg:text-[34px] text-stone-800 font-normal leading-tight">
+              Tudo o que você <br />
+              <span className="font-cursive text-pink-600 text-[42px] lg:text-[50px] leading-none inline-block align-middle px-1">
+                imagina,
+              </span>
+              <br />
+              <span className="relative inline-block">
+                a gente tem!
+                {/* Subtle underline stroke below "a gente tem" */}
+                <span className="absolute left-0 bottom-0.5 w-full h-[2px] bg-pink-100 rounded" />
+              </span>
+            </h2>
+            <p className="text-stone-500 text-[12px] leading-relaxed max-w-sm pt-1">
+              A maior variedade de aviamentos para dar <span className="text-pink-600 font-semibold">vida às suas criações</span>.
+            </p>
+          </div>
+
+          {/* System Badges */}
+          <div className="space-y-3 my-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                <span className="material-symbols-outlined text-[16px] font-bold">verified</span>
+              </div>
+              <div className="leading-none">
+                <p className="text-[10px] font-bold text-stone-700 uppercase">Qualidade e Tradição</p>
+                <p className="text-[9px] text-stone-400">Desde o início do seu projeto</p>
+              </div>
             </div>
-          ))}
+
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                <span className="material-symbols-outlined text-[16px] font-bold">admin_panel_settings</span>
+              </div>
+              <div className="leading-none">
+                <p className="text-[10px] font-bold text-stone-700 uppercase">Sistema de Gestão</p>
+                <p className="text-[9px] text-stone-400">Acesso seguro e restrito a lojistas</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Branding / Address */}
+          <div className="flex items-center justify-between border-t border-stone-200/60 pt-4">
+            <div className="flex items-center gap-2 bg-[#f3eae0] px-3.5 py-1.5 rounded-full">
+              <span className="material-symbols-outlined text-stone-600 text-xs">location_on</span>
+              <span className="text-[9px] font-bold text-stone-600 uppercase tracking-wider">Av. Imperador 4877</span>
+            </div>
+            <span className="text-[9px] font-bold text-stone-400 uppercase tracking-wider">Modo Administrativo</span>
+          </div>
+
         </div>
+
       </div>
 
       {/* Right panel - form */}
@@ -124,13 +147,16 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
-              <span className="material-symbols-outlined text-lg text-white">architecture</span>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg border-t border-white/30"
+              style={{ 
+                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+                boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)' 
+              }}>
+              <span className="material-symbols-outlined text-lg">architecture</span>
             </div>
             <div className="leading-none">
               <p className="text-[15px] font-bold text-stone-800">Vicmar Armarinhos</p>
-              <p className="text-[10px] font-medium text-amber-600 uppercase tracking-wider">Área Administrativa</p>
+              <p className="text-[10px] font-semibold text-blue-600 uppercase tracking-wider">Área Administrativa</p>
             </div>
           </div>
 
@@ -141,11 +167,11 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
           {/* Connection status */}
           <div className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-6 text-[11px] font-medium ${
-            connectionStatus.loading ? 'bg-amber-50 text-amber-700 border border-amber-100'
+            connectionStatus.loading ? 'bg-blue-50 text-blue-700 border border-blue-100'
             : connectionStatus.ok ? 'bg-green-50 text-green-700 border border-green-100'
             : 'bg-red-50 text-red-600 border border-red-100'}`}>
             <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-              connectionStatus.loading ? 'bg-amber-400 animate-pulse'
+              connectionStatus.loading ? 'bg-blue-400 animate-pulse'
               : connectionStatus.ok ? 'bg-green-500'
               : 'bg-red-500'}`} />
             {connectionStatus.loading ? 'Verificando conexão...'
@@ -167,8 +193,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-stone-400">person</span>
                 <input
                   type="text" required autoComplete="username"
-                  className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:outline-none focus:ring-2 focus:border-amber-300 transition-all placeholder:text-stone-300"
-                  style={{ '--tw-ring-color': 'hsl(38 60% 75% / 0.4)' } as any}
+                  className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all placeholder:text-stone-300"
                   placeholder="Seu usuário"
                   value={username} onChange={e => setUsername(e.target.value)} />
               </div>
@@ -180,8 +205,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-stone-400">lock</span>
                 <input
                   type={showPassword ? 'text' : 'password'} required autoComplete="current-password"
-                  className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:border-amber-300 transition-all placeholder:text-stone-300"
-                  style={{ '--tw-ring-color': 'hsl(38 60% 75% / 0.4)' } as any}
+                  className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all placeholder:text-stone-300"
                   placeholder="••••••••"
                   value={password} onChange={e => setPassword(e.target.value)} />
                 <button type="button" onClick={() => setShowPassword(v => !v)}
@@ -192,13 +216,16 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </div>
 
             <button type="submit" disabled={connectionStatus.loading}
-              className="w-full py-3.5 rounded-xl text-[13px] font-semibold text-white mt-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 active:scale-[0.98] shadow-md"
-              style={{ background: 'linear-gradient(135deg, hsl(215 38% 18%), hsl(215 42% 12%))' }}>
+              className="w-full py-3.5 rounded-xl text-[13px] text-white font-bold mt-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-95 active:scale-[0.98] border-b border-black/15 border-t border-white/30"
+              style={{ 
+                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+                boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
+              }}>
               {connectionStatus.loading ? 'Aguarde...' : 'Entrar no Painel'}
             </button>
 
             <button type="button" onClick={() => navigate('/')}
-              className="w-full text-center text-[11px] font-medium text-stone-400 hover:text-amber-600 transition-colors pt-2">
+              className="w-full text-center text-[11px] font-medium text-stone-400 hover:text-blue-600 transition-colors pt-2">
               ← Voltar para a loja
             </button>
           </form>
