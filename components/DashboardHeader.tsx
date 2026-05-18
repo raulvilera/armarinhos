@@ -15,9 +15,8 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
 
   return (
     <header className="mb-8 flex items-start justify-between gap-4">
-      {/* Left: title */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-500 mb-1 capitalize">{dateStr}</p>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-500 mb-1 capitalize">{dateStr}</p>
         <h2 className="text-3xl font-bold tracking-tight text-stone-900 leading-none">{title}</h2>
         {subtitle && <p className="text-stone-400 text-sm font-medium mt-1.5">{subtitle}</p>}
       </div>
@@ -33,7 +32,7 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
             onChange={e => setSearchVal(e.target.value)}
             placeholder="Buscar..."
             className="bg-white border border-stone-200 rounded-xl py-2.5 pl-10 pr-4 w-56 text-sm font-medium focus:outline-none focus:ring-2 transition-all placeholder:text-stone-300 shadow-sm"
-            style={{ '--tw-ring-color': 'hsl(38 60% 80% / 0.5)' } as any}
+            style={{ '--tw-ring-color': 'rgba(59, 130, 246, 0.25)' } as any}
           />
         </div>
 
@@ -45,8 +44,8 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
 
         {/* User */}
         <div className="flex items-center gap-2.5 bg-white border border-stone-200 rounded-xl px-3 py-1.5 shadow-sm cursor-pointer hover:bg-stone-50 transition-all">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold text-stone-900 flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, hsl(43 96% 60%), hsl(38 90% 50%))' }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0 border-t border-white/20 shadow-md"
+            style={{ background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)' }}>
             MS
           </div>
           <div className="hidden sm:block leading-none">
@@ -57,8 +56,11 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
 
         {/* View store button */}
         <button onClick={() => navigate('/')}
-          className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl text-[12px] font-semibold text-white shadow-sm transition-all hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
+          className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl text-[12px] text-white font-bold transition-all hover:opacity-95 border-b border-black/15 border-t border-white/30"
+          style={{ 
+            background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+            boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)' 
+          }}>
           <Store className="w-3.5 h-3.5" />
           Ver Loja
         </button>

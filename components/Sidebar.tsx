@@ -23,14 +23,17 @@ const Sidebar = () => {
 
       {/* Logo */}
       <div className="px-5 py-6 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, hsl(43 96% 56%), hsl(38 90% 46%))' }}>
-          <Scissors className="w-4.5 h-4.5 text-stone-900" />
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 border-t border-white/30"
+          style={{ 
+            background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+            boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
+          }}>
+          <Scissors className="w-4.5 h-4.5 text-white" />
         </div>
         <div className="leading-none">
-          <h1 className="text-[15px] font-bold text-white tracking-tight">ArmaSaaS</h1>
-          <p className="text-[9px] font-semibold uppercase tracking-[0.2em] mt-1" style={{ color: 'hsl(43 70% 65%)' }}>
-            Retrosaria Digital
+          <h1 className="text-[14px] font-bold text-white tracking-tight">Vicmar</h1>
+          <p className="text-[8px] font-semibold uppercase tracking-[0.2em] mt-0.5 text-blue-400">
+            Armarinhos
           </p>
         </div>
       </div>
@@ -52,19 +55,19 @@ const Sidebar = () => {
               key={item.path}
               onClick={() => navigate(item.path)}
               className={cn(
-                "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 text-left",
+                "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-150 text-left border-b border-black/15",
                 isActive
-                  ? "text-stone-900 shadow-md"
-                  : "hover:bg-white/5"
+                  ? "text-white border-t border-white/30 shadow-md"
+                  : "hover:bg-white/5 border-t border-transparent"
               )}
               style={isActive ? {
-                background: 'linear-gradient(135deg, hsl(43 96% 56% / 0.95), hsl(38 90% 50% / 0.9))',
-                color: '#1a1600',
+                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+                boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
               } : { color: 'hsl(213 18% 60%)' }}
             >
-              <item.icon className={cn("w-4 h-4 flex-shrink-0", isActive ? "opacity-80" : "opacity-60")} />
+              <item.icon className={cn("w-4 h-4 flex-shrink-0", isActive ? "opacity-90" : "opacity-60")} />
               <span>{item.label}</span>
-              {isActive && <div className="ml-auto w-1 h-1 rounded-full bg-stone-900/40" />}
+              {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white/60 shadow-sm" />}
             </button>
           );
         })}
@@ -74,8 +77,8 @@ const Sidebar = () => {
       <div className="p-4 space-y-3">
         <div className="p-4 rounded-xl border" style={{ background: 'hsl(215 30% 12%)', borderColor: 'hsl(215 28% 18%)' }}>
           <div className="flex items-center gap-2.5 mb-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[13px] font-bold text-stone-900"
-              style={{ background: 'linear-gradient(135deg, hsl(43 96% 60%), hsl(38 90% 50%))' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[13px] font-bold text-white border-t border-white/20 shadow-md"
+              style={{ background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)' }}>
               MS
             </div>
             <div className="leading-none">
@@ -86,10 +89,10 @@ const Sidebar = () => {
           <div className="h-px mb-3" style={{ background: 'hsl(215 28% 18%)' }} />
           <button
             onClick={() => navigate('/')}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-[11px] font-semibold transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-[11px] font-semibold transition-all border border-blue-500/20"
             style={{ background: 'hsl(215 28% 16%)', color: 'hsl(213 18% 60%)' }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.background = 'hsl(215 28% 20%)';
+              (e.currentTarget as HTMLElement).style.background = 'linear-gradient(to bottom, #3b82f6, #1e3a8a)';
               (e.currentTarget as HTMLElement).style.color = 'white';
             }}
             onMouseLeave={e => {
