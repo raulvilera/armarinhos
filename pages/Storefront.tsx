@@ -146,62 +146,123 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
 
       {/* ── HERO BANNER ── */}
       <section className="px-5 lg:px-10 pt-8 pb-4 max-w-7xl mx-auto w-full">
-        <div className="relative h-52 md:h-72 rounded-2xl overflow-hidden group shadow-lg border border-amber-200/20 bg-gradient-to-tr from-stone-900 via-stone-800 to-amber-950/90">
+        <div className="relative rounded-3xl overflow-hidden shadow-lg border border-amber-200/20 bg-[#faf6f0] flex flex-col md:flex-row min-h-[300px] md:h-[380px]">
           
-          {/* Decorative Vector Grid & Sewing Thread Paths (Lines) */}
-          <div className="absolute inset-0 opacity-25 pointer-events-none">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(245, 158, 11, 0.15)" strokeWidth="1"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-              {/* Elegant curved threads representing sewing patterns */}
-              <path d="M-100,100 C300,50 400,250 800,150 C1200,50 1300,300 1700,200" fill="none" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="3" strokeDasharray="8 6" />
-              <path d="M-50,150 C350,100 450,300 850,200 C1250,100 1350,350 1750,250" fill="none" stroke="rgba(245, 158, 11, 0.2)" strokeWidth="1.5" />
-            </svg>
+          {/* LEFT SIDE: Realistic Store Shelves (Takes 45% on desktop, fits perfectly, no distortion) */}
+          <div className="w-full md:w-[45%] h-48 md:h-full relative overflow-hidden shrink-0">
+            <img 
+              src="/assets/banner-orig.jpg" 
+              alt="Prateleiras de Aviamentos Vicmar" 
+              className="w-full h-full object-cover object-left md:object-center transition-transform duration-700 hover:scale-[1.03]"
+            />
+            {/* Smooth elegant gradient blending the photo into the cream text background */}
+            <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-[#faf6f0]/10 to-[#faf6f0] pointer-events-none" />
           </div>
 
-          {/* Floating Sewing Spools & Scissors Vector Art (Desktop Spools Shelf Graphic) */}
-          <div className="absolute right-12 bottom-0 top-0 w-80 hidden md:flex items-center justify-center opacity-85 pointer-events-none select-none">
-            <svg viewBox="0 0 200 200" className="w-full h-full text-amber-500/20">
-              {/* Main Spool */}
-              <g transform="translate(10, 20)">
-                <rect x="50" y="30" width="80" height="120" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="rgba(245, 158, 11, 0.3)" strokeWidth="2" />
-                {/* Spooled thread lines */}
-                {Array.from({ length: 18 }).map((_, i) => (
-                  <line key={i} x1="53" y1={42 + i * 6} x2="127" y2={42 + i * 6} stroke="rgba(245, 158, 11, 0.45)" strokeWidth="3" />
-                ))}
-                <ellipse cx="90" cy="30" rx="45" ry="12" fill="rgba(120, 113, 108, 0.2)" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="1.5" />
-                <ellipse cx="90" cy="150" rx="45" ry="12" fill="rgba(120, 113, 108, 0.2)" stroke="rgba(245, 158, 11, 0.4)" strokeWidth="1.5" />
-              </g>
-              {/* Secondary Spool */}
-              <g transform="translate(90, 60) scale(0.7)">
-                <rect x="50" y="30" width="80" height="120" rx="10" fill="rgba(217, 119, 6, 0.05)" stroke="rgba(217, 119, 6, 0.25)" strokeWidth="2" />
-                {/* Spooled thread lines */}
-                {Array.from({ length: 18 }).map((_, i) => (
-                  <line key={i} x1="53" y1={42 + i * 6} x2="127" y2={42 + i * 6} stroke="rgba(217, 119, 6, 0.35)" strokeWidth="3" />
-                ))}
-                <ellipse cx="90" cy="30" rx="45" ry="12" fill="rgba(120, 113, 108, 0.15)" stroke="rgba(217, 119, 6, 0.3)" strokeWidth="1.5" />
-                <ellipse cx="90" cy="150" rx="45" ry="12" fill="rgba(120, 113, 108, 0.15)" stroke="rgba(217, 119, 6, 0.3)" strokeWidth="1.5" />
-              </g>
-            </svg>
-          </div>
-
-          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent">
-            <div className="space-y-1.5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-300">Bem-vindo à nossa loja</p>
-              <h2 className="font-serif text-2xl md:text-4xl text-white font-bold leading-tight">
-                Tradição &amp; Variedade<br className="hidden md:block" />
-                <span className="text-amber-300 italic"> em Aviamentos</span>
-              </h2>
+          {/* RIGHT SIDE: Elegant Calligraphy & Custom Info (Takes 55% and adapts perfectly) */}
+          <div className="flex-1 flex flex-col justify-center p-6 md:p-10 lg:p-12 relative text-left">
+            
+            {/* Fine decorative top line */}
+            <div className="absolute top-4 right-8 opacity-10 pointer-events-none select-none hidden lg:block">
+              <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 35 C 30 10, 80 50, 115 5" stroke="#db2777" strokeWidth="1.5" strokeDasharray="3 3"/>
+              </svg>
             </div>
+
+            {/* Typography & Slogan */}
+            <div className="space-y-1 md:space-y-2 mb-4 max-w-xl">
+              <h3 className="font-sans text-stone-500 text-[13px] md:text-sm font-semibold tracking-wide uppercase">
+                Vicmar Armarinhos
+              </h3>
+              <h2 className="font-serif text-[24px] md:text-[34px] lg:text-[40px] text-stone-800 font-normal leading-tight">
+                Tudo o que você <br className="xs:hidden" />
+                <span className="font-cursive text-pink-600 text-[38px] md:text-[54px] lg:text-[62px] leading-none inline-block align-middle px-1">
+                  imagina,
+                </span>
+                <br className="hidden md:block" />
+                <span className="relative inline-block md:ml-2">
+                  a gente tem!
+                  {/* Subtle underline stroke below "a gente tem" */}
+                  <span className="absolute left-0 bottom-0.5 w-full h-[2px] bg-pink-100 rounded" />
+                </span>
+              </h2>
+              <p className="text-stone-500 text-[11px] md:text-[13px] leading-relaxed max-w-md pt-1">
+                A maior variedade de aviamentos para dar <span className="text-pink-600 font-semibold">vida às suas criações</span>.
+              </p>
+            </div>
+
+            {/* 4 Quality Badges (Horizontal scroll on mobile, perfect flex on desktop) */}
+            <div className="flex items-center gap-3 md:gap-5 overflow-x-auto scrollbar-hide py-1 mb-5">
+              
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                  <span className="material-symbols-outlined text-[16px] font-bold">verified</span>
+                </div>
+                <div className="leading-none">
+                  <p className="text-[9px] font-bold text-stone-700 uppercase">Qualidade</p>
+                  <p className="text-[8px] text-stone-400">Que você confia</p>
+                </div>
+              </div>
+
+              <div className="w-px h-6 bg-stone-200 shrink-0 hidden sm:block" />
+
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                  <span className="material-symbols-outlined text-[16px] font-bold">dashboard</span>
+                </div>
+                <div className="leading-none">
+                  <p className="text-[9px] font-bold text-stone-700 uppercase">Variedade</p>
+                  <p className="text-[8px] text-stone-400">Que inspira</p>
+                </div>
+              </div>
+
+              <div className="w-px h-6 bg-stone-200 shrink-0 hidden sm:block" />
+
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                  <span className="material-symbols-outlined text-[16px] font-bold">shopping_bag</span>
+                </div>
+                <div className="leading-none">
+                  <p className="text-[9px] font-bold text-stone-700 uppercase">Compre Fácil</p>
+                  <p className="text-[8px] text-stone-400">Online 24 horas</p>
+                </div>
+              </div>
+
+              <div className="w-px h-6 bg-stone-200 shrink-0 hidden sm:block" />
+
+              <div className="flex items-center gap-2 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-pink-600">
+                  <span className="material-symbols-outlined text-[16px] font-bold">local_shipping</span>
+                </div>
+                <div className="leading-none">
+                  <p className="text-[9px] font-bold text-stone-700 uppercase">Envio Rápido</p>
+                  <p className="text-[8px] text-stone-400">Para toda região</p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom CTA Button */}
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('departamentos-title');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-[11px] font-semibold text-white bg-pink-600 shadow-md shadow-pink-600/20 hover:bg-pink-700 hover:shadow-lg transition-all"
+              >
+                <span className="material-symbols-outlined text-[14px]">favorite</span>
+                Seu projeto começa aqui!
+              </button>
+              
+              <div className="hidden sm:flex items-center gap-2 bg-[#f3eae0] px-3.5 py-1.5 rounded-full">
+                <span className="material-symbols-outlined text-stone-600 text-xs">location_on</span>
+                <span className="text-[9px] font-bold text-stone-600 uppercase tracking-wider">Av. Imperador 4877</span>
+              </div>
+            </div>
+
           </div>
-          <div className="absolute top-5 right-5 hidden sm:flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full">
-            <span className="material-symbols-outlined text-white text-sm">location_on</span>
-            <span className="text-[10px] font-semibold text-white/90">Av. Imperador 4877</span>
-          </div>
+
         </div>
       </section>
 
