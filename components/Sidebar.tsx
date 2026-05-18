@@ -14,28 +14,42 @@ const navItems = [
   { icon: Settings,        label: "Ajustes",   path: "/ajustes" },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+const Sidebar = ({ onClose }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
-    <aside className="w-60 flex flex-col fixed h-full z-10 admin-sidebar-gradient" style={{ borderRight: '1px solid hsl(215 28% 15%)' }}>
+    <aside className="w-60 flex flex-col h-full z-10 admin-sidebar-gradient" style={{ borderRight: '1px solid hsl(215 28% 15%)' }}>
 
       {/* Logo */}
-      <div className="px-5 py-6 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 border-t border-white/30"
-          style={{ 
-            background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
-            boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
-          }}>
-          <Scissors className="w-4.5 h-4.5 text-white" />
+      <div className="px-5 py-6 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 border-t border-white/30"
+            style={{ 
+              background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+              boxShadow: '0 4px 10px rgba(30, 58, 138, 0.3), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 3px rgba(0, 0, 0, 0.25)'
+            }}>
+            <Scissors className="w-4.5 h-4.5 text-white" />
+          </div>
+          <div className="leading-none">
+            <h1 className="text-[14px] font-bold text-white tracking-tight">Vicmar</h1>
+            <p className="text-[8px] font-semibold uppercase tracking-[0.2em] mt-0.5 text-blue-400">
+              Armarinhos
+            </p>
+          </div>
         </div>
-        <div className="leading-none">
-          <h1 className="text-[14px] font-bold text-white tracking-tight">Vicmar</h1>
-          <p className="text-[8px] font-semibold uppercase tracking-[0.2em] mt-0.5 text-blue-400">
-            Armarinhos
-          </p>
-        </div>
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="lg:hidden p-1.5 rounded-lg text-blue-400 hover:text-white hover:bg-white/10 transition-all flex items-center justify-center"
+          >
+            <span className="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        )}
       </div>
 
       {/* Divider */}

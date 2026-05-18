@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
+  onMenuClick?: () => void;
 }
 
-const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
+const DashboardHeader = ({ title, subtitle, onMenuClick }: DashboardHeaderProps) => {
   const [searchVal, setSearchVal] = useState('');
   const navigate = useNavigate();
   const now = new Date();
@@ -15,10 +16,21 @@ const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
 
   return (
     <header className="mb-8 flex items-start justify-between gap-4">
-      <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-500 mb-1 capitalize">{dateStr}</p>
-        <h2 className="text-3xl font-bold tracking-tight text-stone-900 leading-none">{title}</h2>
-        {subtitle && <p className="text-stone-400 text-sm font-medium mt-1.5">{subtitle}</p>}
+      {/* Left: Hamburger + Title */}
+      <div className="flex items-center gap-3">
+        {onMenuClick && (
+          <button 
+            onClick={onMenuClick}
+            className="lg:hidden p-2.5 rounded-xl bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 transition-all shadow-sm flex-shrink-0 flex items-center justify-center animate-in fade-in zoom-in duration-300"
+          >
+            <span className="material-symbols-outlined text-[20px] font-bold">menu</span>
+          </button>
+        )}
+        <div className="leading-tight">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-blue-500 mb-0.5 capitalize">{dateStr}</p>
+          <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-stone-900 leading-none">{title}</h2>
+          {subtitle && <p className="text-stone-400 text-xs sm:text-sm font-medium mt-1">{subtitle}</p>}
+        </div>
       </div>
 
       {/* Right: controls */}

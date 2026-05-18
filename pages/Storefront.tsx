@@ -147,6 +147,19 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
         {/* Mobile categories */}
         <div className="md:hidden border-t border-blue-100/60 bg-white/80 px-4 py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 w-max">
+            {/* Lojista admin shortcut at the far-left of the mobile categories bar */}
+            <button
+              onClick={() => navigate('/login')}
+              className="px-3.5 py-1.5 rounded-full text-[10px] text-white font-bold whitespace-nowrap transition-all border-b border-black/15 border-t border-white/30 flex items-center gap-1 shadow-sm"
+              style={{
+                background: 'linear-gradient(to bottom, #3b82f6, #1e3a8a)',
+                boxShadow: '0 3px 8px rgba(30, 58, 138, 0.25), inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -1.5px 2px rgba(0, 0, 0, 0.25)'
+              }}
+            >
+              <span className="material-symbols-outlined text-[13px] font-bold">admin_panel_settings</span>
+              Admin
+            </button>
+
             {categories.map(cat => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap transition-all border-b border-black/15 ${
