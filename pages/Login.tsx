@@ -28,9 +28,14 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     e.preventDefault();
     setError('');
 
-    // BYPASS DEMONSTRAÇÃO OFFLINE:
-    // Se o usuário digitar admin/admin ou vicmar/vicmar123, libera o acesso imediatamente para o modo offline!
-    const isDemoUser = (username === 'admin' && password === 'admin') || (username === 'vicmar' && password === 'vicmar123');
+    const cleanUsername = username.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // BYPASS DEMONSTRAÇÃO OFFLINE (Tolerante a maiúsculas e espaços de teclados mobile):
+    const isDemoUser = 
+      (cleanUsername === 'admin' || cleanUsername === 'admin@armarinhos.com' || cleanUsername === 'vicmar') && 
+      (cleanPassword === 'admin' || cleanPassword === 'vicmar123');
+
     if (isDemoUser) {
       onLogin();
       navigate('/dashboard');
@@ -38,13 +43,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
 
     if (!connectionStatus.ok) { 
-      setError(`Erro de conexão: ${connectionStatus.message}. (Para testar offline, entre com usuário "admin" e senha "admin")`); 
+      setError(`Modo Offline ativo. Por favor, entre com o usuário "admin" e senha "admin" para acessar o painel demonstrativo.`); 
       return; 
     }
 
     try {
-      const email = username.includes('@') ? username : `${username}@armarinhos.com`;
-      const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+      const email = cleanUsername.includes('@') ? cleanUsername : `${cleanUsername}@armarinhos.com`;
+      const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password: cleanPassword });
       if (authError) {
         setError(authError.message.includes('Invalid login credentials')
           ? 'Credenciais inválidas. Verifique usuário e senha.'
@@ -165,18 +170,26 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <p className="text-sm text-stone-400 mt-1">Entre com suas credenciais para continuar</p>
           </div>
 
-          {/* Connection status */}
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-6 text-[11px] font-medium ${
-            connectionStatus.loading ? 'bg-blue-50 text-blue-700 border border-blue-100'
-            : connectionStatus.ok ? 'bg-green-50 text-green-700 border border-green-100'
-            : 'bg-red-50 text-red-600 border border-red-100'}`}>
-            <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-              connectionStatus.loading ? 'bg-blue-400 animate-pulse'
-              : connectionStatus.ok ? 'bg-green-500'
-              : 'bg-red-500'}`} />
-            {connectionStatus.loading ? 'Verificando conexão...'
-              : connectionStatus.ok ? 'Conectado ao servidor'
-              : connectionStatus.message}
+          {/* Connection status (Sleek and non-alarming badge card for demo status) */}
+          <div className={`flex items-start gap-2.5 px-4 py-3.5 rounded-xl mb-6 text-[11px] font-semibold border ${
+            connectionStatus.loading 
+              ? 'bg-blue-50/50 text-blue-700 border-blue-100/85'
+              : connectionStatus.ok 
+                ? 'bg-green-50/50 text-green-700 border-green-100/85'
+                : 'bg-blue-50/70 text-blue-700 border-blue-100/85 shadow-sm'
+          }`}>
+            <span className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${
+              connectionStatus.loading 
+                ? 'bg-blue-400 animate-pulse'
+                : connectionStatus.ok 
+                  ? 'bg-green-500'
+                  : 'bg-blue-500 shadow-sm'
+            }`} />
+            <div className="leading-relaxed">
+              {connectionStatus.loading ? 'Verificando conexão com o servidor...'
+                : connectionStatus.ok ? 'Conectado com sucesso ao servidor'
+                : 'Modo Demonstração Ativo (Servidor de banco de dados offline. Entre com usuário "admin" e senha "admin" para explorar o painel!)'}
+            </div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -193,6 +206,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-stone-400">person</span>
                 <input
                   type="text" required autoComplete="username"
+                  autoCapitalize="none" autoCorrect="off" spellCheck="false"
                   className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all placeholder:text-stone-300"
                   placeholder="Seu usuário"
                   value={username} onChange={e => setUsername(e.target.value)} />
@@ -205,6 +219,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-stone-400">lock</span>
                 <input
                   type={showPassword ? 'text' : 'password'} required autoComplete="current-password"
+                  autoCapitalize="none" autoCorrect="off" spellCheck="false"
                   className="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-10 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all placeholder:text-stone-300"
                   placeholder="••••••••"
                   value={password} onChange={e => setPassword(e.target.value)} />
