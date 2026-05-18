@@ -55,7 +55,7 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
     <div className="flex flex-col min-h-screen store-hero-bg store-texture font-sans text-foreground">
 
       {/* ── HEADER ── */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-amber-100/80 shadow-sm">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-blue-100/60 shadow-md">
         <div className="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between gap-4">
 
           {/* Logo */}

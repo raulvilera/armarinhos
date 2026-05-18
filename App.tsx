@@ -208,7 +208,7 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-x-clip">
       {toast && (
         <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 rounded-full shadow-2xl flex items-center gap-4 border-2 ${toast.type === 'success' ? 'bg-white border-green-500 text-green-700' : 'bg-sidebar-bg border-primary text-white'
           }`}>
