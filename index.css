@@ -3,23 +3,23 @@
 
 @layer base {
   :root {
-    --background: 40 30% 98%;
-    --foreground: 25 50% 12%;
+    --background: 215 60% 98.5%;
+    --foreground: 215 50% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 25 50% 12%;
-    --primary: 35 75% 42%;
-    --primary-foreground: 40 30% 98%;
-    --secondary: 38 40% 92%;
-    --secondary-foreground: 25 50% 12%;
-    --muted: 38 25% 94%;
-    --muted-foreground: 25 20% 45%;
-    --accent: 38 60% 88%;
-    --accent-foreground: 25 50% 12%;
+    --card-foreground: 215 50% 12%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 30% 95%;
+    --secondary-foreground: 215 50% 12%;
+    --muted: 215 20% 96%;
+    --muted-foreground: 215 20% 45%;
+    --accent: 215 40% 92%;
+    --accent-foreground: 215 50% 12%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 38 25% 88%;
-    --input: 38 25% 90%;
-    --ring: 35 75% 42%;
+    --border: 215 30% 91%;
+    --input: 215 30% 92%;
+    --ring: 221 83% 53%;
     --radius: 0.875rem;
     --sidebar-background: 215 35% 10%;
     --sidebar-foreground: 213 20% 65%;
@@ -96,16 +96,16 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
 
   .store-hero-bg {
-    background: linear-gradient(160deg,
-      hsl(40 30% 97%) 0%,
-      hsl(38 40% 94%) 40%,
-      hsl(35 45% 91%) 100%);
+    background: linear-gradient(135deg,
+      #f4f8fe 0%,
+      #e8f0fe 50%,
+      #d4e3fc 100%);
   }
 
   .store-texture {
     background-image:
-      radial-gradient(circle at 15% 85%, hsl(35 55% 80% / 0.25) 0%, transparent 45%),
-      radial-gradient(circle at 85% 15%, hsl(43 65% 82% / 0.25) 0%, transparent 45%);
+      radial-gradient(circle at 15% 85%, rgba(37, 99, 235, 0.06) 0%, transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(79, 70, 229, 0.06) 0%, transparent 45%);
   }
 
   .admin-sidebar-gradient {

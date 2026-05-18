@@ -65,14 +65,14 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
           >
             <div className="relative">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
-                style={{ background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' }}>
+                style={{ background: 'linear-gradient(135deg, #2563eb, #1e40af)' }}>
                 <span className="material-symbols-outlined text-lg font-black">architecture</span>
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-amber-400 border-2 border-white" />
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-blue-500 border-2 border-white" />
             </div>
             <div className="text-left leading-none">
               <div className="text-[15px] font-bold text-stone-800 tracking-tight">Vicmar</div>
-              <div className="text-[9px] font-semibold text-amber-600 uppercase tracking-[0.25em]">Armarinhos</div>
+              <div className="text-[9px] font-semibold text-blue-600 uppercase tracking-[0.25em]">Armarinhos</div>
             </div>
           </button>
 
@@ -83,9 +83,9 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
                 className={`px-4 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat
                     ? 'text-white shadow-md'
-                    : 'text-stone-500 hover:text-stone-800 hover:bg-amber-50'
+                    : 'text-stone-500 hover:text-stone-800 hover:bg-blue-50/60'
                 }`}
-                style={activeCategory === cat ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+                style={activeCategory === cat ? { background: 'linear-gradient(135deg, #2563eb, #1e40af)' } : {}}>
                 {cat}
               </button>
             ))}
@@ -94,16 +94,16 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
           {/* Actions */}
           <div className="flex items-center gap-2">
             <button onClick={() => setIsSearchOpen(v => !v)}
-              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${isSearchOpen ? 'text-white shadow-md' : 'text-stone-500 bg-white border border-amber-100 hover:bg-amber-50'}`}
-              style={isSearchOpen ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${isSearchOpen ? 'text-white shadow-md' : 'text-stone-500 bg-white border border-blue-100 hover:bg-blue-50/60'}`}
+              style={isSearchOpen ? { background: 'linear-gradient(135deg, #2563eb, #1e40af)' } : {}}>
               <span className="material-symbols-outlined text-[18px]">search</span>
             </button>
             <button onClick={() => navigate('/checkout')}
-              className="relative w-9 h-9 rounded-xl bg-white border border-amber-100 flex items-center justify-center text-stone-600 hover:bg-amber-50 transition-all">
+              className="relative w-9 h-9 rounded-xl bg-white border border-blue-100 flex items-center justify-center text-stone-600 hover:bg-blue-50/60 transition-all">
               <span className="material-symbols-outlined text-[18px]">shopping_basket</span>
               {cartCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 min-w-[18px] rounded-full text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-white shadow-sm"
-                  style={{ background: 'hsl(35 72% 44%)' }}>
+                  style={{ background: '#2563eb' }}>
                   {cartCount}
                 </span>
               )}
@@ -118,25 +118,25 @@ export const Storefront: React.FC<StorefrontProps> = ({ addToCart, products, car
 
         {/* Search bar */}
         {isSearchOpen && (
-          <div className="border-t border-amber-100/60 bg-white/95 px-5 lg:px-10 py-3">
+          <div className="border-t border-blue-100/60 bg-white/95 px-5 lg:px-10 py-3">
             <div className="max-w-7xl mx-auto relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-amber-500">search</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-blue-500">search</span>
               <input autoFocus value={search} onChange={e => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 bg-amber-50 border border-amber-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-300/50 placeholder:text-stone-400"
+                className="w-full pl-11 pr-4 py-2.5 bg-blue-50/20 border border-blue-100 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300/50 placeholder:text-stone-400"
                 placeholder="Busque por linhas, correias, agulhas..." />
             </div>
           </div>
         )}
 
         {/* Mobile categories */}
-        <div className="md:hidden border-t border-amber-100/60 bg-white/80 px-4 py-2.5 overflow-x-auto scrollbar-hide">
+        <div className="md:hidden border-t border-blue-100/60 bg-white/80 px-4 py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 w-max">
             {categories.map(cat => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-full text-[10px] font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat ? 'text-white shadow-sm' : 'text-stone-500 bg-stone-100'
                 }`}
-                style={activeCategory === cat ? { background: 'linear-gradient(135deg, hsl(35 72% 44%), hsl(28 68% 36%))' } : {}}>
+                style={activeCategory === cat ? { background: 'linear-gradient(135deg, #2563eb, #1e40af)' } : {}}>
                 {cat}
               </button>
             ))}
